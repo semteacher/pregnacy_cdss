@@ -9,13 +9,13 @@
 -- Структура таблиці `pregnacy_cdssform_deceaces`
 --
 
-CREATE TABLE IF NOT EXISTS `pregnacy_cdss_deceaces` (
+CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_deceaces` (
   `id_deceaces` int(11) NOT NULL AUTO_INCREMENT,
-  `dec_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dec_note` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dec_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
+  `dec_note` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
   `p` float DEFAULT '0',
   PRIMARY KEY (`id_deceaces`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=3 ;
 
 --
 -- Дамп даних таблиці `pregnacy_cdssform_deceaces`
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_deceases_sympt_opt` (
   PRIMARY KEY (`id_deceasbysymp`),
   KEY `deceases_sympt_opt_id_deceaces_ndx` (`id_deceaces`),
   KEY `deceases_sympt_opt_id_symptom_ndx` (`id_sympt_opt`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=205 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=205 ;
 
 --
 -- Дамп даних таблиці `pregnacy_cdssform_deceases_sympt_opt`
@@ -257,14 +257,14 @@ INSERT INTO `pregnacy_cdssform_deceases_sympt_opt` (`id_deceasbysymp`, `id_decea
 
 CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_symptoms` (
   `id_symptoms` bigint(20) NOT NULL AUTO_INCREMENT,
-  `symp_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `symp_notes` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `symp_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
+  `symp_notes` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
   `id_order` int(11) DEFAULT '0',
   `id_category` int(11) DEFAULT '1',
   `is_multi` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_symptoms`),
   KEY `symptoms_symptomsid_category_ndx` (`id_category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=73 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=73 ;
 
 --
 -- Дамп даних таблиці `pregnacy_cdssform_symptoms`
@@ -370,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_symptoms_by_patient` (
   KEY `symptoms_by_patient_id_sympt_cat_ndx` (`id_sympt_cat`),
   KEY `symptoms_by_patient_id_sympt_opt_ndx` (`id_sympt_opt`),
   KEY `symptoms_by_patient_id_symptom_ndx` (`id_symptom`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -381,10 +381,10 @@ CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_symptoms_by_patient` (
 
 CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_sympt_category` (
   `id_category` int(11) NOT NULL AUTO_INCREMENT,
-  `cat_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `cat_notes` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cat_name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `cat_notes` varchar(150) COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id_category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=8 ;
 
 --
 -- Дамп даних таблиці `pregnacy_cdssform_sympt_category`
@@ -408,13 +408,13 @@ INSERT INTO `pregnacy_cdssform_sympt_category` (`id_category`, `cat_name`, `cat_
 CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_sympt_options` (
   `id_symp_option` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_symptom` bigint(20) DEFAULT '0',
-  `opt_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `opt_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
   `id_order` int(11) DEFAULT '0',
   `is_selected` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_symp_option`),
   KEY `sympt_options_id_symptom_ndx` (`id_symptom`),
   KEY `sympt_options_symptomssympt_options_ndx` (`id_symptom`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=238 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=238 ;
 
 --
 -- Дамп даних таблиці `pregnacy_cdssform_sympt_options`

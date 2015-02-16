@@ -7,7 +7,7 @@ include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 
 /** CHANGE THIS name to the name of your form **/
-$form_name = "CDSS \"Вагітність 2.0\"";
+$form_name = "CDSS \"Вагітність 2.0\"(new)";
 
 /** CHANGE THIS to match the folder you created for this form **/
 $form_folder = "pregnacy_cdss";

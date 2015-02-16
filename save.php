@@ -10,7 +10,7 @@ include_once("$srcdir/forms.inc");
 $table_name = "pregnacy_cdss_patient_data";
 
 /** CHANGE THIS name to the name of your form **/
-$form_name = "CDSS \"¬аг≥тн≥сть 2.0\"";
+$form_name = "CDSS \"Вагітність 2.0\"(save)";
 
 /** CHANGE THIS to match the folder you created for this form **/
 $form_folder = "pregnacy_cdss";

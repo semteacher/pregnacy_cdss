@@ -56,7 +56,7 @@ class SymptByPatient_Model extends ORDataObject {
 	 * Constructor sets all Form attributes to their default value
 	 */
 
-	function FormHpTjePrimary($id= "", $_prefix = "")	{
+	function SymptByPatient_Model($id= "", $_prefix = "")	{
 		if (is_numeric($id)) {
 			$this->id = $id;
 		}
@@ -65,22 +65,25 @@ class SymptByPatient_Model extends ORDataObject {
 		}
 		$this->date = date("Y-m-d H:i:s");
 		$this->date_of_onset = date("Y-m-d");
-		$this->_table = "form_hp_tje_primary";
+		$this->_table = "pregnacy_cdssform_symptoms_by_patient";
 		$this->checks = array();
 		$this->activity = 1;
 		$this->pid = $GLOBALS['pid'];
-		if ($id != "") {
+        var_dump($this->pid);
+		//if ($id != "") {
 			$this->populate();
-		}
+		//}
 	}
 	function populate() {
 		parent::populate();
 		
-		$sql = "SELECT name from form_hp_tje_checks where foreign_id = '" . mysql_real_escape_string($this->id) . "'";
+		$sql = "SELECT * FROM `".$this->_table."` WHERE pid = '" . mysql_real_escape_string($this->pid) . "'";
+        var_dump($sql); 
 		$results = sqlQ($sql);
 
 		while ($row = mysql_fetch_array($results, MYSQL_ASSOC)) {
-			$this->checks[] = $row['name'];	
+var_dump($row);        
+			//$this->checks[] = $row['name'];	
 		}
 		
 		

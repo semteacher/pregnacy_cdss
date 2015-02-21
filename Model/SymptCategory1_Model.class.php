@@ -3,7 +3,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
   class SymptCategory1_Model {
     // we define 3 attributes
     // they are public so that we can access them using $sympcategory1->cat_name directly
-	var $id_category_category;
+	var $id_category;
 	var $cat_name;
 	var $cat_notes;
 
@@ -21,7 +21,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
       $db = get_db();
       $req = $db->Execute('SELECT * FROM pregnacy_cdssform_sympt_category');
 print_r("SymptCategory1_Model::all");
-var_dump($req);
+//var_dump($req);
       // we create a list of SymptCategory1_Model objects from the database results
       //foreach($req->fetchAll() as $sympcategory1) {
       foreach($req as $sympcategory1) {

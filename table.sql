@@ -351,6 +351,7 @@ INSERT INTO `pregnacy_cdssform_symptoms` (`id_symptoms`, `symp_name`, `symp_note
 
 CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_symptoms_by_patient` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `form_id` bigint(20) DEFAULT '0',
   `pid` bigint(20) DEFAULT '0',
   `user` varchar(255) default NULL,
   `groupname` varchar(255) default NULL,
@@ -366,6 +367,7 @@ CREATE TABLE IF NOT EXISTS `pregnacy_cdssform_symptoms_by_patient` (
   /* end of custom form fields */
   PRIMARY KEY (`id`),
   KEY `symptoms_by_patient_id_deceases_ndx` (`id_deceases`),
+  KEY `symptoms_by_patient_id_form_ndx` (`form_id`),
   KEY `symptoms_by_patient_id_patient_ndx` (`pid`),
   KEY `symptoms_by_patient_id_sympt_cat_ndx` (`id_sympt_cat`),
   KEY `symptoms_by_patient_id_sympt_opt_ndx` (`id_sympt_opt`),

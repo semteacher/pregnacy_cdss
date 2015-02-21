@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<?php html_header_show();
+var_dump($this->form_folder);
+?>
+
+<!-- supporting javascript code -->
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+
+<!-- page styles -->
+<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
+<link rel="stylesheet" href="../../forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
+
+<!-- pop up calendar -->
+<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+
+<script language="JavaScript">
+// this line is to assist the calendar text boxes
+var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
+
+function PrintForm() {
+    newwin = window.open("<?php echo "http://".$_SERVER['SERVER_NAME'].$rootdir."/forms/".$this->form_folder."/print.php?id=".$_GET["id"]; ?>","mywin");
+}
+</script>
+
+</head>
+
+<body class="body_top">
+
+<?php echo date("F d, Y", time()); ?>
+
+<form method=post action="<?php echo $rootdir;?>/forms/<?php echo $this->form_folder; ?>/save.php?mode=update&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
+<span class="title"><?php xl($this->form_name,'e'); ?></span><br>
+
+<!-- Save/Cancel links -->
+<input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp; 
+
+<!-- container for the main body of the form -->
+<div id="form_container">
+
+<div id="general">
+<table>
+<?php 
+//var_dump($SymptCategory1);
+foreach ($SymptCategory1 as $key=>$SymptCat) 
+    {
+        echo "<tr><td>";
+        echo $SymptCat->id_category;
+        echo "</td><td>";
+        echo $SymptCat->cat_name;
+        echo "</td></tr>";
+    }
+?>
+</table>
+</div>
+
+<div id="bottom">
+Use this space to express notes <br>
+<textarea name="notes" id="notes" cols="80" rows="4"><?php //echo stripslashes($record['notes']);?></textarea>
+
+</div>
+</div>
+
+</div> <!-- end form_container -->
+
+<input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp; 
+
+</form>
+
+</body>
+
+<script language="javascript">
+/* required for popup calendar */
+//Calendar.setup({inputField:"dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
+//Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
+//Calendar.setup({inputField:"sig_date", ifFormat:"%Y-%m-%d", button:"img_sig_date"});
+
+// jQuery stuff to make the page a little easier to use
+
+$(document).ready(function(){
+    $(".save").click(function() { top.restoreSession(); document.my_form.submit(); });
+    $(".dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$this->returnurl";?>'; });
+    $(".printform").click(function() { PrintForm(); });
+});
+
+</script>
+
+</html>

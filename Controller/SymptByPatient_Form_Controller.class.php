@@ -32,6 +32,7 @@ class SymptByPatient_Form_Controller extends Controller {
 	}
 	
 	function view_action($form_id) {
+    var_dump($form_id);
 		if (is_numeric($form_id)) {
     		$SymptByPatient = new SymptByPatient_Model($form_id);
     	}

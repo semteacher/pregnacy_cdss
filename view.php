@@ -2,8 +2,8 @@
 include_once("../../globals.php");
 include_once("$srcdir/api.inc");
 
-require ("/Controller/SymptByPatient_Form_Controller.class.php");
+require ("/Controller/PatientExam_Form_Controller.class.php");
 
-$c = new SymptByPatient_Form_Controller();
+$c = new PatientExam_Form_Controller();
 echo $c->view_action($_GET['id']);
 ?>

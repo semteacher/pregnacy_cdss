@@ -2,8 +2,9 @@
 
 require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
-//require_once("SymptByPatient_Model.class.php");
+
 require_once("/../Model/SymptByPatient_Model.class.php");
+require_once("/../Model/SymptCategory1_Model.class.php");
 
 class SymptByPatient_Form_Controller extends Controller {
 
@@ -22,6 +23,7 @@ class SymptByPatient_Form_Controller extends Controller {
     
     function default_action() {
     	$SymptByPatient = new SymptByPatient_Model();
+        $SymptCategory1 = SymptCategory1_Model::all();
         var_dump($this->template_dir);        
     	$this->assign("SymptByPatient",$SymptByPatient);
     	$this->assign("checks",$SymptByPatient->_form_layout());

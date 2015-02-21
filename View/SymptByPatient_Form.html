@@ -75,11 +75,13 @@ a {
 
 <body bgcolor="{$STYLE.BGCOLOR2}">
 
-<p><span class="title">Head Pain and Temporomandibular Jaw Examination</span></p>
+<p><span class="title">Pregnacy CDSS Patient Examination Form</span></p>
 
-<form name="hptje" method="post" action="{$FORM_ACTION}/interface/forms/hp_tje_primary/save.php"
+<form name="pregnacy_cdss" method="post" action="{$FORM_ACTION}/interface/forms/pregnacy_cdss/save.php"
 
  onsubmit="return top.restoreSession()">
+ 
+<?php foreach $SymptCategory1 as $key=> $sympcat { echo $key.'. '.$sympcat->cat_name;}?>
 
 <table>
 

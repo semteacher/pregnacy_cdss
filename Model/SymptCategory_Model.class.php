@@ -2,17 +2,17 @@
 
 require_once(dirname(__FILE__) . "/../../../../library/classes/ORDataObject.class.php");
 
-define("EVENT_VEHICLE",1);
-define("EVENT_WORK_RELATED",2);
-define("EVENT_SLIP_FALL",3);
-define("EVENT_OTHER",4);
+//define("EVENT_VEHICLE",1);
+//define("EVENT_WORK_RELATED",2);
+//define("EVENT_SLIP_FALL",3);
+//define("EVENT_OTHER",4);
 
 
 /**
- * class SymptByPatient_Model
+ * class SymptCategory_Model
  *
  */
-class SymptByPatient_Model extends ORDataObject {
+class SymptCategory_Model extends ORDataObject {
 
 	/**
 	 *
@@ -24,23 +24,24 @@ class SymptByPatient_Model extends ORDataObject {
 	 *
 	 * static
 	 */
-	var $event_array = array("","Vehicular Accident","Work Related Accident","Slip & Fall","Other");
+	//var $event_array = array("","Vehicular Accident","Work Related Accident","Slip & Fall","Other");
 
 	/**
 	 *
 	 * @access private
 	 */
 
-	var $id;
-	var $referred_by;
-	var $complaints;
-	var $date_of_onset;
+	var $id_category;
+	var $cat_name;
+	var $cat_notes;
+    
+	//var $date_of_onset;
 	var $event;
 	var $event_description;
 	var $prior_symptoms;
 	var $aggravated_symptoms;
 	var $comments;
-	var $date;
+	//var $date;
 	var $teeth_sore_number;
 	var $teeth_mobile_number;
 	var $teeth_fractured_number;
@@ -48,7 +49,7 @@ class SymptByPatient_Model extends ORDataObject {
 	var $precipitating_factors_other_text;
 	var $checks;
 	var $pid;
-	var $activity;
+	//var $activity;
 	var $history;
 	var $previous_accidents;
 	
@@ -56,48 +57,38 @@ class SymptByPatient_Model extends ORDataObject {
 	 * Constructor sets all Form attributes to their default value
 	 */
 
-	function SymptByPatient_Model($id= "", $_prefix = "")	{
-		if (is_numeric($id)) {
-			$this->id = $id;
+	function SymptCategory_Model($id_category= "", $_prefix = "")	{
+		if (is_numeric($id_category)) {
+			$this->id_category = $id_category;
+		} else {
+			$id_category = "";	
 		}
-		else {
-			$id = "";	
-		}
-		$this->date = date("Y-m-d H:i:s");
-		$this->date_of_onset = date("Y-m-d");
-		$this->_table = "pregnacy_cdssform_symptoms_by_patient";
+		//$this->date = date("Y-m-d H:i:s");
+		//$this->date_of_onset = date("Y-m-d");
+		$this->_table = "pregnacy_cdssform_sympt_category";
 		$this->checks = array();
-		$this->activity = 1;
+		//$this->activity = 1;
 		$this->pid = $GLOBALS['pid'];
-        var_dump($this->pid);
-        //var_dump($GLOBALS);
-        $this->_db=get_db();
-       //// var_dump($this->_db);
-		//if ($id != "") {
-			$this->populate();
-		//}
+       // var_dump($this->pid);
+		if ($id_category != "") {
+			//$this->get_category_by_id($id_category);
+		} else {
+            $this->populate();
+        }
 	}
 	function populate() {
 		parent::populate();
 		
-		$sql = "SELECT * FROM `".$this->_table."` WHERE pid = '" . mysql_real_escape_string($this->pid) . "'";
-        var_dump($sql); 
-        var_dump($sqlconf); 
+		$sql = "SELECT id_category, cat_name, cat_notes FROM `".$this->_table;
+
 		$results = sqlQ($sql);
 
 		while ($row = mysql_fetch_array($results, MYSQL_ASSOC)) {
-//var_dump($row);  //OK      
+var_dump($row);        
 			//$this->checks[] = $row['name'];	
 		}
-		print_r("adodb");
-		$rs = $this->_db->Execute("SELECT * FROM `".$this->_table."` WHERE pid = '" . mysql_real_escape_string($this->pid) . "'");
-foreach ($rs as $row) {
-//    print_r($row);
-var_dump($row); 
-    }
-
-
-
+		
+		
 		$sql = "SELECT doctor,specialty,tx_rendered,effectiveness,date from form_hp_tje_history where foreign_id = '" . mysql_real_escape_string($this->id) . "'";
 		$results = sqlQ($sql);
 
@@ -125,14 +116,31 @@ var_dump($row);
 			return $string;
 		}
 	}
-	function set_id($id) {
-		if (!empty($id) && is_numeric($id)) {
-			$this->id = $id;
+	function set_id_category($id_category) {
+		if (!empty($id_category) && is_numeric($id_category)) {
+			$this->id_category = $id_category;
 		}
 	}
-	function get_id() {
-		return $this->id;
+	function get_id_category() {
+		return $this->id_category;
 	}
+	function set_cat_name($string) {
+		$this->cat_name = $cat_name;
+	}
+	
+	function get_cat_name() {
+		return $this->cat_name;	
+	}    
+	function set_cat_notes($string) {
+		$this->cat_notes = $string;
+	}
+	
+	function get_cat_notes() {
+		return $this->cat_notes;	
+	}    
+    
+    
+    
 	function set_pid($pid) {
 		if (!empty($pid) && is_numeric($pid)) {
 			$this->pid = $pid;

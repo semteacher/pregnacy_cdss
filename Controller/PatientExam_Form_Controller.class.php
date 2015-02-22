@@ -3,9 +3,8 @@
 //require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 
-//require_once("/../Model/SymptByPatient_Model.class.php");
-require_once("/../Model/SymptByPatient1_Model.class.php");
-require_once("/../Model/SymptCategory1_Model.class.php");
+require_once("/../Model/SymptByPatient_Model.class.php");
+require_once("/../Model/SymptCategory_Model.class.php");
 
 define("VIEW_DIR", dirname(__FILE__) . "\..\View\\");
 /** CHANGE THIS name to the name of your form **/
@@ -43,34 +42,38 @@ class PatientExam_Form_Controller {
     }
     
     public function default_action() {
-    	$SymptByPatient1 = new SymptByPatient1_Model();
-        $SymptCategory1 = SymptCategory1_Model::all();
-        var_dump($this->template_dir);        
+    	//$SymptByPatient = new SymptByPatient_Model();
+        $SymptCategory = SymptCategory_Model::all();
+        
+    //var_dump($this->template_dir);        
     	//$this->assign("SymptByPatient",$SymptByPatient1);
     	//$this->assign("checks",$SymptByPatient1->_form_layout());
 		//return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
-        return $this->fetch($this->template_dir . $this->template_mod. ".html");
+        //return $this->fetch($this->template_dir . $this->template_mod. ".html");
+        return; //????
 	}
 	
 	public function view_action($form_id) {
     //var_dump($form_id);
 		if (is_numeric($form_id)) {
-    		//$SymptByPatient = new SymptByPatient1_Model($form_id);
-            $SymptCategory1 = SymptByPatient1_Model::find($form_id);
+    		//$SymptByPatient = new SymptByPatient_Model($form_id);
+            $SymptByPatient = SymptByPatient_Model::find($form_id);
     	}
     	else {
-    		
-            //$SymptCategory1 = SymptByPatient1_Model::all();
+    		//error
+            //$SymptCategory = SymptByPatient_Model::all();
     	}
-    	$SymptCategory1 = SymptCategory1_Model::all();
-        print_r('back to controller ...');
-        var_dump($SymptCategory1);
+        //get all form models (nested mode)
+    	$SymptCategory = SymptCategory_Model::all();
+    //print_r('back to controller ...');
+    //var_dump($SymptCategory);
     	//$this->assign("SymptByPatient",$SymptByPatient);
     	//$this->assign("checks",$SymptByPatient->_form_layout());
     	//$this->assign("VIEW",true);
 		//return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
         //return $this->fetch($this->template_dir . $this->template_mod. ".html");
-        require_once(VIEW_DIR.'SymptByPatient1_Form.html');
+        require_once(VIEW_DIR.'SymptByPatient_Form.html');
+        return;//???
 
 	}
 	
@@ -80,11 +83,11 @@ class PatientExam_Form_Controller {
 		$this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
 		parent::populate_object($this->SymptByPatient);
 		
-		$this->SymptByPatient->persist();
+		//$this->SymptByPatient->persist();
 		if ($GLOBALS['encounter'] == "") {
 			$GLOBALS['encounter'] = date("Ymd");
 		}
-		addForm($GLOBALS['encounter'], "Head Pain TJE", $this->SymptByPatient->id, "hp_tje_primary", $GLOBALS['pid'], $_SESSION['userauthorized']);
+		addForm($GLOBALS['encounter'], $this->form_name, $this->SymptByPatient->id, $this->form_folder, $GLOBALS['pid'], $_SESSION['userauthorized']);
 		$_POST['process'] = "";
 		return;
 	}

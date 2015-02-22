@@ -9,11 +9,13 @@ define("SYMPTCATEGORY_DBTABLE", "pregnacy_cdssform_sympt_category");
 	var $id_category;
 	var $cat_name;
 	var $cat_notes;
+    var $symptoms;
 
-    public function __construct($id_category, $cat_name, $content) {
-      $this->id_category  = $id_category;
-      $this->cat_name  = $cat_name;
-      $this->content = $content;
+    public function __construct($id_category, $cat_name, $cat_notes) {
+        $this->id_category  = $id_category;
+        $this->cat_name  = $cat_name;
+        $this->cat_notes = $cat_notes;
+        $this->symptoms = Symptoms_Model::find($id_category);
     }
 
     public static function all() {
@@ -25,17 +27,16 @@ define("SYMPTCATEGORY_DBTABLE", "pregnacy_cdssform_sympt_category");
         //ADODB:
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTCATEGORY_DBTABLE);
-print_r("SymptCategory_Model::all");
-//var_dump(DIRECTORY_SEPARATOR);
+//print_r("SymptCategory_Model::all");
 //var_dump($req);
         // we create a list of SymptCategory_Model objects from the database results
         //PDO:
         //foreach($req->fetchAll() as $sympcategory) {
         //ADODB:
         foreach($req as $sympcategory) {
-            $list[] = new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['content']);
+            $list[] = new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['cat_notes']);
         }
-var_dump($list);
+//var_dump($list);
         return $list;
     }
 
@@ -52,11 +53,11 @@ var_dump($list);
         //return new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['content']);
         //ADODB:
         $db = get_db();
-        $req = $db->Execute('SELECT * FROM '.SYMPTCATEGORY_DBTABLE.' WHERE id_category = :id_category');
+        $req = $db->Execute('SELECT * FROM '.SYMPTCATEGORY_DBTABLE.' WHERE id_category = '.$id_category);
         foreach($req as $sympcategory) {
-            $list[] = new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['content']);
+            $list[] = new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['cat_notes']);
         }
-var_dump($list);
+//var_dump($list);
         return $list;
     }
   }

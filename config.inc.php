@@ -8,4 +8,5 @@
 define ('DS', DIRECTORY_SEPARATOR);
 define ('HOME', dirname(__FILE__));
 
-define("VIEW_DIR", HOME . DS.'View'.DS);
+define('VIEW_DIR', HOME . DS.'View'.DS);
+define('MODEL_DIR', HOME . DS.'Model'.DS);

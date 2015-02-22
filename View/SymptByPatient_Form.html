@@ -48,15 +48,30 @@ function PrintForm() {
 <div id="general">
 <table>
 <?php 
-//var_dump($SymptCategory1);
-foreach ($SymptCategory as $key=>$SymptCat) 
+foreach ($SymptCategory as $key=>$SymptCat)
+{
+    echo '<tr><td>';
+    echo '<strong>'.$SymptCat->id_category.'. '.$SymptCat->cat_name.'</strong>';
+    echo '</td></tr>';
+
+    foreach ($SymptCat->symptoms as $key=>$Symptoms)
     {
-        echo "<tr><td>";
-        echo $SymptCat->id_category;
-        echo "</td><td>";
-        echo $SymptCat->cat_name;
-        echo "</td></tr>";
+        echo '<tr><td>';
+        echo $Symptoms->symp_name;
+        echo '</td></tr>';
+
+        foreach ($Symptoms->symptoptions as $key=>$SymptOptions)
+        {
+            echo '<tr><td>';
+            if ($Symptoms->is_multi) {
+                echo '<input type="checkbox" id="'.$Symptoms->id_symptoms.'" name="'.$Symptoms->symp_name.'" value="'.$SymptOptions->id_symp_option.'">'.$SymptOptions->opt_name;
+            } else {
+                echo '<input type="radio" id="'.$Symptoms->id_symptoms.'" name="'.$Symptoms->symp_name.'" value="'.$SymptOptions->id_symp_option.'">'.$SymptOptions->opt_name;
+            }
+            echo '</td></tr>';
+        }
     }
+}
 ?>
 </table>
 </div>

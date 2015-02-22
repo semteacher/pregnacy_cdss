@@ -39,8 +39,8 @@ define("SYMPTBYPATIENT_DBTABLE", "pregnacy_cdssform_symptoms_by_patient");
         //ADODB:
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE);
-print_r("SymptByPatient_Model::all");
-var_dump($req);
+//print_r("SymptByPatient_Model::all");
+//var_dump($req);
         // we create a list of SymptByPatient_Model objects from the database results
         //PDO:
         //foreach($req->fetchAll() as $symptbypt) {
@@ -48,7 +48,7 @@ var_dump($req);
         foreach($req as $symptbypt) {
             $list[] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
         }
-var_dump($list);
+//var_dump($list);
 
         return $list;
     }
@@ -66,14 +66,14 @@ var_dump($list);
         //ADODB:
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE form_id = '.$form_id);
-print_r("SymptByPatient_Model::find");
-var_dump($form_id);
+//print_r("SymptByPatient_Model::find");
+//var_dump($form_id);
      
         // the query was prepared, now we replace :id_category with our actual $id_category value
         foreach($req as $symptbypt) {
             $list[] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
         }
-var_dump($list);
+//var_dump($list);
         return $list;      
     }
   }

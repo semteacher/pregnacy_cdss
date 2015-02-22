@@ -5,8 +5,10 @@ require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 
 //require_once("/../config.inc.php");
 
-require_once("/../Model/SymptByPatient_Model.class.php");
-require_once("/../Model/SymptCategory_Model.class.php");
+require_once(MODEL_DIR."SymptByPatient_Model.class.php");
+require_once(MODEL_DIR."SymptCategory_Model.class.php");
+require_once(MODEL_DIR."Symptoms_Model.class.php");
+require_once(MODEL_DIR."SymptOptions_Model.class.php");
 
 //define("VIEW_DIR", dirname(__FILE__) . "\..\View\\");
 /** CHANGE THIS name to the name of your form **/
@@ -31,7 +33,7 @@ class PatientExam_Form_Controller {
         $this->form_folder = "pregnacy_cdss";
         $this->form_name = "Pregnacy CDSS (test) Form";
         
-        formHeader("Form: ".$form_name);
+        formHeader("Form: ".$form_name);//?????
         $this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
         
     	//$this->template_mod = $template_mod;
@@ -44,7 +46,6 @@ class PatientExam_Form_Controller {
     }
     
     public function default_action() {
-    	//$SymptByPatient = new SymptByPatient_Model();
         $SymptCategory = SymptCategory_Model::all();
         $this->form_name = "Pregnacy CDSS (new) Form";
     //var_dump($this->template_dir);        
@@ -59,7 +60,6 @@ class PatientExam_Form_Controller {
 	public function view_action($form_id) {
     //var_dump($form_id);
 		if (is_numeric($form_id)) {
-    		//$SymptByPatient = new SymptByPatient_Model($form_id);
             $SymptByPatient = SymptByPatient_Model::find($form_id);
     	}
     	else {
@@ -69,6 +69,7 @@ class PatientExam_Form_Controller {
         $this->form_name = "Pregnacy CDSS (view) Form";
         //get all form models (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
+
     //print_r('back to controller ...');
     //var_dump($SymptCategory);
     	//$this->assign("SymptByPatient",$SymptByPatient);

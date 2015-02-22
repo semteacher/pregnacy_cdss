@@ -3,10 +3,12 @@
 //require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 
+//require_once("/../config.inc.php");
+
 require_once("/../Model/SymptByPatient_Model.class.php");
 require_once("/../Model/SymptCategory_Model.class.php");
 
-define("VIEW_DIR", dirname(__FILE__) . "\..\View\\");
+//define("VIEW_DIR", dirname(__FILE__) . "\..\View\\");
 /** CHANGE THIS name to the name of your form **/
 //$form_name = "Pregnacy CDSS (test) Form1";
 
@@ -27,15 +29,15 @@ class PatientExam_Form_Controller {
     function PatientExam_Form_Controller() {
     	//parent::Controller();
         $this->form_folder = "pregnacy_cdss";
-        $this->form_name = "Pregnacy CDSS (test) Form1";
+        $this->form_name = "Pregnacy CDSS (test) Form";
         
         formHeader("Form: ".$form_name);
         $this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
         
-    	$this->template_mod = $template_mod;
+    	//$this->template_mod = $template_mod;
         //var_dump($template_mod);
     	//$this->template_dir = dirname(__FILE__) . "/../View/";
-        $this->template_dir = VIEW_DIR;
+        //$this->template_dir = VIEW_DIR;
     	//$this->assign("FORM_ACTION", $GLOBALS['web_root']);
     	//$this->assign("DONT_SAVE_LINK", $GLOBALS['form_exit_url']);
     	//$this->assign("STYLE", $GLOBALS['style']);
@@ -44,12 +46,13 @@ class PatientExam_Form_Controller {
     public function default_action() {
     	//$SymptByPatient = new SymptByPatient_Model();
         $SymptCategory = SymptCategory_Model::all();
-        
+        $this->form_name = "Pregnacy CDSS (new) Form";
     //var_dump($this->template_dir);        
     	//$this->assign("SymptByPatient",$SymptByPatient1);
     	//$this->assign("checks",$SymptByPatient1->_form_layout());
 		//return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
         //return $this->fetch($this->template_dir . $this->template_mod. ".html");
+        require_once(VIEW_DIR.'SymptByPatient_Form.html');
         return; //????
 	}
 	
@@ -63,6 +66,7 @@ class PatientExam_Form_Controller {
     		//error
             //$SymptCategory = SymptByPatient_Model::all();
     	}
+        $this->form_name = "Pregnacy CDSS (view) Form";
         //get all form models (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
     //print_r('back to controller ...');

@@ -26,6 +26,7 @@ define("SYMPTCATEGORY_DBTABLE", "pregnacy_cdssform_sympt_category");
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTCATEGORY_DBTABLE);
 print_r("SymptCategory_Model::all");
+//var_dump(DIRECTORY_SEPARATOR);
 //var_dump($req);
         // we create a list of SymptCategory_Model objects from the database results
         //PDO:

@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php html_header_show();
-var_dump($this->form_folder);
-?>
+<?php html_header_show(); ?>
 
 <!-- supporting javascript code -->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
@@ -24,7 +22,7 @@ var_dump($this->form_folder);
 var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
 
 function PrintForm() {
-    newwin = window.open("<?php echo "http://".$_SERVER['SERVER_NAME'].$rootdir."/forms/".$this->form_folder."/print.php?id=".$_GET["id"]; ?>","mywin");
+    newwin = window.open("<?php echo "http://".$_SERVER['SERVER_NAME'].$rootdir."/interface/forms/".$this->form_folder."/print.php?id=".$_GET["id"]; ?>","mywin");
 }
 </script>
 
@@ -34,8 +32,13 @@ function PrintForm() {
 
 <?php echo date("F d, Y", time()); ?>
 
-<form method=post action="<?php echo $rootdir;?>/forms/<?php echo $this->form_folder; ?>/save.php?mode=update&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
+<form method=post action="<?php echo $rootdir;?>/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=update&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
+
+<input type="hidden" name="id" value="<?php echo $this->form_id; ?>" />
+<!--<input type="hidden" name="activity" value="{$data->get_activity()}">-->
+<input type="hidden" name="pid" value="<?php echo $this->form_pid; ?>">
+<input type="hidden" name="process" value="true">
 
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -47,7 +50,8 @@ function PrintForm() {
 
 <div id="general">
 <table>
-<?php 
+<?php
+var_dump($rootdir);
 foreach ($SymptCategory as $key=>$SymptCat)
 {
     echo '<tr><td>';
@@ -63,11 +67,10 @@ foreach ($SymptCategory as $key=>$SymptCat)
         foreach ($Symptoms->symptoptions as $key=>$SymptOptions)
         {
             echo '<tr><td>';
-            if ($Symptoms->is_multi) {
-                echo '<input type="checkbox" id="'.$Symptoms->id_symptoms.'" name="'.$Symptoms->symp_name.'" value="'.$SymptOptions->id_symp_option.'">'.$SymptOptions->opt_name;
-            } else {
-                echo '<input type="radio" id="'.$Symptoms->id_symptoms.'" name="'.$Symptoms->symp_name.'" value="'.$SymptOptions->id_symp_option.'">'.$SymptOptions->opt_name;
-            }
+            if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
+            $selection = '';
+            if (SymptByPatient_Model::isselected($this->form_id, $this->form_pid, $Symptoms->id_symptoms, $SymptOptions->id_symp_option)) { $selection = 'checked'; }
+            echo '<input type="'.$sel_type.'" id="'.$Symptoms->id_symptoms.'" name="'.$Symptoms->symp_name.'" value="'.$SymptOptions->id_symp_option.'" '.$selection.' >'.$SymptOptions->opt_name;
             echo '</td></tr>';
         }
     }
@@ -102,8 +105,8 @@ Use this space to express notes <br>
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){
-    $(".save").click(function() { top.restoreSession(); document.my_form.submit(); });
-    $(".dontsave").click(function() { location.href='<?php echo "$rootdir/patient_file/encounter/$this->returnurl";?>'; });
+    $(".save").click(function() { top.restoreSession(); document.pregnacy_cdss_form.submit(); });
+    $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });
 });
 

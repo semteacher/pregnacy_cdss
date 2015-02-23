@@ -76,5 +76,25 @@ define("SYMPTBYPATIENT_DBTABLE", "pregnacy_cdssform_symptoms_by_patient");
 //var_dump($list);
         return $list;      
     }
+
+      //Check is it symptom option is selected in given form for given patient
+      public static function isselected($form_id, $pid, $id_symptom, $id_symp_option) {
+          unset($req);
+          // we make sure $id is an integer
+          $form_id = intval($form_id);
+          $pid = intval($pid);
+          $id_symp_option = intval($id_symp_option);
+          $id_symptom = intval($id_symptom);
+
+          //ADODB:
+          $db = get_db();
+          $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE (form_id = '.$form_id.')AND(pid = '.$pid.')AND(id_sympt_opt = '.$id_symp_option.')AND(id_symptom = '.$id_symptom.')');
+
+          if ($req->RecordCount()>0){
+              return TRUE;
+          }else{
+              return False;
+          }
+      }
   }
 ?>

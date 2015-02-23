@@ -26,16 +26,18 @@ class PatientExam_Form_Controller {
     var $template_mod;
     var $form_folder;
 	var $form_name;
+    var $form_id;
+    var $form_pid;
     var $returnurl;
     
     function PatientExam_Form_Controller() {
     	//parent::Controller();
         $this->form_folder = "pregnacy_cdss";
         $this->form_name = "Pregnacy CDSS (test) Form";
-        
-        formHeader("Form: ".$form_name);//?????
-        $this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
-        
+        $this->returnurl =$GLOBALS['form_exit_url'];
+        formHeader("Form: ".$this->form_name);//?????
+        //$this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
+
     	//$this->template_mod = $template_mod;
         //var_dump($template_mod);
     	//$this->template_dir = dirname(__FILE__) . "/../View/";
@@ -48,7 +50,7 @@ class PatientExam_Form_Controller {
     public function default_action() {
         $SymptCategory = SymptCategory_Model::all();
         $this->form_name = "Pregnacy CDSS (new) Form";
-    //var_dump($this->template_dir);        
+    //var_dump($this->template_dir);
     	//$this->assign("SymptByPatient",$SymptByPatient1);
     	//$this->assign("checks",$SymptByPatient1->_form_layout());
 		//return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
@@ -60,6 +62,9 @@ class PatientExam_Form_Controller {
 	public function view_action($form_id) {
     //var_dump($form_id);
 		if (is_numeric($form_id)) {
+            $this->form_id = $form_id;
+            $this->form_pid = $GLOBALS['pid'];
+            //get paient form data
             $SymptByPatient = SymptByPatient_Model::find($form_id);
     	}
     	else {
@@ -67,7 +72,7 @@ class PatientExam_Form_Controller {
             //$SymptCategory = SymptByPatient_Model::all();
     	}
         $this->form_name = "Pregnacy CDSS (view) Form";
-        //get all form models (nested mode)
+        //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
 
     //print_r('back to controller ...');
@@ -77,12 +82,14 @@ class PatientExam_Form_Controller {
     	//$this->assign("VIEW",true);
 		//return $this->fetch($this->template_dir . $this->template_mod . "_new.html");
         //return $this->fetch($this->template_dir . $this->template_mod. ".html");
+        //display form
         require_once(VIEW_DIR.'SymptByPatient_Form.html');
         return;//???
 
 	}
 	
 	public function default_action_process() {
+        var_dump($_POST['process']);
 		if ($_POST['process'] != "true")
 			return;
 		$this->SymptByPatient = new SymptByPatient_Model($_POST['id']);

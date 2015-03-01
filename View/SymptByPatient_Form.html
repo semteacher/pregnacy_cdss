@@ -70,7 +70,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
             if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
             $selection = '';
             if (SymptByPatient_Model::isselected($this->form_id, $this->form_pid, $Symptoms->id_symptoms, $SymptOptions->id_symp_option)) { $selection = 'checked'; }
-            echo '<input type="'.$sel_type.'" id="'.$Symptoms->id_symptoms.'" name="'.$Symptoms->symp_name.'" value="'.$SymptOptions->id_symp_option.'" '.$selection.' >'.$SymptOptions->opt_name;
+            echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id_symp_option.'" name="symptom_options['.$Symptoms->id_symptoms.'][]" value="'.$SymptOptions->id_symp_option.'" '.$selection.' >'.$SymptOptions->opt_name;
             echo '</td></tr>';
         }
     }

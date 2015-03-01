@@ -32,7 +32,7 @@ define("SYMPTOMS_DBTABLE", "pregnacy_cdssform_symptoms");
         
         //ADODB:
         $db = get_db();
-        $req = $db->Execute('SELECT * FROM '.SYMPTOMS_DBTABLE.'ORDER BY id_order');
+        $req = $db->Execute('SELECT * FROM '.SYMPTOMS_DBTABLE.' ORDER BY id_order');
 //print_r("Symptoms_Model::all");
 //var_dump($req);
         // we create a list of SymptCategory_Model objects from the database results
@@ -66,6 +66,15 @@ define("SYMPTOMS_DBTABLE", "pregnacy_cdssform_symptoms");
         }
 //var_dump($list);
         return $list;
+    }
+
+    public static function is_multy($id_symptoms) {
+        // we make sure $id_symptom is an integer
+        $id_symptoms = intval($id_symptoms);
+        $db = get_db();
+        $req = $db->Execute('SELECT is_multi FROM '.SYMPTOMS_DBTABLE.' WHERE id_symptoms = '.$id_symptoms);
+        return $req->fields('is_multi');
+
     }
   }
 ?>

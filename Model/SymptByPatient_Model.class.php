@@ -46,7 +46,7 @@ define("SYMPTBYPATIENT_DBTABLE", "pregnacy_cdssform_symptoms_by_patient");
         //foreach($req->fetchAll() as $symptbypt) {
         //ADODB:
         foreach($req as $symptbypt) {
-            $list[] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
+            $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
         }
 //var_dump($list);
 
@@ -71,7 +71,7 @@ define("SYMPTBYPATIENT_DBTABLE", "pregnacy_cdssform_symptoms_by_patient");
      
         // the query was prepared, now we replace :id_category with our actual $id_category value
         foreach($req as $symptbypt) {
-            $list[] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
+            $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
         }
 //var_dump($list);
         return $list;      
@@ -95,6 +95,19 @@ define("SYMPTBYPATIENT_DBTABLE", "pregnacy_cdssform_symptoms_by_patient");
           }else{
               return False;
           }
+      }
+      public static function selectedOptionsCount($form_id, $pid, $id_symptom) {
+          unset($req);
+          // we make sure $id is an integer
+          $form_id = intval($form_id);
+          $pid = intval($pid);
+          $id_symp_option = intval($id_symp_option);
+          $id_symptom = intval($id_symptom);
+
+          //ADODB:
+          $db = get_db();
+          $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE (form_id = '.$form_id.')AND(pid = '.$pid.')AND(id_symptom = '.$id_symptom.')');
+          return $req->RecordCount();
       }
   }
 ?>

@@ -5,7 +5,9 @@ require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 
 //require_once("/../config.inc.php");
 
+
 require_once(MODEL_DIR."SymptByPatient_Model.class.php");
+require_once(MODEL_DIR."SymptByPatient2_Model.class.php");
 require_once(MODEL_DIR."SymptCategory_Model.class.php");
 require_once(MODEL_DIR."Symptoms_Model.class.php");
 require_once(MODEL_DIR."SymptOptions_Model.class.php");
@@ -22,14 +24,16 @@ require_once(MODEL_DIR."SymptOptions_Model.class.php");
 
 class PatientExam_Form_Controller {
 
-	var $template_dir;
-    var $template_mod;
-    var $form_folder;
-	var $form_name;
-    var $form_id;
-    var $form_pid;
-    var $returnurl;
-    
+	public $template_dir;
+    public $template_mod;
+    public $form_folder;
+    public $form_name;
+    public $form_id;
+    public $form_pid;
+    public $returnurl;
+
+    public $symptbypatient;
+
     function PatientExam_Form_Controller() {
     	//parent::Controller();
         $this->form_folder = "pregnacy_cdss";
@@ -66,6 +70,8 @@ class PatientExam_Form_Controller {
             $this->form_pid = $GLOBALS['pid'];
             //get paient form data
             $SymptByPatient = SymptByPatient_Model::find($form_id);
+            $this->symptbypatient=$SymptByPatient;
+
     	}
     	else {
     		//error
@@ -90,8 +96,94 @@ class PatientExam_Form_Controller {
 	
 	public function default_action_process() {
         var_dump($_POST['process']);
-		if ($_POST['process'] != "true")
-			return;
+        //var_dump($_SESSION);
+        var_dump($_POST['symptom_options']);
+		if ($_POST['process'] != "true"){
+            return;
+        }
+
+      //  $this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
+      //  parent::populate_object($this->SymptByPatient);
+
+        $this->form_id = $_POST['id'];
+        $this->form_pid = $_POST['pid'];
+       // print_r('<br>DB conncct througt ADOdb_Active_Record');
+       // $db = get_db();
+       // ADOdb_Active_Record::SetDatabaseAdapter($db);
+        print_r('<br>form data:');
+        var_dump($this->form_id);
+        var_dump($this->form_pid);
+        //var_dump($this->symptbypatient);
+
+        print_r('<br>load and process all symptoms:');
+        $Symptoms = Symptoms_Model::all();
+        //var_dump($Symptoms);
+        ///foreach ($_POST['symptom_options'] as $symptid=>$SymptOptByPt) {
+        foreach ($Symptoms as $key=>$Symptom) {
+            print_r('<br>Is it this symptom in POST?:');
+            if (array_key_exists($Symptom->id_symptoms,$_POST['symptom_options'])){
+                //Symptom is selected!
+                if (Symptoms_Model::is_multy($Symptom->id_symptoms)) {
+                    //Symptom can have multiple options
+                    print_r('<br>multi-YES');
+                    foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
+                        if (!SymptByPatient_Model::isselected($this->form_id, $this->form_pid, $Symptom->id_symptoms, $SympOption->id_symp_option)) {
+                            //print_r($opt_name.' will be added/updated<br>');
+
+                        } else {
+                            //print_r($opt_name.' will be skipped<br>');
+                        }
+
+                    }
+                } else {
+                    //Symptom can have only single option
+                    print_r('<br>multi-NO');
+                    //Create new SymptByPatient_Model object instance
+                    /////$SymptByPatient = new SymptByPatient_Model($_POST['id']);
+                    //Is this syptom in database?
+                    //get record count
+                    $currSelectedOptionsCount = SymptByPatient_Model::selectedOptionsCount($this->form_id, $this->form_pid, $Symptom->id_symptoms);
+                    print_r('<br>found records:'.$currSelectedOptionsCount);
+                    if ($currSelectedOptionsCount ==1) {
+                        //Update single record
+                        $symptoptbyperson = new SymptByPatient2_Model();
+                        $symptoptbyperson->Load('(form_id='.$this->form_id.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id_symptoms.')');
+                        var_dump($symptoptbyperson);
+                        if ($symptoptbyperson->id_sympt_opt != intval($_POST['symptom_options'][$Symptom->id_symptoms][0])){
+                            $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id_symptoms][0];
+                            $symptoptbyperson->save();
+                        }
+
+                    } elseif ($currSelectedOptionsCount >1) {
+                        //TODO: delete all and insert new one
+                        //print_r($opt_name.' will be skipped<br>');
+                    } else {
+                        //Insert one record
+
+                        $symptoptbyperson = new SymptByPatient2_Model();
+                        $symptoptbyperson->form_id   = $this->form_id;
+                        $symptoptbyperson->pid  = $this->form_pid;
+                        $symptoptbyperson->user = $_SESSION['authUser'];
+                        $symptoptbyperson->id_symptom = $Symptom->id_symptoms;
+                        $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
+                        $symptoptbyperson->id_order = $Symptom->id_order;
+                        $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id_symptoms][0];
+
+                        //$symptoptbyperson->id_deceases = $id_deceases;
+                       // $symptoptbyperson->p_val = $p_val;
+                        $symptoptbyperson->save();
+                    }
+
+                    // if (SymptByPatient_Model:: getfirstbysympt($this->form_id, $this->form_pid, $symptid));
+
+
+                }
+            } else {
+                foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
+                //TODO:remove symptom from patient table in DB??
+                }
+            }
+        }
 		$this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
 		parent::populate_object($this->SymptByPatient);
 		
@@ -99,7 +191,7 @@ class PatientExam_Form_Controller {
 		if ($GLOBALS['encounter'] == "") {
 			$GLOBALS['encounter'] = date("Ymd");
 		}
-		addForm($GLOBALS['encounter'], $this->form_name, $this->SymptByPatient->id, $this->form_folder, $GLOBALS['pid'], $_SESSION['userauthorized']);
+		///addForm($GLOBALS['encounter'], $this->form_name, $_POST['id'], $this->form_folder, $GLOBALS['pid'], $_SESSION['userauthorized']);
 		$_POST['process'] = "";
 		return;
 	}

@@ -1,7 +1,7 @@
 <?php
 require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
 
-define("SYMPTCATEGORY_DBTABLE", "pregnacy_cdssform_sympt_category");
+
 
   class SymptCategory_Model {
     // we define attributes

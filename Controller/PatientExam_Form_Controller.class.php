@@ -9,8 +9,11 @@ require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 require_once(MODEL_DIR."SymptByPatient_Model.class.php");
 require_once(MODEL_DIR."SymptByPatient2_Model.class.php");
 require_once(MODEL_DIR."SymptCategory_Model.class.php");
+//require_once(MODEL_DIR."SymptCategory2_Model.class.php");
 require_once(MODEL_DIR."Symptoms_Model.class.php");
+//require_once(MODEL_DIR."Symptoms2_Model.class.php");
 require_once(MODEL_DIR."SymptOptions_Model.class.php");
+require_once(MODEL_DIR."SymptomsTree_Model.class.php");
 
 //define("VIEW_DIR", dirname(__FILE__) . "\..\View\\");
 /** CHANGE THIS name to the name of your form **/
@@ -71,7 +74,6 @@ class PatientExam_Form_Controller {
             //get paient form data
             $SymptByPatient = SymptByPatient_Model::find($form_id);
             $this->symptbypatient=$SymptByPatient;
-
     	}
     	else {
     		//error
@@ -80,6 +82,14 @@ class PatientExam_Form_Controller {
         $this->form_name = "Pregnacy CDSS (view) Form";
         //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
+        $SymptCategory2 = new SymptCategory2_Model();
+        $symptcat2arr = $SymptCategory2->Find("");
+        //var_dump($symptcat2arr);
+        $SymptCategory3 = new SymptCategory2_Model();
+        $SymptCategory3->Load("id_category=1");
+        var_dump($SymptCategory3->cat_name);
+        //var_dump($SymptCategory3);
+        var_dump($SymptCategory3->Symptoms2_Model);
 
     //print_r('back to controller ...');
     //var_dump($SymptCategory);

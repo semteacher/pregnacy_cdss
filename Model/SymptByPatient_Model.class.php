@@ -57,18 +57,19 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $list = [];
         // we make sure $id is an integer
         $form_id = intval($form_id);
+        //print_r("SymptByPatient_Model::find");
+        //var_dump($form_id);
+
         //PDO:
         //$db = Db::getInstance();
         //$req = $db->prepare('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE form_id = '.$form_id);
         //$req->Execute(array('form_id' => $form_id));
         //$symptbypt = $req->fetch();
-        
+
         //ADODB:
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE form_id = '.$form_id);
-//print_r("SymptByPatient_Model::find");
-//var_dump($form_id);
-     
+//var_dump($req);
         // the query was prepared, now we replace :id_category with our actual $id_category value
         foreach($req as $symptbypt) {
             $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['form_id'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
@@ -85,7 +86,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
           $pid = intval($pid);
           $id_symp_option = intval($id_symp_option);
           $id_symptom = intval($id_symptom);
-
+//var_dump($form_id,$pid,$id_symp_option,$id_symptom);
           //ADODB:
           $db = get_db();
           $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE (form_id = '.$form_id.')AND(pid = '.$pid.')AND(id_sympt_opt = '.$id_symp_option.')AND(id_symptom = '.$id_symptom.')');
@@ -95,13 +96,19 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
           }else{
               return False;
           }
+        //  var_dump($req);
+        //  if (isset($req)){
+        //      return TRUE;
+        //  }else {
+        //      return False;
+        //  }
       }
       public static function selectedOptionsCount($form_id, $pid, $id_symptom) {
           unset($req);
           // we make sure $id is an integer
           $form_id = intval($form_id);
           $pid = intval($pid);
-          $id_symp_option = intval($id_symp_option);
+          //$id_symp_option = intval($id_symp_option);
           $id_symptom = intval($id_symptom);
 
           //ADODB:

@@ -9,13 +9,16 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
 	var $id_category;
 	var $cat_name;
 	var $cat_notes;
+    var $is_selected;
     var $symptoms;
 
-    public function __construct($id_category, $cat_name, $cat_notes) {
-        $this->id_category  = $id_category;
+
+    public function __construct($id, $cat_name, $cat_notes, $is_selected) {
+        $this->id  = $id;
         $this->cat_name  = $cat_name;
         $this->cat_notes = $cat_notes;
-        $this->symptoms = Symptoms_Model::find($id_category);
+        $this->is_selected = $is_selected;
+        $this->symptoms = Symptoms_Model::find($id);
     }
 
     public static function all() {
@@ -34,13 +37,13 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         //foreach($req->fetchAll() as $sympcategory) {
         //ADODB:
         foreach($req as $sympcategory) {
-            $list[] = new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['cat_notes']);
+            $list[] = new SymptCategory_Model($sympcategory['id'], $sympcategory['cat_name'], $sympcategory['cat_notes'], $sympcategory['is_selected']);
         }
 //var_dump($list);
         return $list;
     }
 
-    public static function find($id_category) {
+    public static function find($id) {
         $list = [];
         // we make sure $id_category is an integer
         $id_category = intval($id_category);
@@ -53,9 +56,9 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         //return new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['content']);
         //ADODB:
         $db = get_db();
-        $req = $db->Execute('SELECT * FROM '.SYMPTCATEGORY_DBTABLE.' WHERE id_category = '.$id_category);
+        $req = $db->Execute('SELECT * FROM '.SYMPTCATEGORY_DBTABLE.' WHERE id = '.$id);
         foreach($req as $sympcategory) {
-            $list[] = new SymptCategory_Model($sympcategory['id_category'], $sympcategory['cat_name'], $sympcategory['cat_notes']);
+            $list[] = new SymptCategory_Model($sympcategory['id'], $sympcategory['cat_name'], $sympcategory['cat_notes'], $sympcategory['is_selected']);
         }
 //var_dump($list);
         return $list;

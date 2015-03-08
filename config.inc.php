@@ -13,10 +13,10 @@ define('VIEW_DIR', HOME . DS.'View'.DS);
 define('MODEL_DIR', HOME . DS.'Model'.DS);
 
 //define database table names
-define("SYMPTCATEGORY_DBTABLE", "pregnacy_cdssform_sympt_category");
-define("SYMPTOMS_DBTABLE", "pregnacy_cdssform_symptoms");
-define("SYMPTOPTIONS_DBTABLE", "pregnacy_cdssform_sympt_options");
-define("SYMPTBYPATIENT_DBTABLE", "pregnacy_cdssform_symptoms_by_patient");
+define("SYMPTCATEGORY_DBTABLE", "form_pregnacycdss_sympt_category");
+define("SYMPTOMS_DBTABLE", "form_pregnacycdss_symptoms");
+define("SYMPTOPTIONS_DBTABLE", "form_pregnacycdss_sympt_options");
+define("SYMPTBYPATIENT_DBTABLE", "form_pregnacycdss_symptopt_by_patient");
 
 
 
@@ -27,4 +27,4 @@ include_once("$srcdir/adodb/adodb-active-record.inc.php");
 $form_db = get_db();
 ADOdb_Active_Record::SetDatabaseAdapter($form_db);
 
-ADODB_Active_Record::$_changeNames = FALSE;//???????
+ADODB_Active_Record::$_changeNames = FALSE;//??????? but required

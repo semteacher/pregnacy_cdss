@@ -6,22 +6,25 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
   class Symptoms_Model {
     // we define attributes
     // they are public so that we can access them using $symptoms->cat_name directly
-    var $id_symptoms;
+    var $id;
 	var $symp_name;
 	var $symp_notes;
     var $id_order;
     var $id_category;
     var $is_multi;
+    var $is_selected;
     var $symptoptions;
 
-    public function __construct($id_symptoms, $symp_name, $symp_notes, $id_order, $id_category, $is_multi) {
-        $this->id_symptoms  = $id_symptoms;
+
+    public function __construct($id, $symp_name, $symp_notes, $id_order, $id_category, $is_multi, $is_selected) {
+        $this->id  = $id;
         $this->symp_name  = $symp_name;
         $this->symp_notes = $symp_notes;
         $this->id_order  = $id_order;
         $this->id_category  = $id_category;
         $this->is_multi = $is_multi;
-        $this->symptoptions = SymptOptions_Model::find($id_symptoms);
+        $this->is_selected = $is_selected;
+        $this->symptoptions = SymptOptions_Model::find($id);
     }
 
     public static function all() {
@@ -40,7 +43,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         //foreach($req->fetchAll() as $sympcategory) {
         //ADODB:
         foreach($req as $symptoms) {
-            $list[] = new Symptoms_Model($symptoms['id_symptoms'], $symptoms['symp_name'], $symptoms['symp_notes'], $symptoms['id_order'], $symptoms['id_category'], $symptoms['is_multi']);
+            $list[] = new Symptoms_Model($symptoms['id'], $symptoms['symp_name'], $symptoms['symp_notes'], $symptoms['id_order'], $symptoms['id_category'], $symptoms['is_multi'], $symptoms['is_selected']);
         }
 //var_dump($list);
         return $list;
@@ -62,17 +65,17 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTOMS_DBTABLE.' WHERE id_category = '.$id_category.' ORDER BY id_order');
         foreach($req as $symptoms) {
-            $list[] = new Symptoms_Model($symptoms['id_symptoms'], $symptoms['symp_name'], $symptoms['symp_notes'], $symptoms['id_order'], $symptoms['id_category'], $symptoms['is_multi']);
+            $list[] = new Symptoms_Model($symptoms['id'], $symptoms['symp_name'], $symptoms['symp_notes'], $symptoms['id_order'], $symptoms['id_category'], $symptoms['is_multi'], $symptoms['is_selected']);
         }
 //var_dump($list);
         return $list;
     }
 
-    public static function is_multy($id_symptoms) {
+    public static function is_multy($id) {
         // we make sure $id_symptom is an integer
-        $id_symptoms = intval($id_symptoms);
+        $id_symptoms = intval($id);
         $db = get_db();
-        $req = $db->Execute('SELECT is_multi FROM '.SYMPTOMS_DBTABLE.' WHERE id_symptoms = '.$id_symptoms);
+        $req = $db->Execute('SELECT is_multi FROM '.SYMPTOMS_DBTABLE.' WHERE id = '.$id);
         return $req->fields('is_multi');
 
     }

@@ -51,11 +51,11 @@ function PrintForm() {
 <div id="general">
 <table>
 <?php
-var_dump($rootdir);
+//var_dump($rootdir);
 foreach ($SymptCategory as $key=>$SymptCat)
 {
     echo '<tr><td>';
-    echo '<strong>'.$SymptCat->id_category.'. '.$SymptCat->cat_name.'</strong>';
+    echo '<strong>'.$SymptCat->id.'. '.$SymptCat->cat_name.'</strong>';
     echo '</td></tr>';
 
     foreach ($SymptCat->symptoms as $key=>$Symptoms)
@@ -69,8 +69,8 @@ foreach ($SymptCategory as $key=>$SymptCat)
             echo '<tr><td>';
             if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
             $selection = '';
-            if (SymptByPatient_Model::isselected($this->form_id, $this->form_pid, $Symptoms->id_symptoms, $SymptOptions->id_symp_option)) { $selection = 'checked'; }
-            echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id_symp_option.'" name="symptom_options['.$Symptoms->id_symptoms.'][]" value="'.$SymptOptions->id_symp_option.'" '.$selection.' >'.$SymptOptions->opt_name;
+            if (SymptByPatient_Model::isselected($this->form_id, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
+            echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' >'.$SymptOptions->opt_name;
             echo '</td></tr>';
         }
     }

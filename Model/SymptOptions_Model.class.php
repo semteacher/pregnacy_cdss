@@ -6,14 +6,14 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
   class SymptOptions_Model {
     // we define attributes
     // they are public so that we can access them using $symptoms->cat_name directly
-        var $id_symp_option;
+        var $id;
         var $id_symptom;
 	    var $opt_name;
 	    var $id_order;
         var $is_selected;
 
-    public function __construct($id_symp_option, $id_symptom, $opt_name, $id_order, $is_selected) {
-        $this->id_symp_option  = $id_symp_option;
+    public function __construct($id, $id_symptom, $opt_name, $id_order, $is_selected) {
+        $this->id  = $id;
         $this->id_symptom  = $id_symptom;
         $this->opt_name  = $opt_name;
         $this->id_order  = $id_order;
@@ -36,7 +36,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         //foreach($req->fetchAll() as $sympcategory) {
         //ADODB:
         foreach($req as $symptopt) {
-            $list[] = new SymptOptions_Model($symptopt['id_symp_option'], $symptopt['id_symptom'], $symptopt['opt_name'], $symptopt['id_order'], $symptopt['is_selected']);
+            $list[] = new SymptOptions_Model($symptopt['id'], $symptopt['id_symptom'], $symptopt['opt_name'], $symptopt['id_order'], $symptopt['is_selected']);
         }
 //var_dump($list);
         return $list;
@@ -58,7 +58,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.SYMPTOPTIONS_DBTABLE.' WHERE id_symptom = '.$id_symptom.' ORDER BY id_order');
         foreach($req as $symptopt) {
-            $list[] = new SymptOptions_Model($symptopt['id_symp_option'], $symptopt['id_symptom'], $symptopt['opt_name'], $symptopt['id_order'], $symptopt['is_selected']);
+            $list[] = new SymptOptions_Model($symptopt['id'], $symptopt['id_symptom'], $symptopt['opt_name'], $symptopt['id_order'], $symptopt['is_selected']);
         }
 //var_dump($list);
         return $list;

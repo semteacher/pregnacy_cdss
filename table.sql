@@ -671,20 +671,20 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_symptopt_by_patient` (
 -- Обмеження зовнішнього ключа таблиці `pregnacy_cdssform_deceases_sympt_opt`
 --
 ALTER TABLE `form_pregnacycdss_deceases_sympt_opt`
-  ADD CONSTRAINT `deceases_sympt_opt_ibfk_1` FOREIGN KEY (`id_deceaces`) REFERENCES `form_pregnacycdss_deceaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `deceases_sympt_opt_ibfk_2` FOREIGN KEY (`id_sympt_opt`) REFERENCES `form_pregnacycdss_sympt_options` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_1` FOREIGN KEY (`id_deceaces`) REFERENCES `form_pregnacycdss_deceaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_2` FOREIGN KEY (`id_sympt_opt`) REFERENCES `form_pregnacycdss_sympt_options` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Обмеження зовнішнього ключа таблиці `pregnacy_cdssform_symptoms`
 --
 ALTER TABLE `form_pregnacycdss_symptoms`
-  ADD CONSTRAINT `symptoms_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `form_pregnacycdss_sympt_category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `form_symptoms_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `form_pregnacycdss_sympt_category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Обмеження зовнішнього ключа таблиці `pregnacy_cdssform_sympt_options`
 --
 ALTER TABLE `form_pregnacycdss_sympt_options`
-  ADD CONSTRAINT `sympt_options_ibfk_1` FOREIGN KEY (`id_symptom`) REFERENCES `form_pregnacycdss_symptoms` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `form_sympt_options_ibfk_1` FOREIGN KEY (`id_symptom`) REFERENCES `form_pregnacycdss_symptoms` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

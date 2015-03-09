@@ -7,7 +7,6 @@ require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
 
 
 require_once(MODEL_DIR."SymptByPatient_Model.class.php");
-//require_once(MODEL_DIR."SymptByPatient2_Model.class.php");
 require_once(MODEL_DIR."SymptCategory_Model.class.php");
 require_once(MODEL_DIR."Symptoms_Model.class.php");
 require_once(MODEL_DIR."SymptOptions_Model.class.php");
@@ -243,10 +242,6 @@ class PatientExam_Form_Controller {
                        // $symptoptbyperson->p_val = $p_val;
                         $symptoptbyperson->save();
                     }
-
-                    // if (SymptByPatient_Model:: getfirstbysympt($this->form_id, $this->form_pid, $symptid));
-
-
                 }
             } else {
                 foreach ($Symptom->symptoptions as $optkey=>$SympOption) {

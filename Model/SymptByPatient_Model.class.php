@@ -7,7 +7,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
     // we define attributes
     // they are public so that we can access them using $symptbypatient->id directly
 	var $id;
-    var $form_id;
+    var $id_exam;
 	var $pid;
 	var $user;
     var $id_symptom;

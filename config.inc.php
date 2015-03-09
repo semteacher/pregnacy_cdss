@@ -12,13 +12,19 @@ define ('HOME', dirname(__FILE__));
 define('VIEW_DIR', HOME . DS.'View'.DS);
 define('MODEL_DIR', HOME . DS.'Model'.DS);
 
+//define form general
+define("FORM_NAME", "Pregnacy CDSS (test) Form");
+define("FORM_FOLDER", "pregnacy_cdss");
+
 //define database table names
 define("SYMPTCATEGORY_DBTABLE", "form_pregnacycdss_sympt_category");
 define("SYMPTOMS_DBTABLE", "form_pregnacycdss_symptoms");
 define("SYMPTOPTIONS_DBTABLE", "form_pregnacycdss_sympt_options");
 define("SYMPTBYPATIENT_DBTABLE", "form_pregnacycdss_symptopt_by_patient");
+define("PATIENTEXAM_DBTABLE", "form_pregnacycdss_patient_exam");
 
-
+define("DECEASESSYMPTOMOPTIONS_DBTABLE", "form_pregnacycdss_deceases_sympt_opt");
+define("DECEASES_DBTABLE", "form_pregnacycdss_deceaces");
 
 
 //print_r('<br>DB connect througt ADOdb_Active_Record');

@@ -1,0 +1,636 @@
+GLOBALS:
+
+array (size=400)
+  '_GET' => 
+    array (size=2)
+      'mode' => string 'new' (length=3)
+      'id' => string '' (length=0)
+  '_POST' => 
+    array (size=5)
+      'id' => string '' (length=0)
+      'pid' => string '' (length=0)
+      'process' => string 'true' (length=4)
+      'symptom_options' => 
+        array (size=1)
+          1 => 
+            array (size=1)
+              ...
+      'notes' => string '' (length=0)
+  '_COOKIE' => 
+    array (size=1)
+      'OpenEMR' => string '014j69tmq26oqinu410d27llc4' (length=26)
+  '_FILES' => 
+    array (size=0)
+      empty
+  '_ENV' => 
+    array (size=0)
+      empty
+  '_REQUEST' => 
+    array (size=6)
+      'mode' => string 'new' (length=3)
+      'id' => string '' (length=0)
+      'pid' => string '' (length=0)
+      'process' => string 'true' (length=4)
+      'symptom_options' => 
+        array (size=1)
+          1 => 
+            array (size=1)
+              ...
+      'notes' => string '' (length=0)
+  '_SERVER' => 
+    array (size=35)
+      'HTTP_HOST' => string 'openemr42.loc' (length=13)
+      'HTTP_USER_AGENT' => string 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0' (length=72)
+      'HTTP_ACCEPT' => string 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' (length=63)
+      'HTTP_ACCEPT_LANGUAGE' => string 'uk,en-US;q=0.8,en;q=0.5,ru;q=0.3' (length=32)
+      'HTTP_ACCEPT_ENCODING' => string 'gzip, deflate' (length=13)
+      'HTTP_REFERER' => string 'http://openemr42.loc/interface/patient_file/encounter/load_form.php?formname=pregnacy_cdss' (length=90)
+      'HTTP_COOKIE' => string 'OpenEMR=014j69tmq26oqinu410d27llc4' (length=34)
+      'HTTP_X_CLICKONCESUPPORT' => string '( .NET CLR 3.5.30729; .NET4.0E)' (length=31)
+      'HTTP_CONNECTION' => string 'keep-alive' (length=10)
+      'CONTENT_TYPE' => string 'application/x-www-form-urlencoded' (length=33)
+      'CONTENT_LENGTH' => string '59' (length=2)
+      'PATH' => string '\usr\local\ImageMagick;\usr\local\php5;C:\Program Files (x86)\PC Connectivity Solution\;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program F'... (length=1317)
+      'SystemRoot' => string 'C:\Windows' (length=10)
+      'COMSPEC' => string 'C:\Windows\system32\cmd.exe' (length=27)
+      'PATHEXT' => string '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC' (length=53)
+      'WINDIR' => string 'C:\Windows' (length=10)
+      'SERVER_SIGNATURE' => string '<address>Apache/2.2.22 (Win32) mod_ssl/2.2.22 OpenSSL/1.0.1c PHP/5.4.31 Server at openemr42.loc Port 80</address>
+' (length=114)
+      'SERVER_SOFTWARE' => string 'Apache/2.2.22 (Win32) mod_ssl/2.2.22 OpenSSL/1.0.1c PHP/5.4.31' (length=62)
+      'SERVER_NAME' => string 'openemr42.loc' (length=13)
+      'SERVER_ADDR' => string '127.0.0.1' (length=9)
+      'SERVER_PORT' => string '80' (length=2)
+      'REMOTE_ADDR' => string '127.0.0.1' (length=9)
+      'DOCUMENT_ROOT' => string 'Z:/home/openemr42.loc/www' (length=25)
+      'SERVER_ADMIN' => string 'admin@localhost' (length=15)
+      'SCRIPT_FILENAME' => string 'Z:/home/openemr42.loc/www/interface/forms/pregnacy_cdss/save.php' (length=64)
+      'REMOTE_PORT' => string '54778' (length=5)
+      'GATEWAY_INTERFACE' => string 'CGI/1.1' (length=7)
+      'SERVER_PROTOCOL' => string 'HTTP/1.1' (length=8)
+      'REQUEST_METHOD' => string 'POST' (length=4)
+      'QUERY_STRING' => string 'mode=new&id=' (length=12)
+      'REQUEST_URI' => string '/interface/forms/pregnacy_cdss/save.php?mode=new&id=' (length=52)
+      'SCRIPT_NAME' => string '/interface/forms/pregnacy_cdss/save.php' (length=39)
+      'PHP_SELF' => string '/interface/forms/pregnacy_cdss/save.php' (length=39)
+      'REQUEST_TIME_FLOAT' => float 1425906969.908
+      'REQUEST_TIME' => int 1425906969
+  'GLOBALS' => 
+    &array
+  'fake_register_globals' => boolean true
+  'mode' => string 'new' (length=3)
+  'id' => string '' (length=0)
+  'pid' => int 2
+  'process' => string 'true' (length=4)
+  'symptom_options' => 
+    array (size=1)
+      1 => 
+        array (size=1)
+          0 => string '3' (length=1)
+  'notes' => string '' (length=0)
+  'webserver_root' => string 'Z:/home/openemr42.loc/www' (length=25)
+  'server_document_root' => string 'Z:/home/openemr42.loc/www' (length=25)
+  'web_root' => boolean false
+  'OE_SITES_BASE' => string 'Z:/home/openemr42.loc/www/sites' (length=31)
+  '_SESSION' => &
+    array (size=20)
+      'site_id' => string 'default' (length=7)
+      'language_choice' => string '1' (length=1)
+      'authUser' => string 'admin' (length=5)
+      'authPass' => string '$2a$05$XPCO9g6.zOgBF/iXlN71v.1H.jtI3d3cGeA7Jsd4XQwheIhotqcoC' (length=60)
+      'authGroup' => string 'Default' (length=7)
+      'authUserID' => string '1' (length=1)
+      'authProvider' => string 'Default' (length=7)
+      'authId' => string '1' (length=1)
+      'cal_ui' => string '3' (length=1)
+      'userauthorized' => string '1' (length=1)
+      'last_update' => int 1425906970
+      'encounter' => string '6' (length=1)
+      'pc_username' => string 'admin' (length=5)
+      'pc_framewidth' => string '1212' (length=4)
+      'pc_facility' => int 0
+      'viewtype' => string 'day' (length=3)
+      'PNSVrand' => int 26647
+      'PNSVlang' => string 'eng' (length=3)
+      'lastcaldate' => string '2015-03-09' (length=10)
+      'pid' => int 2
+  'OE_SITE_DIR' => string 'Z:/home/openemr42.loc/www/sites/default' (length=39)
+  'oer_config' => 
+    array (size=6)
+      'freeb' => 
+        array (size=8)
+          'claim_file_dir' => string '/usr/share/freeb/public/' (length=24)
+          'default_format' => string 'pdf' (length=3)
+          'username' => string 'freeb' (length=5)
+          'password' => string '12345' (length=5)
+          'print_command' => string '/usr/bin/lpr' (length=12)
+          'printer_name' => string 'HP_LaserJet4L' (length=13)
+          'printer_extras' => string '-o PageSize=Letter -o portrait' (length=30)
+          'copy_pdfs_to' => string '' (length=0)
+      'ofx' => 
+        array (size=2)
+          'bankid' => string '123456789' (length=9)
+          'acctid' => string '123456789' (length=9)
+      'prescriptions' => 
+        array (size=9)
+          'format' => string '' (length=0)
+          'logo_pic' => string 'Rx.png' (length=6)
+          'sig_pic' => string 'sig.png' (length=7)
+          'use_signature' => boolean false
+          'shading' => boolean false
+          'sendfax' => string '' (length=0)
+          'prefix' => string '' (length=0)
+          'logo' => string 'Z:\home\openemr42.loc\www\sites\default/../../interface/pic/Rx.png' (length=66)
+          'signature' => string 'Z:\home\openemr42.loc\www\sites\default/../../interface/pic/sig.png' (length=67)
+      'documents' => 
+        array (size=3)
+          'repopath' => string 'Z:/home/openemr42.loc/www/sites/default/documents/' (length=50)
+          'file_command_path' => string '/usr/bin/file' (length=13)
+          'repository' => string 'Z:/home/openemr42.loc/www/sites/default/documents/' (length=50)
+      'druglabels' => 
+        array (size=8)
+          'paper_size' => 
+            array (size=4)
+              ...
+          'left' => int 18
+          'right' => int 18
+          'top' => int 18
+          'bottom' => int 18
+          'logo_pic' => string 'druglogo.png' (length=12)
+          'disclaimer' => string 'Caution: Federal law prohibits dispensing without a prescription. Use only as directed.' (length=87)
+          'logo' => string 'Z:\home\openemr42.loc\www\sites\default/../../interface/pic/druglogo.png' (length=72)
+      'ws_accounting' => 
+        array (size=8)
+          'enabled' => int 2
+          'server' => string 'localhost' (length=9)
+          'port' => string '80' (length=2)
+          'url' => string '/sql-ledger/ws_server.pl' (length=24)
+          'username' => string 'unused' (length=6)
+          'password' => string 'unused' (length=6)
+          'url_path' => string 'http://openemr42.loc/sql-ledger/login.pl' (length=40)
+          'income_acct' => string '4320' (length=4)
+  'host' => string 'localhost' (length=9)
+  'port' => string '3306' (length=4)
+  'login' => string 'openemr' (length=7)
+  'pass' => string 'openemr' (length=7)
+  'dbase' => string 'openemr' (length=7)
+  'disable_utf8_flag' => boolean false
+  'sqlconf' => 
+    array (size=5)
+      'host' => string 'localhost' (length=9)
+      'port' => string '3306' (length=4)
+      'login' => string 'openemr' (length=7)
+      'pass' => string 'openemr' (length=7)
+      'dbase' => string 'openemr' (length=7)
+  'config' => int 1
+  'HTML_CHARSET' => string 'UTF-8' (length=5)
+  'rootdir' => string '/interface' (length=10)
+  'srcdir' => string 'Z:/home/openemr42.loc/www/library' (length=33)
+  'fileroot' => string 'Z:/home/openemr42.loc/www' (length=25)
+  'include_root' => string 'Z:/home/openemr42.loc/www/interface' (length=35)
+  'webroot' => boolean false
+  'template_dir' => string 'Z:/home/openemr42.loc/www/templates/' (length=36)
+  'incdir' => string 'Z:/home/openemr42.loc/www/interface' (length=35)
+  'login_screen' => string '/interface/login_screen.php' (length=27)
+  'edi_271_file_path' => string 'Z:/home/openemr42.loc/www/sites/default/edi/' (length=44)
+  'ADODB_vers' => string 'V5.14 8 Sept 2011  (c) 2000-2011 John Lim (jlim#natsoft.com). All rights reserved. Released BSD & LGPL.' (length=103)
+  'ADODB_COUNTRECS' => boolean true
+  'ADODB_CACHE_DIR' => string '/tmp' (length=4)
+  'ADODB_CACHE' => null
+  'ADODB_CACHE_CLASS' => string 'ADODB_Cache_File' (length=16)
+  'ADODB_EXTENSION' => &boolean false
+  'ADODB_COMPAT_FETCH' => &null
+  'ADODB_FETCH_MODE' => int 0
+  'ADODB_GETONE_EOF' => null
+  'ADODB_QUOTE_FIELDNAMES' => null
+  '_adodb_ver' => float 5.4
+  'ADODB_FORCE_TYPE' => int 3
+  'ADODB_DATETIME_CLASS' => boolean true
+  '_month_table_normal' => 
+    array (size=13)
+      0 => string '' (length=0)
+      1 => int 31
+      2 => int 28
+      3 => int 31
+      4 => int 30
+      5 => int 31
+      6 => int 30
+      7 => int 31
+      8 => int 31
+      9 => int 30
+      10 => int 31
+      11 => int 30
+      12 => int 31
+  '_month_table_leaf' => 
+    array (size=13)
+      0 => string '' (length=0)
+      1 => int 31
+      2 => int 29
+      3 => int 31
+      4 => int 30
+      5 => int 31
+      6 => int 30
+      7 => int 31
+      8 => int 31
+      9 => int 30
+      10 => int 31
+      11 => int 30
+      12 => int 31
+  'ADODB_NEWCONNECTION' => null
+  'ADODB_LASTDB' => string 'mysql' (length=5)
+  'database' => 
+    object(ADODB_mysql_log)[1]
+      public 'databaseType' => string 'mysql' (length=5)
+      public 'dataProvider' => string 'mysql' (length=5)
+      public 'hasInsertID' => boolean true
+      public 'hasAffectedRows' => boolean true
+      public 'metaTablesSQL' => string 'SHOW TABLES' (length=11)
+      public 'metaColumnsSQL' => string 'SHOW COLUMNS FROM `%s`' (length=22)
+      public 'fmtTimeStamp' => string ''Y-m-d H:i:s'' (length=13)
+      public 'hasLimit' => boolean true
+      public 'hasMoveFirst' => boolean true
+      public 'hasGenID' => boolean true
+      public 'isoDates' => boolean true
+      public 'sysDate' => string 'CURDATE()' (length=9)
+      public 'sysTimeStamp' => string 'NOW()' (length=5)
+      public 'hasTransactions' => boolean false
+      public 'forceNewConnect' => boolean false
+      public 'poorAffectedRows' => boolean true
+      public 'clientFlags' => int 128
+      public 'substr' => string 'substring' (length=9)
+      public 'nameQuote' => string '`' (length=1)
+      public 'compat323' => boolean false
+      public '_genIDSQL' => string 'update %s set id=LAST_INSERT_ID(id+1);' (length=38)
+      public '_genSeqSQL' => string 'create table %s (id int not null)' (length=33)
+      public '_genSeqCountSQL' => string 'select count(*) from %s' (length=23)
+      public '_genSeq2SQL' => string 'insert into %s values (%s)' (length=26)
+      public '_dropSeqSQL' => string 'drop table %s' (length=13)
+      public 'database' => string 'openemr' (length=7)
+      public 'host' => string 'localhost:3306' (length=14)
+      public 'user' => string 'openemr' (length=7)
+      public 'password' => string 'not stored' (length=10)
+      public 'debug' => boolean false
+      public 'maxblobsize' => int 262144
+      public 'concat_operator' => string '+' (length=1)
+      public 'length' => string 'length' (length=6)
+      public 'random' => string 'rand()' (length=6)
+      public 'upperCase' => string 'upper' (length=5)
+      public 'fmtDate' => string ''Y-m-d'' (length=7)
+      public 'true' => string '1' (length=1)
+      public 'false' => string '0' (length=1)
+      public 'replaceQuote' => string '\'' (length=2)
+      public 'charSet' => boolean false
+      public 'metaDatabasesSQL' => string '' (length=0)
+      public 'uniqueOrderBy' => boolean false
+      public 'emptyDate' => string '&nbsp;' (length=6)
+      public 'emptyTimeStamp' => string '&nbsp;' (length=6)
+      public 'lastInsID' => boolean false
+      public 'hasTop' => boolean false
+      public 'readOnly' => boolean false
+      public 'genID' => int 0
+      public 'raiseErrorFn' => boolean false
+      public 'cacheSecs' => int 3600
+      public 'memCache' => boolean false
+      public 'memCacheHost' => null
+      public 'memCachePort' => int 11211
+      public 'memCacheCompress' => boolean false
+      public 'sysUTimeStamp' => boolean false
+      public 'arrayClass' => string 'ADORecordSet_array' (length=18)
+      public 'noNullStrings' => boolean false
+      public 'numCacheHits' => int 0
+      public 'numCacheMisses' => int 0
+      public 'pageExecuteCountRows' => boolean true
+      public 'uniqueSort' => boolean false
+      public 'leftOuter' => boolean false
+      public 'rightOuter' => boolean false
+      public 'ansiOuter' => boolean false
+      public 'autoRollback' => boolean false
+      public 'fnExecute' => boolean false
+      public 'fnCacheExecute' => boolean false
+      public 'blobEncodeType' => boolean false
+      public 'rsPrefix' => string 'ADORecordSet_' (length=13)
+      public 'autoCommit' => boolean true
+      public 'transOff' => int 0
+      public 'transCnt' => int 0
+      public 'fetchMode' => int 2
+      public 'null2null' => string 'null' (length=4)
+      public 'bulkBind' => boolean false
+      public '_oldRaiseFn' => boolean false
+      public '_transOK' => null
+      public '_connectionID' => resource(13, mysql link persistent)
+      public '_errorMsg' => boolean false
+      public '_errorCode' => boolean false
+      public '_queryID' => resource(57, mysql result)
+      public '_isPersistentConnection' => boolean true
+      public '_bindInputArray' => boolean false
+      public '_evalAll' => boolean false
+      public '_affected' => boolean false
+      public '_logsql' => boolean false
+      public '_transmode' => string '' (length=0)
+      public 'databaseName' => string 'openemr' (length=7)
+  'adodb' => 
+    array (size=1)
+      'db' => 
+        object(ADODB_mysql_log)[1]
+          public 'databaseType' => string 'mysql' (length=5)
+          public 'dataProvider' => string 'mysql' (length=5)
+          public 'hasInsertID' => boolean true
+          public 'hasAffectedRows' => boolean true
+          public 'metaTablesSQL' => string 'SHOW TABLES' (length=11)
+          public 'metaColumnsSQL' => string 'SHOW COLUMNS FROM `%s`' (length=22)
+          public 'fmtTimeStamp' => string ''Y-m-d H:i:s'' (length=13)
+          public 'hasLimit' => boolean true
+          public 'hasMoveFirst' => boolean true
+          public 'hasGenID' => boolean true
+          public 'isoDates' => boolean true
+          public 'sysDate' => string 'CURDATE()' (length=9)
+          public 'sysTimeStamp' => string 'NOW()' (length=5)
+          public 'hasTransactions' => boolean false
+          public 'forceNewConnect' => boolean false
+          public 'poorAffectedRows' => boolean true
+          public 'clientFlags' => int 128
+          public 'substr' => string 'substring' (length=9)
+          public 'nameQuote' => string '`' (length=1)
+          public 'compat323' => boolean false
+          public '_genIDSQL' => string 'update %s set id=LAST_INSERT_ID(id+1);' (length=38)
+          public '_genSeqSQL' => string 'create table %s (id int not null)' (length=33)
+          public '_genSeqCountSQL' => string 'select count(*) from %s' (length=23)
+          public '_genSeq2SQL' => string 'insert into %s values (%s)' (length=26)
+          public '_dropSeqSQL' => string 'drop table %s' (length=13)
+          public 'database' => string 'openemr' (length=7)
+          public 'host' => string 'localhost:3306' (length=14)
+          public 'user' => string 'openemr' (length=7)
+          public 'password' => string 'not stored' (length=10)
+          public 'debug' => boolean false
+          public 'maxblobsize' => int 262144
+          public 'concat_operator' => string '+' (length=1)
+          public 'length' => string 'length' (length=6)
+          public 'random' => string 'rand()' (length=6)
+          public 'upperCase' => string 'upper' (length=5)
+          public 'fmtDate' => string ''Y-m-d'' (length=7)
+          public 'true' => string '1' (length=1)
+          public 'false' => string '0' (length=1)
+          public 'replaceQuote' => string '\'' (length=2)
+          public 'charSet' => boolean false
+          public 'metaDatabasesSQL' => string '' (length=0)
+          public 'uniqueOrderBy' => boolean false
+          public 'emptyDate' => string '&nbsp;' (length=6)
+          public 'emptyTimeStamp' => string '&nbsp;' (length=6)
+          public 'lastInsID' => boolean false
+          public 'hasTop' => boolean false
+          public 'readOnly' => boolean false
+          public 'genID' => int 0
+          public 'raiseErrorFn' => boolean false
+          public 'cacheSecs' => int 3600
+          public 'memCache' => boolean false
+          public 'memCacheHost' => null
+          public 'memCachePort' => int 11211
+          public 'memCacheCompress' => boolean false
+          public 'sysUTimeStamp' => boolean false
+          public 'arrayClass' => string 'ADORecordSet_array' (length=18)
+          public 'noNullStrings' => boolean false
+          public 'numCacheHits' => int 0
+          public 'numCacheMisses' => int 0
+          public 'pageExecuteCountRows' => boolean true
+          public 'uniqueSort' => boolean false
+          public 'leftOuter' => boolean false
+          public 'rightOuter' => boolean false
+          public 'ansiOuter' => boolean false
+          public 'autoRollback' => boolean false
+          public 'fnExecute' => boolean false
+          public 'fnCacheExecute' => boolean false
+          public 'blobEncodeType' => boolean false
+          public 'rsPrefix' => string 'ADORecordSet_' (length=13)
+          public 'autoCommit' => boolean true
+          public 'transOff' => int 0
+          public 'transCnt' => int 0
+          public 'fetchMode' => int 2
+          public 'null2null' => string 'null' (length=4)
+          public 'bulkBind' => boolean false
+          public '_oldRaiseFn' => boolean false
+          public '_transOK' => null
+          public '_connectionID' => resource(13, mysql link persistent)
+          public '_errorMsg' => boolean false
+          public '_errorCode' => boolean false
+          public '_queryID' => resource(57, mysql result)
+          public '_isPersistentConnection' => boolean true
+          public '_bindInputArray' => boolean false
+          public '_evalAll' => boolean false
+          public '_affected' => boolean false
+          public '_logsql' => boolean false
+          public '_transmode' => string '' (length=0)
+          public 'databaseName' => string 'openemr' (length=7)
+  'dbh' => resource(13, mysql link persistent)
+  'lastidado' => string '0' (length=1)
+  'success_flag' => 
+    object(ADORecordSet_empty)[2]
+      public 'dataProvider' => string 'empty' (length=5)
+      public 'databaseType' => boolean false
+      public 'EOF' => boolean true
+      public '_numOfRows' => int 0
+      public 'fields' => boolean false
+      public 'connection' => boolean false
+  'athletic_team' => boolean false
+  'weight_loss_clinic' => boolean false
+  'ippf_specific' => boolean false
+  'cene_specific' => boolean false
+  'inhouse_pharmacy' => boolean false
+  'sell_non_drug_products' => int 0
+  'glrow' => boolean false
+  'gl_user' => 
+    array (size=0)
+      empty
+  'glres_user' => 
+    object(ADORecordSet_mysql)[3]
+      public 'databaseType' => string 'mysql' (length=5)
+      public 'canSeek' => boolean true
+      public 'dataProvider' => string 'native' (length=6)
+      public 'fields' => boolean false
+      public 'blobSize' => int 100
+      public 'sql' => string 'SELECT `setting_label`, `setting_value` FROM `user_settings` WHERE `setting_user` = '1' AND `setting_label` LIKE 'global:%'' (length=123)
+      public 'EOF' => boolean true
+      public 'emptyTimeStamp' => string '&nbsp;' (length=6)
+      public 'emptyDate' => string '&nbsp;' (length=6)
+      public 'debug' => boolean false
+      public 'timeCreated' => int 0
+      public 'bind' => boolean false
+      public 'fetchMode' => int 1
+      public 'connection' => 
+        object(ADODB_mysql_log)[1]
+          public 'databaseType' => string 'mysql' (length=5)
+          public 'dataProvider' => string 'mysql' (length=5)
+          public 'hasInsertID' => boolean true
+          public 'hasAffectedRows' => boolean true
+          public 'metaTablesSQL' => string 'SHOW TABLES' (length=11)
+          public 'metaColumnsSQL' => string 'SHOW COLUMNS FROM `%s`' (length=22)
+          public 'fmtTimeStamp' => string ''Y-m-d H:i:s'' (length=13)
+          public 'hasLimit' => boolean true
+          public 'hasMoveFirst' => boolean true
+          public 'hasGenID' => boolean true
+          public 'isoDates' => boolean true
+          public 'sysDate' => string 'CURDATE()' (length=9)
+          public 'sysTimeStamp' => string 'NOW()' (length=5)
+          public 'hasTransactions' => boolean false
+          public 'forceNewConnect' => boolean false
+          public 'poorAffectedRows' => boolean true
+          public 'clientFlags' => int 128
+          public 'substr' => string 'substring' (length=9)
+          public 'nameQuote' => string '`' (length=1)
+          public 'compat323' => boolean false
+          public '_genIDSQL' => string 'update %s set id=LAST_INSERT_ID(id+1);' (length=38)
+          public '_genSeqSQL' => string 'create table %s (id int not null)' (length=33)
+          public '_genSeqCountSQL' => string 'select count(*) from %s' (length=23)
+          public '_genSeq2SQL' => string 'insert into %s values (%s)' (length=26)
+          public '_dropSeqSQL' => string 'drop table %s' (length=13)
+          public 'database' => string 'openemr' (length=7)
+          public 'host' => string 'localhost:3306' (length=14)
+          public 'user' => string 'openemr' (length=7)
+          public 'password' => string 'not stored' (length=10)
+          public 'debug' => boolean false
+          public 'maxblobsize' => int 262144
+          public 'concat_operator' => string '+' (length=1)
+          public 'length' => string 'length' (length=6)
+          public 'random' => string 'rand()' (length=6)
+          public 'upperCase' => string 'upper' (length=5)
+          public 'fmtDate' => string ''Y-m-d'' (length=7)
+          public 'true' => string '1' (length=1)
+          public 'false' => string '0' (length=1)
+          public 'replaceQuote' => string '\'' (length=2)
+          public 'charSet' => boolean false
+          public 'metaDatabasesSQL' => string '' (length=0)
+          public 'uniqueOrderBy' => boolean false
+          public 'emptyDate' => string '&nbsp;' (length=6)
+          public 'emptyTimeStamp' => string '&nbsp;' (length=6)
+          public 'lastInsID' => boolean false
+          public 'hasTop' => boolean false
+          public 'readOnly' => boolean false
+          public 'genID' => int 0
+          public 'raiseErrorFn' => boolean false
+          public 'cacheSecs' => int 3600
+          public 'memCache' => boolean false
+          public 'memCacheHost' => null
+          public 'memCachePort' => int 11211
+          public 'memCacheCompress' => boolean false
+          public 'sysUTimeStamp' => boolean false
+          public 'arrayClass' => string 'ADORecordSet_array' (length=18)
+          public 'noNullStrings' => boolean false
+          public 'numCacheHits' => int 0
+          public 'numCacheMisses' => int 0
+          public 'pageExecuteCountRows' => boolean true
+          public 'uniqueSort' => boolean false
+          public 'leftOuter' => boolean false
+          public 'rightOuter' => boolean false
+          public 'ansiOuter' => boolean false
+          public 'autoRollback' => boolean false
+          public 'fnExecute' => boolean false
+          public 'fnCacheExecute' => boolean false
+          public 'blobEncodeType' => boolean false
+          public 'rsPrefix' => string 'ADORecordSet_' (length=13)
+          public 'autoCommit' => boolean true
+          public 'transOff' => int 0
+          public 'transCnt' => int 0
+          public 'fetchMode' => int 2
+          public 'null2null' => string 'null' (length=4)
+          public 'bulkBind' => boolean false
+          public '_oldRaiseFn' => boolean false
+          public '_transOK' => null
+          public '_connectionID' => resource(13, mysql link persistent)
+          public '_errorMsg' => boolean false
+          public '_errorCode' => boolean false
+          public '_queryID' => resource(57, mysql result)
+          public '_isPersistentConnection' => boolean true
+          public '_bindInputArray' => boolean false
+          public '_evalAll' => boolean false
+          public '_affected' => boolean false
+          public '_logsql' => boolean false
+          public '_transmode' => string '' (length=0)
+          public 'databaseName' => string 'openemr' (length=7)
+      public '_numOfRows' => int 0
+      public '_numOfFields' => int 2
+      public '_queryID' => resource(20, mysql result)
+      public '_currentRow' => int -1
+      public '_closed' => boolean false
+      public '_inited' => boolean true
+      public '_obj' => null
+      public '_names' => null
+      public '_currentPage' => int -1
+      public '_atFirstPage' => boolean false
+      public '_atLastPage' => boolean false
+      public '_lastPageNo' => int -1
+      public '_maxRecordCount' => int 0
+      public 'datetime' => boolean false
+      public 'adodbFetchMode' => int 2
+  'iter' => int 0
+  'row' => boolean false
+  'language_menu_show' => 
+    array (size=0)
+      empty
+  'glres' => resource(22, mysql result)
+  'gl_name' => string 'us_weight_format' (length=16)
+  'gl_value' => string '1' (length=1)
+  'activate_ccr_ccd_report' => string '1' (length=1)
+  'addr_label_type' => string '1' (length=1)
+  'advance_directives_warning' => string '' (length=0)
+  'age_display_format' => string '0' (length=1)
+  'age_display_limit' => string '3' (length=1)
+  'allow_debug_language' => string '' (length=0)
+  'amendments' => string '1' (length=1)
+  'atna_audit_cacert' => string '' (length=0)
+  'atna_audit_host' => string '' (length=0)
+  'atna_audit_localcert' => string '' (length=0)
+  'atna_audit_port' => string '6514' (length=4)
+  'audit_events_backup' => string '1' (length=1)
+  'audit_events_cdr' => string '' (length=0)
+  'audit_events_order' => string '1' (length=1)
+  'audit_events_other' => string '1' (length=1)
+  'audit_events_patient-record' => string '1' (length=1)
+  'audit_events_query' => string '' (length=0)
+  'audit_events_scheduling' => string '1' (length=1)
+  'audit_events_security-administration' => string '1' (length=1)
+  'auto_create_new_encounters' => string '1' (length=1)
+  'backup_log_dir' => string 'C:/windows/temp' (length=15)
+  'barcode_label_type' => string '9' (length=1)
+  'calendar_appt_style' => string '2' (length=1)
+  'calendar_interval' => string '15' (length=2)
+  'cdr_report_nice' => string '' (length=0)
+  'certificate_authority_crt' => string '' (length=0)
+  'certificate_authority_key' => string '' (length=0)
+  'chart_label_type' => string '1' (length=1)
+  'client_certificate_valid_in_days' => string '365' (length=3)
+  'cms_1500' => string '0' (length=1)
+  'cms_1500_box_31_date' => string '0' (length=1)
+  'cms_1500_box_31_format' => string '0' (length=1)
+  'concurrent_layout' => string '3' (length=1)
+  'configuration_import_export' => string '' (length=0)
+  'couchdb_dbase' => string '' (length=0)
+  'couchdb_host' => string 'localhost' (length=9)
+  'couchdb_log' => string '' (length=0)
+  'couchdb_pass' => string '' (length=0)
+  'couchdb_port' => string '5984' (length=4)
+  'couchdb_user' => string '' (length=0)
+  'country_data_type' => string '26' (length=2)
+  'country_list' => string 'country' (length=7)
+  'css_header' => string '/interface/themes/style_oemr.css' (length=32)
+  'currency_decimals' => string '2' (length=1)
+  'currency_dec_point' => string '.' (length=1)
+  'currency_thousands_sep' => string ',' (length=1)
+  'date_display_format' => string '0' (length=1)
+  'default_chief_complaint' => string '' (length=0)
+  'default_new_encounter_form' => string '' (length=0)
+  'default_top_pane' => string 'main_info.php' (length=13)
+  'disable_calendar' => string '' (length=0)
+  more elements...
+
+  
+POST:
+
+array (size=5)
+  'id' => string '' (length=0)
+  'pid' => string '' (length=0)
+  'process' => string 'true' (length=4)
+  'symptom_options' => 
+    array (size=1)
+      1 => 
+        array (size=1)
+          0 => string '3' (length=1)
+  'notes' => string '' (length=0)

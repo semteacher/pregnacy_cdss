@@ -32,10 +32,10 @@ function PrintForm() {
 
 <?php echo date("F d, Y", time()); ?>
 
-<form method=post action="<?php echo $rootdir;?>/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=update&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
+<form method=post action="<?php echo $rootdir;?>/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
 
-<input type="hidden" name="id" value="<?php echo $this->form_id; ?>" />
+<input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />
 <!--<input type="hidden" name="activity" value="{$data->get_activity()}">-->
 <input type="hidden" name="pid" value="<?php echo $this->form_pid; ?>">
 <input type="hidden" name="process" value="true">
@@ -69,7 +69,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
             echo '<tr><td>';
             if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
             $selection = '';
-            if (SymptByPatient_Model::isselected($this->form_id, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
+            if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
             echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' >'.$SymptOptions->opt_name;
             echo '</td></tr>';
         }

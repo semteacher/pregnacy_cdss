@@ -153,13 +153,6 @@ class PatientExam_Form_Controller {
             $success = formUpdate($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2]), $_GET["id"], $this->form_userauthorized);
         }
 
-        //  $this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
-        //  parent::populate_object($this->SymptByPatient);
-
-
-       // print_r('<br>DB conncct througt ADOdb_Active_Record');
-       // $db = get_db();
-       // ADOdb_Active_Record::SetDatabaseAdapter($db);
         print_r('<br>form data:');
         var_dump($this->form_idexam);
         var_dump($_GET["id"]);
@@ -171,19 +164,47 @@ class PatientExam_Form_Controller {
         //process all symptoms:
         foreach ($Symptoms as $key=>$Symptom) {
             print_r('<br>Is it this symptom in POST?:');
+            //check is it symptom selected is?
             if (array_key_exists($Symptom->id,$_POST['symptom_options'])){
                 //Symptom is selected!
+                //check symptom type:
                 if (Symptoms_Model::is_multy($Symptom->id)) {
                     //Symptom can have multiple options
                     print_r('<br>multi-YES');
                     foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
-                        if (!SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id)) {
-                            //print_r($opt_name.' will be added/updated<br>');
+                        //is it symptom option in POST?
+                        $key = array_search($SympOption->id,$_POST['symptom_options'][$Symptom->id]);
+                        var_dump($key);
+                        //is it symptom option in database?
+                        if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id)) {
+                            if ($key === false){
+                                print_r($SympOption->opt_name.' will be deleted<br>');
+                                $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
+                                $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
+                                $symptoptbyperson->delete();
+                            }
 
                         } else {
-                            //print_r($opt_name.' will be skipped<br>');
-                        }
+                            if ($key !== false) {
+                                print_r($SympOption->opt_name.' will be added<br>');
+                                var_dump($_POST['symptom_options'][$Symptom->id][$key]);
+                                //Insert one new record
+                                $symptoptbyperson = new SymptByPatient2_Model();
+                                //$symptoptbyperson->form_id   = $this->form_id;
+                                $symptoptbyperson->id_exam = $this->form_idexam;
+                                $symptoptbyperson->pid  = $this->form_pid;
+                                $symptoptbyperson->user = $_SESSION['authUser'];
+                                $symptoptbyperson->id_symptom = $Symptom->id;
+                                $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
+                                $symptoptbyperson->id_order = $Symptom->id_order;
+                                $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][$key];
+                                //$symptoptbyperson->id_sympt_opt = $SympOption->id; //also must work
 
+                                //$symptoptbyperson->id_deceases = $id_deceases;
+                                // $symptoptbyperson->p_val = $p_val;
+                                $symptoptbyperson->save();
+                            }
+                        }
                     }
                 } else {
                     //Symptom can have only single option
@@ -191,14 +212,14 @@ class PatientExam_Form_Controller {
                     //Is this symptom in database?
                     //get record count
                     //$currSelectedOptionsCount = SymptByPatient_Model::selectedOptionsCount($this->form_id, $this->form_pid, $Symptom->id);
-                    $symptoptbyperson = new SymptByPatient2_Model();
+                    $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
                     $currSelectedOptionsCount = $symptoptbyperson->Find('(id_exam=?)AND(pid=?)AND(id_symptom=?)',array($this->form_idexam, $this->form_pid, $Symptom->id));
                     //print_r('<br>found records:'.$currSelectedOptionsCount);
                     print_r('<br>found records:'.sizeof($currSelectedOptionsCount));
                     if (sizeof($currSelectedOptionsCount) ==1) {
                         //Update single record
                         print_r('<br>Update single record:');
-                        //$symptoptbyperson = new SymptByPatient2_Model();
+                        $symptoptbyperson = new SymptByPatient2_Model();
                         $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')');
                        // var_dump($symptoptbyperson);
                         if ($symptoptbyperson->id_sympt_opt != intval($_POST['symptom_options'][$Symptom->id][0])){
@@ -212,7 +233,7 @@ class PatientExam_Form_Controller {
                             $tmpsymptoptbyperson->delete();
                         }
                         //Insert one new record
-                        //$symptoptbyperson = new SymptByPatient2_Model();//?????????????
+                        $symptoptbyperson = new SymptByPatient2_Model();
                         //$symptoptbyperson->form_id   = $this->form_id;
                         $symptoptbyperson->id_exam = $this->form_idexam;
                         $symptoptbyperson->pid  = $this->form_pid;
@@ -228,7 +249,7 @@ class PatientExam_Form_Controller {
                         //print_r($opt_name.' will be skipped<br>');
                     } else {
                         //Insert one new record
-                        //$symptoptbyperson = new SymptByPatient2_Model();
+                        $symptoptbyperson = new SymptByPatient2_Model();
                         //$symptoptbyperson->form_id   = $this->form_id;
                         $symptoptbyperson->id_exam = $this->form_idexam;
                         $symptoptbyperson->pid  = $this->form_pid;

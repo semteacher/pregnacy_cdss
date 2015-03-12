@@ -24,11 +24,7 @@ require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
 class PatientExam_Form_Controller {
 
-	//public $template_dir;
-    //public $template_mod;
     public $form_folder;
-    public $form_name;
-    //public $form_id;
     public $form_idexam;
     public $form_pid;
     public $returnurl;
@@ -52,18 +48,20 @@ class PatientExam_Form_Controller {
     }
     
     public function default_action() {
-        $SymptCategory = SymptCategory_Model::all();
         $this->form_name = "Pregnacy CDSS (default) Form";
-
+        //get all form options (nested mode)
+        $SymptCategory = SymptCategory_Model::all();
+        //display form
         require_once(VIEW_DIR.'SymptByPatient_Form.html');
         return;
 	}
 
     public function new_action() {
-        $SymptCategory = SymptCategory_Model::all();
         $this->form_name = "Pregnacy CDSS (new) Form";
         $this->form_mode = "new";
-
+        //get all form options (nested mode)
+        $SymptCategory = SymptCategory_Model::all();
+        //display form
         require_once(VIEW_DIR.'SymptByPatient_Form.html');
         return;
     }
@@ -74,19 +72,14 @@ class PatientExam_Form_Controller {
             //$this->form_id = $form_idexam;
             $this->form_idexam = $form_idexam;
             $this->form_pid = $_SESSION['pid'];
-            //get paient form data
-            //$SymptByPatient = SymptByPatient_Model::find($form_id);
-            //$this->symptbypatient=$SymptByPatient;
     	}
     	else {
-    		//error
-            //$SymptCategory = SymptByPatient_Model::all();
+    		//error??
     	}
         $this->form_name = "Pregnacy CDSS (view) Form";
         $this->form_mode = "update";
         //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
-
         //display form
         require_once(VIEW_DIR.'SymptByPatient_Form.html');
         return;

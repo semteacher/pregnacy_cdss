@@ -17,6 +17,10 @@ class Symptoms2_Model extends ADOdb_Active_Record {
     var $_table = SYMPTOMS_DBTABLE;
 }
 
+class SymptOptions2_Model extends ADOdb_Active_Record {
+    var $_table = SYMPTOPTIONS_DBTABLE;
+}
+
 class DeceasesSymptOpt2_Model extends ADOdb_Active_Record {
     var $_table = DECEASESSYMPTOMOPTIONS_DBTABLE;
 }

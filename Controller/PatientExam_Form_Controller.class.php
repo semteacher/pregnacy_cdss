@@ -102,14 +102,14 @@ class PatientExam_Form_Controller {
 
         //prepare default deceases array
         $curr_decease = array();
+        $curr_decease_multi = array();
         $decease = new Deceases2_Model();
         $deceases_arr = $decease->Find('');
         foreach ($deceases_arr as $dec){
             $curr_decease[$dec->id]=1; ///default - each decease probability =1
+            $curr_decease_multi[$dec->id][py]=1;
+            $curr_decease_multi[$dec->id][count]=0;
         }
-
-        print_r('<br>default - each decease probability =1:');
-        var_dump($curr_decease);
 
         //process form submissions
         $deceasesymptopt = new DeceasesSymptOpt2_Model();
@@ -117,11 +117,16 @@ class PatientExam_Form_Controller {
             foreach ($sympt_options as $key=>$id_sympt_opt) {
                 $deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt);
                 $curr_decease[$deceasesymptopt->id_deceaces]=$curr_decease[$deceasesymptopt->id_deceaces]*$deceasesymptopt->py;
+                $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease[$deceasesymptopt->id_deceaces];
+                $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
             }
         }
 
         print_r('<br>each decease probability after processing:');
         var_dump($curr_decease);
+        var_dump($curr_decease_multi);
+        $ser_curr_decease_multi=serialize($curr_decease_multi);
+        var_dump($ser_curr_decease_multi);
 
         //if ($encounter == "") $encounter = date("Ymd");
         if ($_GET["mode"] == "new") {
@@ -144,7 +149,7 @@ class PatientExam_Form_Controller {
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2]), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2], 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
         }
 
         print_r('<br>form data:');
@@ -152,7 +157,8 @@ class PatientExam_Form_Controller {
         var_dump($_GET["id"]);
         var_dump($this->form_pid);
         //var_dump($this->symptbypatient);
-//die;
+        var_dump(unserialize($ser_curr_decease_multi));
+die;
         print_r('<br>load and process all symptoms:');
         $Symptoms = Symptoms_Model::all();
         //process all symptoms:
@@ -185,7 +191,6 @@ class PatientExam_Form_Controller {
                                 var_dump($_POST['symptom_options'][$Symptom->id][$key]);
                                 //Insert one new record
                                 $symptoptbyperson = new SymptByPatient2_Model();
-                                //$symptoptbyperson->form_id   = $this->form_id;
                                 $symptoptbyperson->id_exam = $this->form_idexam;
                                 $symptoptbyperson->pid  = $this->form_pid;
                                 $symptoptbyperson->user = $_SESSION['authUser'];
@@ -235,7 +240,6 @@ class PatientExam_Form_Controller {
                         }
                         //Insert one new record
                         $symptoptbyperson = new SymptByPatient2_Model();
-                        //$symptoptbyperson->form_id   = $this->form_id;
                         $symptoptbyperson->id_exam = $this->form_idexam;
                         $symptoptbyperson->pid  = $this->form_pid;
                         $symptoptbyperson->user = $_SESSION['authUser'];
@@ -253,7 +257,6 @@ class PatientExam_Form_Controller {
                     } else {
                         //Insert one new record
                         $symptoptbyperson = new SymptByPatient2_Model();
-                        //$symptoptbyperson->form_id   = $this->form_id;
                         $symptoptbyperson->id_exam = $this->form_idexam;
                         $symptoptbyperson->pid  = $this->form_pid;
                         $symptoptbyperson->user = $_SESSION['authUser'];

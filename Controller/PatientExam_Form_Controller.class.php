@@ -72,7 +72,7 @@ class PatientExam_Form_Controller {
 		if (is_numeric($form_idexam)) {
             //$this->form_id = $form_idexam;
             $this->form_idexam = $form_idexam;
-            $this->form_pid = $_SESSION['pid'];
+           // $this->form_pid = $_SESSION['pid'];
     	}
     	else {
     		//error??
@@ -86,6 +86,27 @@ class PatientExam_Form_Controller {
         return;
 
 	}
+
+    public function report_action($form_idexam) {
+        if (is_numeric($form_idexam)) {
+            //$this->form_id = $form_idexam;
+            $this->form_idexam = $form_idexam;
+           // $this->form_pid = $_SESSION['pid'];
+        }
+        else {
+            //error??
+        }
+
+
+        $form_data = formFetch($this->table_name, $form_idexam);
+//var_dump($form_data);
+        $curr_decease_multi = array();
+        $curr_decease_multi = unserialize($form_data[deceases]);
+
+        if ($form_data) {
+            require_once(VIEW_DIR.'SymptByPatient_FormReport.php');
+        }
+    }
 	
 	public function default_action_process() {
         //var_dump($GLOBALS);
@@ -158,7 +179,7 @@ class PatientExam_Form_Controller {
         var_dump($this->form_pid);
         //var_dump($this->symptbypatient);
         var_dump(unserialize($ser_curr_decease_multi));
-die;
+//die;
         print_r('<br>load and process all symptoms:');
         $Symptoms = Symptoms_Model::all();
         //process all symptoms:

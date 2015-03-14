@@ -102,7 +102,7 @@ class PatientExam_Form_Controller {
  //var_dump($curr_deceases_multi);
         //display form
         if ($form_data) {
-            require_once(VIEW_DIR.'SymptByPatient_FormReport.php');
+            require(VIEW_DIR.'SymptByPatient_FormReport.php');
         }
     }
 	

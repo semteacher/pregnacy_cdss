@@ -76,10 +76,9 @@ class PatientExam_Form_Controller {
 	}
 
     public function report_action($form_idexam) {
+        //show form report on the encounter page
         if (is_numeric($form_idexam)) {
-            //$this->form_id = $form_idexam;
             $this->form_idexam = $form_idexam;
-           // $this->form_pid = $_SESSION['pid'];
         }
         else {
             //error??
@@ -88,9 +87,21 @@ class PatientExam_Form_Controller {
         //fetch form data
         $form_data = formFetch($this->table_name, $form_idexam);
 //var_dump($form_data);
-        $curr_decease_multi = array();
-        $curr_decease_multi = unserialize($form_data[deceases]);
-
+        $curr_deceases_multi = array();
+        $curr_deceases_multi = unserialize($form_data[deceases]);
+        //get deceases names
+        $deceases = new Deceases2_Model();
+        foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
+            if ($deceases->Load('id='.$decease_id)){
+                $dec_symmary[dec_name] = $deceases->dec_name;
+                $curr_deceases_multi[$decease_id][dec_name] = $deceases->dec_name;
+            } else {
+                $dec_symmary[dec_name] = "Інший діагноз";
+                $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
+            }
+        }
+        var_dump($curr_deceases_multi);
+        //display form
         if ($form_data) {
             require_once(VIEW_DIR.'SymptByPatient_FormReport.php');
         }
@@ -118,6 +129,7 @@ class PatientExam_Form_Controller {
         foreach ($deceases_arr as $dec){
             $curr_decease[$dec->id]=1; ///default - each decease probability =1
             $curr_decease_multi[$dec->id][py]=1;
+            $curr_decease_multi[$dec->id][pn]=1;
             $curr_decease_multi[$dec->id][count]=0;
         }
 
@@ -132,7 +144,8 @@ class PatientExam_Form_Controller {
                 if ($deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt))
                 {
                     $curr_decease[$deceasesymptopt->id_deceaces]=$curr_decease[$deceasesymptopt->id_deceaces]*$deceasesymptopt->py;
-                    $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease[$deceasesymptopt->id_deceaces];
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease_multi[$deceasesymptopt->id_deceaces][py]*$deceasesymptopt->py;
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][pn]=$curr_decease_multi[$deceasesymptopt->id_deceaces][pn]*$deceasesymptopt->pn;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
                 }
             }
@@ -156,7 +169,7 @@ class PatientExam_Form_Controller {
 
             /* save the data into the form's own table */
             //TODO: replace array(2,$curr_decease[2]) with highest value!!!!
-            $newid = formSubmit($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2], 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
             print_r('<br>form new id:');
             var_dump($newid);
             $this->form_idexam = $newid;
@@ -165,7 +178,7 @@ class PatientExam_Form_Controller {
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2], 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
         }
 
         print_r('<br>form data:');

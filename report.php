@@ -1,8 +1,8 @@
 <?php
-//include_once($GLOBALS["srcdir"]."/api.inc");
 
 include_once("../../globals.php");
-include_once("$srcdir/api.inc");
+include_once($GLOBALS["srcdir"]."/api.inc");
+//include_once("$srcdir/api.inc");
 
 //include_once("$srcdir/adodb/adodb-active-record.inc.php");
 
@@ -10,9 +10,6 @@ include_once("config.inc.php");
 
 require ("/Controller/PatientExam_Form_Controller.class.php");
 
-
-/** CHANGE THIS, the name of the function is significant and  **
- **              must be changed to match the folder name     **/
 function pregnacy_cdss_report( $pid, $encounter, $cols, $id) {
 
     $c = new PatientExam_Form_Controller();

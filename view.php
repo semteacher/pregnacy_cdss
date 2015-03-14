@@ -1,8 +1,7 @@
 <?php
 include_once("../../globals.php");
-include_once("$srcdir/api.inc");
-
-//include_once("$srcdir/adodb/adodb-active-record.inc.php");
+include_once($GLOBALS["srcdir"]."/api.inc");
+//include_once("$srcdir/api.inc");
 
 include_once("config.inc.php");
 

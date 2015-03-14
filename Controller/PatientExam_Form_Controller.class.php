@@ -46,12 +46,21 @@ class PatientExam_Form_Controller {
 	}
 
     public function new_action() {
-        $this->form_name = "Pregnacy CDSS (new) Form";
-        $this->form_mode = "new";
-        //get all form options (nested mode)
-        $SymptCategory = SymptCategory_Model::all();
-        //display form
-        require_once(VIEW_DIR.'SymptByPatient_Form.html');
+        //check gender
+        $gender = getPatientData($_SESSION['pid'], 'sex');
+        if ($gender[sex]=='Female'){
+            $this->form_name = "Pregnacy CDSS (new) Form";
+            $this->form_mode = "new";
+            //get all form options (nested mode)
+            $SymptCategory = SymptCategory_Model::all();
+            //display form
+            require_once(VIEW_DIR.'SymptByPatient_Form.html');
+        } else{
+            //error message
+            echo '<script language="javascript">alert("Дана форма не може бути застосована до осіб чоловічої статі!")</script>';
+            //redirect to encounter
+            @formJump();
+        }
         return;
     }
 

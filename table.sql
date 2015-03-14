@@ -642,9 +642,9 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_patient_exam` (
   `groupname` varchar(255) DEFAULT NULL,
   `authorized` tinyint(4) DEFAULT NULL,
   `activity` tinyint(4) DEFAULT NULL,
-  `dec_name` varchar(50) DEFAULT NULL,
-  `id_deceases` int(11) DEFAULT '0',
-  `p` float DEFAULT '0',
+  `createuser` varchar(255) DEFAULT NULL,
+  `createdate` datetime DEFAULT NULL,
+  `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
 

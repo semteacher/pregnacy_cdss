@@ -9,8 +9,8 @@ print "<style>.borderedtable, .borderedtable th, .borderedtable td { border: 1px
 print "<style>.centertext { text-align: center; }</style>";
 
 print "<div class=bold>Анкету створено:</div>";
-print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[user]</span></div>";
-print "<div><span class=bold>- Дата і час: </span><span class=text>$form_data[date]</span></div>";
+print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[createuser]</span></div>";
+print "<div><span class=bold>- Дата і час: </span><span class=text>$form_data[createdate]</span></div>";
 print "<br>";
 print "<div class=bold>Анкету востаннє змінювали:</div>";
 print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[user]</span></div>";

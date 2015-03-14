@@ -1,10 +1,6 @@
 <?php
 
-//require_once ($GLOBALS['fileroot'] . "/library/classes/Controller.class.php");
 require_once ($GLOBALS['fileroot'] . "/library/forms.inc");
-
-//require_once("/../config.inc.php");
-
 
 require_once(MODEL_DIR."SymptByPatient_Model.class.php");
 require_once(MODEL_DIR."SymptCategory_Model.class.php");
@@ -14,15 +10,7 @@ require_once(MODEL_DIR."DeceasesSymptOpt_Model.class.php");
 
 require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
-/** CHANGE THIS name to the name of your form **/
-//$form_name = "Pregnacy CDSS (test) Form1";
-
-/** CHANGE THIS to match the folder you created for this form **/
-//$form_folder = "pregnacy_cdss";
-
-//formHeader("Form: ".$form_name);
-//$returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
-
+//main controller class
 class PatientExam_Form_Controller {
 
     public $form_folder;
@@ -97,7 +85,7 @@ class PatientExam_Form_Controller {
             //error??
         }
 
-
+        //fetch form data
         $form_data = formFetch($this->table_name, $form_idexam);
 //var_dump($form_data);
         $curr_decease_multi = array();
@@ -126,20 +114,27 @@ class PatientExam_Form_Controller {
         $curr_decease_multi = array();
         $decease = new Deceases2_Model();
         $deceases_arr = $decease->Find('');
+
         foreach ($deceases_arr as $dec){
             $curr_decease[$dec->id]=1; ///default - each decease probability =1
             $curr_decease_multi[$dec->id][py]=1;
             $curr_decease_multi[$dec->id][count]=0;
         }
 
+        var_dump($deceases_arr);
+        var_dump($curr_decease);
+        var_dump($curr_decease_multi);
+
         //process form submissions
         $deceasesymptopt = new DeceasesSymptOpt2_Model();
         foreach ($_POST['symptom_options'] as $sympt_id=>$sympt_options) {
             foreach ($sympt_options as $key=>$id_sympt_opt) {
-                $deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt);
-                $curr_decease[$deceasesymptopt->id_deceaces]=$curr_decease[$deceasesymptopt->id_deceaces]*$deceasesymptopt->py;
-                $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease[$deceasesymptopt->id_deceaces];
-                $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
+                if ($deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt))
+                {
+                    $curr_decease[$deceasesymptopt->id_deceaces]=$curr_decease[$deceasesymptopt->id_deceaces]*$deceasesymptopt->py;
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease[$deceasesymptopt->id_deceaces];
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
+                }
             }
         }
 
@@ -161,7 +156,7 @@ class PatientExam_Form_Controller {
 
             /* save the data into the form's own table */
             //TODO: replace array(2,$curr_decease[2]) with highest value!!!!
-            $newid = formSubmit($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2]), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('id_deceases'=>2,'p'=>$curr_decease[2], 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
             print_r('<br>form new id:');
             var_dump($newid);
             $this->form_idexam = $newid;
@@ -246,16 +241,16 @@ class PatientExam_Form_Controller {
                        // var_dump($symptoptbyperson);
                         if ($symptoptbyperson->id_sympt_opt != intval($_POST['symptom_options'][$Symptom->id][0])){
                             $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][0];
-
-                            $deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt);
-                            $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                            $symptoptbyperson->p = $deceasesymptopt->py;
-
+                            //load decease info
+                            if ($deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
+                                $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
+                                $symptoptbyperson->p = $deceasesymptopt->py;
+                            }
                             $symptoptbyperson->save();
                         }
 
                     } elseif (sizeof($currSelectedOptionsCount) >1) {
-                        //TODO: delete all and insert new one
+                        //delete all and insert new one
                         foreach ($currSelectedOptionsCount as $tmpsymptoptbyperson) {
                             $tmpsymptoptbyperson->delete();
                         }
@@ -268,11 +263,11 @@ class PatientExam_Form_Controller {
                         $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
                         $symptoptbyperson->id_order = $Symptom->id_order;
                         $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][0];
-
-                        $deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt);
-                        $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                        $symptoptbyperson->p = $deceasesymptopt->py;
-
+                        //load decease info
+                        if ($deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
+                            $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
+                            $symptoptbyperson->p = $deceasesymptopt->py;
+                        }
                         $symptoptbyperson->save();
                         //print_r($opt_name.' will be skipped<br>');
                     } else {
@@ -286,10 +281,11 @@ class PatientExam_Form_Controller {
                         $symptoptbyperson->id_order = $Symptom->id_order;
                         $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][0];
 
-                        $deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt);
-                        $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                        $symptoptbyperson->p = $deceasesymptopt->py;
-
+                        //load decease info
+                        if ($deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
+                            $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
+                            $symptoptbyperson->p = $deceasesymptopt->py;
+                        }
                         $symptoptbyperson->save();
                     }
                 }
@@ -299,8 +295,9 @@ class PatientExam_Form_Controller {
                 }
             }
         }
-		$this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
-		parent::populate_object($this->SymptByPatient);
+die;
+		//$this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
+		//parent::populate_object($this->SymptByPatient);
 		
 		//$this->SymptByPatient->persist();
 		//if ($GLOBALS['encounter'] == "") {

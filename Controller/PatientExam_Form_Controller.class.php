@@ -157,6 +157,7 @@ class PatientExam_Form_Controller {
         var_dump($ser_curr_decease_multi);
 
         //if ($encounter == "") $encounter = date("Ymd");
+        //save new/update patient form data
         if ($_GET["mode"] == "new") {
 
             /* NOTE - for customization you can replace $_POST with your own array
@@ -188,6 +189,7 @@ class PatientExam_Form_Controller {
         var_dump(unserialize($ser_curr_decease_multi));
 //die;
         print_r('<br>load and process all symptoms:');
+        //save new/update patient details
         $Symptoms = Symptoms_Model::all();
         //process all symptoms:
         foreach ($Symptoms as $key=>$Symptom) {
@@ -229,7 +231,8 @@ class PatientExam_Form_Controller {
 
                                 $deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt);
                                 $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                                $symptoptbyperson->p = $deceasesymptopt->py;
+                                $symptoptbyperson->py = $deceasesymptopt->py;
+                                $symptoptbyperson->pn = $deceasesymptopt->pn;
 
                                 $symptoptbyperson->save();
                             }
@@ -256,7 +259,8 @@ class PatientExam_Form_Controller {
                             //load decease info
                             if ($deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
                                 $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                                $symptoptbyperson->p = $deceasesymptopt->py;
+                                $symptoptbyperson->py = $deceasesymptopt->py;
+                                $symptoptbyperson->pn = $deceasesymptopt->pn;
                             }
                             $symptoptbyperson->save();
                         }
@@ -278,7 +282,8 @@ class PatientExam_Form_Controller {
                         //load decease info
                         if ($deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
                             $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                            $symptoptbyperson->p = $deceasesymptopt->py;
+                            $symptoptbyperson->py = $deceasesymptopt->py;
+                            $symptoptbyperson->pn = $deceasesymptopt->pn;
                         }
                         $symptoptbyperson->save();
                         //print_r($opt_name.' will be skipped<br>');
@@ -296,7 +301,8 @@ class PatientExam_Form_Controller {
                         //load decease info
                         if ($deceasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
                             $symptoptbyperson->id_deceases = $deceasesymptopt->id_deceaces;
-                            $symptoptbyperson->p = $deceasesymptopt->py;
+                            $symptoptbyperson->py = $deceasesymptopt->py;
+                            $symptoptbyperson->pn = $deceasesymptopt->pn;
                         }
                         $symptoptbyperson->save();
                     }

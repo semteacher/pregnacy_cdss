@@ -17,7 +17,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
     var $id_sympt_cat;
     var $id_order;
 
-    public function __construct($id, $id_exam, $pid, $user, $id_symptom, $id_sympt_opt, $id_deceases, $p_val, $id_sympt_cat, $id_order) {
+    public function __construct($id, $id_exam, $pid, $user, $id_symptom, $id_sympt_opt, $id_deceases, $py, $pn, $id_sympt_cat, $id_order) {
         $this->id   = $id;
         $this->id_exam   = $id_exam;
         $this->pid  = $pid;
@@ -25,7 +25,8 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $this->id_symptom = $id_symptom;
         $this->id_sympt_opt = $id_sympt_opt;
         $this->id_deceases = $id_deceases;
-        $this->p_val = $p_val;
+        $this->py = $py;
+        $this->pn = $pn;
         $this->id_sympt_cat = $id_sympt_cat;
         $this->id_order = $id_order;
     }
@@ -46,7 +47,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         //foreach($req->fetchAll() as $symptbypt) {
         //ADODB:
         foreach($req as $symptbypt) {
-            $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['id_exam'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
+            $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['id_exam'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['py'], $symptbypt['pn'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
         }
 //var_dump($list);
 
@@ -72,7 +73,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
 //var_dump($req);
         // the query was prepared, now we replace :id_category with our actual $id_category value
         foreach($req as $symptbypt) {
-            $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['id_exam'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['p'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
+            $list[$symptbypt['id']] = new SymptByPatient_Model($symptbypt['id'], $symptbypt['id_exam'], $symptbypt['pid'], $symptbypt['user'], $symptbypt['id_symptom'], $symptbypt['id_sympt_opt'], $symptbypt['id_deceases'], $symptbypt['py'], $symptbypt['pn'], $symptbypt['id_sympt_cat'], $symptbypt['id_order'], $symptbypt['content']);
         }
 //var_dump($list);
         return $list;      

@@ -10,6 +10,8 @@ require_once(MODEL_DIR."DeceasesSymptOpt_Model.class.php");
 
 require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
+require_once(VIEW_DIR."SymptByPatient_Form2Report.class.php");
+
 //main controller class
 class PatientExam_Form_Controller {
 
@@ -94,7 +96,6 @@ class PatientExam_Form_Controller {
         }
         //fetch form data
         $form_data = formFetch($this->table_name, $form_idexam);
-//var_dump($form_data);
         $curr_deceases_multi = array();
         $curr_deceases_multi = unserialize($form_data[deceases]);
         //set deceases names
@@ -108,10 +109,10 @@ class PatientExam_Form_Controller {
                 $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
             }
         }
- //var_dump($curr_deceases_multi);
         //display form
         if ($form_data) {
-            require(VIEW_DIR.'SymptByPatient_FormReport.php');
+            //require(VIEW_DIR.'SymptByPatient_FormReport.php');
+            $report_form = new SymptByPatient_Form2Report($form_data, $curr_deceases_multi);
         }
     }
 	
@@ -129,20 +130,18 @@ class PatientExam_Form_Controller {
         $this->form_userauthorized = $_SESSION['userauthorized'];
 
         //prepare default deceases array
-        //$curr_decease = array();
         $curr_decease_multi = array();
         $decease = new Deceases2_Model();
         $deceases_arr = $decease->Find('');
 
         foreach ($deceases_arr as $dec){
-            //$curr_decease[$dec->id]=1; ///default - each decease probability =1
+            //default - each decease probability =1
             $curr_decease_multi[$dec->id][py]=1;
             $curr_decease_multi[$dec->id][pn]=1;
             $curr_decease_multi[$dec->id][count]=0;
         }
 
         var_dump($deceases_arr);
-        //var_dump($curr_decease);
         var_dump($curr_decease_multi);
 
         //process form submissions
@@ -151,7 +150,6 @@ class PatientExam_Form_Controller {
             foreach ($sympt_options as $key=>$id_sympt_opt) {
                 if ($deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt))
                 {
-                    //$curr_decease[$deceasesymptopt->id_deceaces]=$curr_decease[$deceasesymptopt->id_deceaces]*$deceasesymptopt->py;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease_multi[$deceasesymptopt->id_deceaces][py]*$deceasesymptopt->py;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][pn]=$curr_decease_multi[$deceasesymptopt->id_deceaces][pn]*$deceasesymptopt->pn;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
@@ -160,12 +158,10 @@ class PatientExam_Form_Controller {
         }
 
         print_r('<br>each decease probability after processing:');
-        //var_dump($curr_decease);
         var_dump($curr_decease_multi);
         $ser_curr_decease_multi=serialize($curr_decease_multi);
         var_dump($ser_curr_decease_multi);
 
-        //if ($encounter == "") $encounter = date("Ymd");
         //save new/update patient form data
         if ($_GET["mode"] == "new") {
 
@@ -323,20 +319,11 @@ class PatientExam_Form_Controller {
             }
         }
 die;
-		//$this->SymptByPatient = new SymptByPatient_Model($_POST['id']);
-		//parent::populate_object($this->SymptByPatient);
-		
-		//$this->SymptByPatient->persist();
-		//if ($GLOBALS['encounter'] == "") {
-		//	$GLOBALS['encounter'] = date("Ymd");
-		//}
-		///addForm($GLOBALS['encounter'], $this->form_name, $_POST['id'], $this->form_folder, $GLOBALS['pid'], $_SESSION['userauthorized']);
+
 		$_POST['process'] = "";
 		return;
 	}
     
 }
-
-
 
 ?>

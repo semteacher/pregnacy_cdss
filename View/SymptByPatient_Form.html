@@ -4,7 +4,7 @@
 <?php html_header_show(); ?>
 
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
 
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
 
@@ -19,7 +19,7 @@
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
-<script type="text/javascript">
+<script type="text/javascript" language="javascript">
 // this line is to assist the calendar text boxes
 var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
 
@@ -28,27 +28,6 @@ function PrintForm() {
 }
 </script>
 
-    <script type="text/javascript">
-        $('#firstpregnacyconfirm').on('change', function() {
-            // From the other examples
-            if (!this.checked) {
-                var sure = confirm("Are you sure?");
-                this.checked = !sure;
-                $('#textbox1').val(sure.toString());
-            }
-        });
-    </script>
-    <script type="text/javascript">
-        $("#firstpregnacyconfirm").change(function(evt){
-            var attr = $(evt.target).attr("checked")
-            if (typeof attr !== 'undefined' && attr !== false){
-                alert("Checked");
-            }
-            else{
-                alert("Not Checked");
-            }
-        });
-    </script>
 </head>
 
 <body class="body_top">
@@ -62,7 +41,7 @@ function PrintForm() {
 <!--<input type="hidden" name="activity" value="{$data->get_activity()}">-->
 <input type="hidden" name="pid" value="<?php echo $this->form_pid; ?>">
 <input type="hidden" name="process" value="true">
-<input type="hidden" name="isfirstpregnacy" value="false">
+<input type="hidden" class="isfirstpregnacyhd" name="isfirstpregnacyhd" value="<?php echo $this->is_firstpregnacy; ?>">
 
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -74,13 +53,18 @@ function PrintForm() {
 
 <div id="general">
     <div id="isfirspregcheck">
-        <input type="checkbox" id="firstpregnacyconfirm" name="is_firstpregnacy" value="<?php echo $this->is_firstpregnacy; ?>" <?php echo ($this->is_firstpregnacy == 1) ? 'checked="checked"' : ''; ?>/>Is firts pregnacy?
+        <input type="checkbox" class="isfirstpregnacy" id="firstpregnacyconfirm" name="is_firstpregnacy" value="<?php echo $this->is_firstpregnacy; ?>" <?php echo ($this->is_firstpregnacy == 1) ? 'checked="checked"' : ''; ?>/>Is firts pregnacy?
+    </div>
+    <div id="isfirspregbtn">
+        <span><strong>Вагітність:&nbsp;</strong></span> <span id="firstpregbtnansw"></span>
+        <input type="button" class="firspregbtn" value="Це перша вагітність?">
     </div>
 <table>
 <?php
 //var_dump($rootdir);
 foreach ($SymptCategory as $key=>$SymptCat)
 {
+
     echo '<tr><td>';
     echo '<strong>'.$SymptCat->id.'. '.$SymptCat->cat_name.'</strong>';
     echo '</td></tr>';
@@ -101,6 +85,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
             echo '</td></tr>';
         }
     }
+
 }
 ?>
 </table>
@@ -122,6 +107,30 @@ Use this space to express notes <br>
 </form>
 
 </body>
+<script type="text/javascript" language="javascript">
+    $(".isfirstpregnacy").on("change", function() {
+        if (this.checked) {
+            var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
+            this.checked = sure;
+            this.disabled = true;
+            $('.isfirstpregnacy').prop("value", 1);
+            $('.isfirstpregnacyhd').prop("value", 1);
+            $('#notes').val(sure.toString());
+        }
+    });
+</script>
+
+<script type="text/javascript" language="javascript">
+    function myFunction() {
+        var x;
+        if (confirm("Press a button!") == true) {
+            x = "Yes!";
+        } else {
+            x = "No!";
+        }
+        document.getElementById("firstpregbtnansw").innerHTML = x;
+    }
+</script>
 
 <script language="javascript">
 /* required for popup calendar */
@@ -135,6 +144,17 @@ $(document).ready(function(){
     $(".save").click(function() { top.restoreSession(); document.pregnacy_cdss_form.submit(); });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });
+    $(".firspregbtn").click(function() {
+        var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
+        if (sure == true){
+            $('#firstpregbtnansw').text("Перша");
+            $('.isfirstpregnacyhd').prop("value", 1);
+        } else {
+            $('#firstpregbtnansw').text("Повторна");
+            $('.isfirstpregnacyhd').prop("value", 0);
+        }
+        this.disabled = true;
+    });
 });
 
 </script>

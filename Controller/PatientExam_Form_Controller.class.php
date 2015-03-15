@@ -23,6 +23,7 @@ class PatientExam_Form_Controller {
     public $table_name;
     public $form_encounter;
     public $form_userauthorized;
+    public $is_firstpregnacy;
 
     public $symptbypatient;
 
@@ -34,6 +35,7 @@ class PatientExam_Form_Controller {
         $this->form_pid = $_SESSION['pid'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
         $this->returnurl =$GLOBALS['form_exit_url'];
+        $this->is_firstpregnacy = false;
         //formHeader("Form: ".$this->form_name);//?????
         //$this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     }
@@ -53,6 +55,9 @@ class PatientExam_Form_Controller {
         if ($gender[sex]=='Female'){
             $this->form_name = "Pregnacy CDSS (new) Form";
             $this->form_mode = "new";
+            //$this->form_encounter = $_SESSION['encounter'];
+            //$this->is_firstpregnacy = false;
+
             //get all form options (nested mode)
             $SymptCategory = SymptCategory_Model::all();
             //display form
@@ -67,10 +72,15 @@ class PatientExam_Form_Controller {
     }
 
 	public function view_action($form_idexam) {
-        //var_dump($form_id);
-		if (is_numeric($form_idexam)) {
-            //$this->form_id = $form_idexam;
+        //show form patient data
+        $form_idexam = intval($form_idexam);
+        //fetch form data
+        $form_data = formFetch($this->table_name, $form_idexam);
+
+		if ($form_data) {
             $this->form_idexam = $form_idexam;
+            //var_dump($form_data);
+            $this->is_firstpregnacy = $form_data[is_firstpregnacy];
            // $this->form_pid = $_SESSION['pid'];
     	}
     	else {
@@ -88,32 +98,31 @@ class PatientExam_Form_Controller {
 
     public function report_action($form_idexam) {
         //show form report on the encounter page
-        if (is_numeric($form_idexam)) {
-            $this->form_idexam = $form_idexam;
-        }
-        else {
-            //error??
-        }
+        $form_idexam = intval($form_idexam);
         //fetch form data
         $form_data = formFetch($this->table_name, $form_idexam);
-        $curr_deceases_multi = array();
-        $curr_deceases_multi = unserialize($form_data[deceases]);
-        //set deceases names
-        $deceases = new Deceases2_Model();
-        foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
-            if ($deceases->Load('id='.$decease_id)){
-                $dec_symmary[dec_name] = $deceases->dec_name;
-                $curr_deceases_multi[$decease_id][dec_name] = $deceases->dec_name;
-            } else {
-                $dec_symmary[dec_name] = "Інший діагноз";
-                $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
-            }
-        }
-        //display form
         if ($form_data) {
+            $curr_deceases_multi = array();
+            $curr_deceases_multi = unserialize($form_data[deceases]);
+            //set deceases names
+            $deceases = new Deceases2_Model();
+            foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
+                if ($deceases->Load('id='.$decease_id)){
+                    $dec_symmary[dec_name] = $deceases->dec_name;
+                    $curr_deceases_multi[$decease_id][dec_name] = $deceases->dec_name;
+                } else {
+                    //db error
+                    $dec_symmary[dec_name] = "Інший діагноз";
+                    $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
+                }
+            }
+            //display form
             //require(VIEW_DIR.'SymptByPatient_FormReport.php');
             $report_form = new SymptByPatient_Form2Report($form_data, $curr_deceases_multi);
+        } else {
+            return;
         }
+        return;
     }
 	
 	public function default_action_process() {
@@ -174,7 +183,7 @@ class PatientExam_Form_Controller {
 
             /* save the data into the form's own table */
             //TODO: replace array(2,$curr_decease[2]) with highest value!!!!
-            $newid = formSubmit($this->table_name, array('createuser'=>$_SESSION['authUser'], 'createdate'=>date("Y-m-d H:i:s"),'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>date("Y-m-d H:i:s"),'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
             print_r('<br>form new id:');
             var_dump($newid);
             $this->form_idexam = $newid;
@@ -183,7 +192,7 @@ class PatientExam_Form_Controller {
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
         }
 
         print_r('<br>form data:');

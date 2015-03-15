@@ -5,7 +5,9 @@
 
 <!-- supporting javascript code -->
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery.js"></script>
+
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+
 
 <!-- page styles -->
 <link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
@@ -17,15 +19,36 @@
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
 <script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
 
-<script language="JavaScript">
+<script type="text/javascript">
 // this line is to assist the calendar text boxes
-var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
+var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
 
 function PrintForm() {
-    newwin = window.open("<?php echo "http://".$_SERVER['SERVER_NAME'].$rootdir."/interface/forms/".$this->form_folder."/print.php?id=".$_GET["id"]; ?>","mywin");
+    newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
 }
 </script>
 
+    <script type="text/javascript">
+        $('#firstpregnacyconfirm').on('change', function() {
+            // From the other examples
+            if (!this.checked) {
+                var sure = confirm("Are you sure?");
+                this.checked = !sure;
+                $('#textbox1').val(sure.toString());
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $("#firstpregnacyconfirm").change(function(evt){
+            var attr = $(evt.target).attr("checked")
+            if (typeof attr !== 'undefined' && attr !== false){
+                alert("Checked");
+            }
+            else{
+                alert("Not Checked");
+            }
+        });
+    </script>
 </head>
 
 <body class="body_top">
@@ -39,6 +62,7 @@ function PrintForm() {
 <!--<input type="hidden" name="activity" value="{$data->get_activity()}">-->
 <input type="hidden" name="pid" value="<?php echo $this->form_pid; ?>">
 <input type="hidden" name="process" value="true">
+<input type="hidden" name="isfirstpregnacy" value="false">
 
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -49,6 +73,9 @@ function PrintForm() {
 <div id="form_container">
 
 <div id="general">
+    <div id="isfirspregcheck">
+        <input type="checkbox" id="firstpregnacyconfirm" name="is_firstpregnacy" value="<?php echo $this->is_firstpregnacy; ?>" <?php echo ($this->is_firstpregnacy == 1) ? 'checked="checked"' : ''; ?>/>Is firts pregnacy?
+    </div>
 <table>
 <?php
 //var_dump($rootdir);
@@ -70,7 +97,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
             if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
             $selection = '';
             if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
-            echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' >'.$SymptOptions->opt_name;
+            echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' />'.$SymptOptions->opt_name;
             echo '</td></tr>';
         }
     }

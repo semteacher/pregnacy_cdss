@@ -129,7 +129,7 @@ class PatientExam_Form_Controller {
 	public function default_action_process() {
         //var_dump($GLOBALS);
         var_dump($_POST);
-die;
+//die;
 		if ($_POST['process'] != "true"){
             return;
         }
@@ -150,9 +150,9 @@ die;
             $curr_decease_multi[$dec->id][pn]=1;
             $curr_decease_multi[$dec->id][count]=0;
         }
-
-        var_dump($deceases_arr);
-        var_dump($curr_decease_multi);
+        $expectdeceasecount = 0;
+        $expectdeceaseid = 0;
+        $expectdeceasename = 0;
 
         //process form submissions
         $deceasesymptopt = new DeceasesSymptOpt2_Model();
@@ -163,15 +163,25 @@ die;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease_multi[$deceasesymptopt->id_deceaces][py]*$deceasesymptopt->py;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][pn]=$curr_decease_multi[$deceasesymptopt->id_deceaces][pn]*$deceasesymptopt->pn;
                     $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
+                    //define most expected decease
+                    if ($curr_decease_multi[$deceasesymptopt->id_deceaces][count] > $expectdeceasecount) {
+                        $expectdeceaseid = $deceasesymptopt->id_deceaces;
+                        $expectdeceasecount = $curr_decease_multi[$deceasesymptopt->id_deceaces][count];
+                    }
                 }
             }
         }
+        //Get most expected decease name
+        $decease->Load('id='.$expectdeceaseid);
+        $expectdeceasename = $decease->dec_name;
 
         print_r('<br>each decease probability after processing:');
+        var_dump($expectdeceaseid);
+        var_dump($expectdeceasename);
         var_dump($curr_decease_multi);
         $ser_curr_decease_multi=serialize($curr_decease_multi);
         var_dump($ser_curr_decease_multi);
-
+//die;
         //save new/update patient form data
         if ($_GET["mode"] == "new") {
 
@@ -184,7 +194,7 @@ die;
 
             /* save the data into the form's own table */
             //TODO: replace array(2,$curr_decease[2]) with highest value!!!!
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>date("Y-m-d H:i:s"),'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>date("Y-m-d H:i:s"), 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
             print_r('<br>form new id:');
             var_dump($newid);
             $this->form_idexam = $newid;
@@ -193,7 +203,7 @@ die;
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
         }
 
         print_r('<br>form data:');

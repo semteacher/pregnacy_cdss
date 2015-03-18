@@ -11,6 +11,7 @@ require_once(MODEL_DIR."DeceasesSymptOpt_Model.class.php");
 require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
 require_once(VIEW_DIR."SymptByPatient_Form2Report.class.php");
+require_once(VIEW_DIR."SymptByPatient_Form.class.php");
 
 //main controller class
 class PatientExam_Form_Controller {
@@ -35,7 +36,7 @@ class PatientExam_Form_Controller {
         $this->form_pid = $_SESSION['pid'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
         $this->returnurl =$GLOBALS['form_exit_url'];
-        $this->is_firstpregnacy = false;
+        $this->is_firstpregnacy = NULL;
         //formHeader("Form: ".$this->form_name);//?????
         //$this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     }
@@ -92,6 +93,7 @@ class PatientExam_Form_Controller {
     	$SymptCategory = SymptCategory_Model::all();
         //display form
         require_once(VIEW_DIR.'SymptByPatient_Form.html');
+        //$report_form = new SymptByPatient_Form($this, $SymptCategory);
         return;
 
 	}
@@ -117,7 +119,6 @@ class PatientExam_Form_Controller {
                 }
             }
             //display form
-            //require(VIEW_DIR.'SymptByPatient_FormReport.php');
             $report_form = new SymptByPatient_Form2Report($form_data, $curr_deceases_multi);
         } else {
             return;
@@ -128,7 +129,7 @@ class PatientExam_Form_Controller {
 	public function default_action_process() {
         //var_dump($GLOBALS);
         var_dump($_POST);
-
+die;
 		if ($_POST['process'] != "true"){
             return;
         }

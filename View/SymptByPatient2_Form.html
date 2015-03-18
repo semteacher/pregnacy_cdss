@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<?php html_header_show(); ?>
-
+<meta charset="UTF-8">
 <!-- supporting javascript code -->
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/js/jquery-1.9.1.min.js"></script>
 
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+<script type="text/javascript" src="/library/textformat.js"></script>
 
 
 <!-- page styles -->
-<link rel="stylesheet" href="<?php echo $css_header;?>" type="text/css">
-<link rel="stylesheet" href="../../forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
+<link rel="stylesheet" href="/interface/themes/style_oemr.css" type="text/css">
+<link rel="stylesheet" href="/interface/forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
 
 <!-- pop up calendar -->
 <style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
@@ -32,9 +31,9 @@ function PrintForm() {
 
 <body class="body_top">
 
-<?php echo date("F d, Y", time()); ?>
+<?php echo '<strong>Сьогодні:&nbsp;'.date("d, F, Y", time()).'</strong>'; ?>
 
-<form method=post action="<?php echo $rootdir;?>/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
+<form method=post action="/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
 
 <input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />
@@ -59,39 +58,40 @@ function PrintForm() {
         <span><strong>Вагітність:&nbsp;</strong></span> <span id="firstpregbtnansw"></span>
         <input type="button" class="firspregbtn" value="Це перша вагітність?">
     </div>
-<table>
-<?php
-        var_dump($css_header);
-        var_dump($rootdir);
 
-//var_dump($rootdir);
+<?php
+
 foreach ($SymptCategory as $key=>$SymptCat)
 {
-
-    echo '<tr><td>';
-    echo '<strong>'.$SymptCat->id.'. '.$SymptCat->cat_name.'</strong>';
-    echo '</td></tr>';
+    //begin category
+    echo '<div class="symptcategory" rel="'.$SymptCat->id.'">';
+    echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
 
     foreach ($SymptCat->symptoms as $key=>$Symptoms)
     {
-        echo '<tr><td>';
-        echo $Symptoms->symp_name;
-        echo '</td></tr>';
+        //begin symptom
+        echo '<div class="symptom" rel="'.$Symptoms->id.'">';
+        echo '<span class="symptomtext">'.$Symptoms->symp_name.'</span>';
 
         foreach ($Symptoms->symptoptions as $key=>$SymptOptions)
         {
-            echo '<tr><td>';
+            //begin symptom option
+            echo '<div class="symptoption" rel="'.$SymptOptions->id.'">';
             if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
             $selection = '';
             if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
-            echo '<input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' />'.$SymptOptions->opt_name;
-            echo '</td></tr>';
+            echo '<span class="formtext"><input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' />'.$SymptOptions->opt_name.'</span>';
+            //end symptom option
+            echo '</div>';
         }
+        //end symptom
+        echo '</div>';
     }
-
+    //end category
+    echo '</div>';
 }
 ?>
-</table>
+
 </div>
 
 <div id="bottom">

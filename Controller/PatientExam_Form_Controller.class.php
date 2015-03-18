@@ -92,7 +92,7 @@ class PatientExam_Form_Controller {
         //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
         //display form
-        require_once(VIEW_DIR.'SymptByPatient_Form.html');
+        require_once(VIEW_DIR.'SymptByPatient2_Form.html');
         //$report_form = new SymptByPatient_Form($this, $SymptCategory);
         return;
 

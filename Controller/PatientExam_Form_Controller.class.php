@@ -62,7 +62,7 @@ class PatientExam_Form_Controller {
             //get all form options (nested mode)
             $SymptCategory = SymptCategory_Model::all();
             //display form
-            require_once(VIEW_DIR.'SymptByPatient_Form.html');
+            require_once(VIEW_DIR.'SymptByPatient2_Form.html');
         } else{
             //error message
             echo '<script language="javascript">alert("Дана форма не може бути застосована до осіб чоловічої статі!")</script>';

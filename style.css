@@ -72,6 +72,9 @@ h1 {
     font-size: 110%;
     font-weight: bold;
 }
+.warningtext { 
+    background-color: gold;
+}
 
 #print_form_container {
     border: 1px solid black;

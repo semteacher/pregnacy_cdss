@@ -55,7 +55,7 @@ function PrintForm() {
         <input type="checkbox" class="isfirstpregnacy" id="firstpregnacyconfirm" name="is_firstpregnacy" value="<?php echo $this->is_firstpregnacy; ?>" <?php echo ($this->is_firstpregnacy == 1) ? 'checked="checked"' : ''; ?>/>Is firts pregnacy?
     </div>
     <div id="isfirspregbtn">
-        <span><strong>Вагітність:&nbsp;</strong></span> <span id="firstpregbtnansw"></span>
+        <span class="bold" >Вагітність:&nbsp;</span> <span class="bold warningtext" id="firstpregbtnansw"></span>
         <input type="button" class="firspregbtn" value="Це перша вагітність?">
     </div>
 
@@ -64,19 +64,19 @@ function PrintForm() {
 foreach ($SymptCategory as $key=>$SymptCat)
 {
     //begin category
-    echo '<div class="symptcategory" rel="'.$SymptCat->id.'">';
+    echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'">';
     echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
 
     foreach ($SymptCat->symptoms as $key=>$Symptoms)
     {
         //begin symptom
-        echo '<div class="symptom" rel="'.$Symptoms->id.'">';
+        echo '<div class="symptom" rel="sympt'.$Symptoms->id.'">';
         echo '<span class="symptomtext">'.$Symptoms->symp_name.'</span>';
 
         foreach ($Symptoms->symptoptions as $key=>$SymptOptions)
         {
             //begin symptom option
-            echo '<div class="symptoption" rel="'.$SymptOptions->id.'">';
+            echo '<div class="symptoption" rel="opt'.$SymptOptions->id.'">';
             if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
             $selection = '';
             if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
@@ -150,10 +150,11 @@ $(document).ready(function(){
     $(".firspregbtn").click(function() {
         var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
         if (sure == true){
-            $('#firstpregbtnansw').text("Перша");
+            $('#firstpregbtnansw').text(<?php echo '"'.FIRSTPREGNACYTXT.'"';?>);
             $('.isfirstpregnacyhd').prop("value", 1);
+            $('.symptcategory[rel=cat3]').hide();
         } else {
-            $('#firstpregbtnansw').text("Повторна");
+            $('#firstpregbtnansw').text(<?php echo '"'.NEXTPREGNACYTXT.'"';?>);
             $('.isfirstpregnacyhd').prop("value", 0);
         }
         this.disabled = true;

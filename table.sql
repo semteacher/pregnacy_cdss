@@ -645,7 +645,7 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_patient_exam` (
   `encounter` bigint(20) DEFAULT NULL,
   `createuser` varchar(255) DEFAULT NULL,
   `createdate` datetime DEFAULT NULL,
-  `is_firstpregnacy` tinyint(4) NOT NULL DEFAULT NULL,
+  `is_firstpregnacy` tinyint(4) DEFAULT NULL,
   `expect_decease` varchar(255) DEFAULT NULL,
   `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)

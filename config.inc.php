@@ -26,7 +26,10 @@ define("PATIENTEXAM_DBTABLE", "form_pregnacycdss_patient_exam");
 define("DECEASESSYMPTOMOPTIONS_DBTABLE", "form_pregnacycdss_deceases_sympt_opt");
 define("DECEASES_DBTABLE", "form_pregnacycdss_deceaces");
 
+define("FIRSTPREGNACYTXT","Перша");
+define("NEXTPREGNACYTXT","Повторна");
 
+define("UNDEFINED","Не вказано!");
 //print_r('<br>DB connect througt ADOdb_Active_Record');
 //establish persistent database connection
 include_once("$srcdir/adodb/adodb-active-record.inc.php");

@@ -52,17 +52,32 @@ function PrintForm() {
 
 <div id="general">
 
-    <div id="isfirspregbtn">
-        <span class="bold" >Вагітність:&nbsp;</span> <span class="bold warningtext" id="firstpregbtnansw"></span>
-        <input type="button" class="firspregbtn" value="Це перша вагітність?">
-    </div>
-
 <?php
+    //$isfirstpregtext = ($this->is_firstpregnacy) ? FIRSTPREGNACYTXT : NEXTPREGNACYTXT;
+
+    if (!is_null($this->is_firstpregnacy)) {
+        if ($this->is_firstpregnacy==1) {
+            $isfirstpregtext = FIRSTPREGNACYTXT;
+            $buttonstate ='disabled';
+        } else {
+            $isfirstpregtext = NEXTPREGNACYTXT;
+            $buttonstate ='disabled';
+        }
+    } else {
+        $isfirstpregtext = UNDEFINED;
+        $buttonstate='';
+    }
+
+    echo '<div id="isfirspregbtn">';
+    echo '<span class="bold" >Вагітність:&nbsp;</span><span class="bold warningtext" id="firstpregbtnansw">'.$isfirstpregtext.'</span>&nbsp;';
+    echo '<input type="button" class="firspregbtn" value="Це перша вагітність?" '.$buttonstate.'>';
+    echo '</div>';
 
 foreach ($SymptCategory as $key=>$SymptCat)
 {
+    $hiddencat = (($this->is_firstpregnacy==1)&&($SymptCat->id==3)) ? 'hidden' : '';
     //begin category
-    echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'">';
+    echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'" '.$hiddencat.'>';
     echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
 
     foreach ($SymptCat->symptoms as $key=>$Symptoms)
@@ -93,8 +108,6 @@ foreach ($SymptCategory as $key=>$SymptCat)
 </div>
 
 <div id="bottom">
-
-</div>
 
 </div>
 

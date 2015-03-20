@@ -51,9 +51,7 @@ function PrintForm() {
 <div id="form_container">
 
 <div id="general">
-    <div id="isfirspregcheck">
-        <input type="checkbox" class="isfirstpregnacy" id="firstpregnacyconfirm" name="is_firstpregnacy" value="<?php echo $this->is_firstpregnacy; ?>" <?php echo ($this->is_firstpregnacy == 1) ? 'checked="checked"' : ''; ?>/>Is firts pregnacy?
-    </div>
+
     <div id="isfirspregbtn">
         <span class="bold" >Вагітність:&nbsp;</span> <span class="bold warningtext" id="firstpregbtnansw"></span>
         <input type="button" class="firspregbtn" value="Це перша вагітність?">
@@ -95,10 +93,9 @@ foreach ($SymptCategory as $key=>$SymptCat)
 </div>
 
 <div id="bottom">
-Use this space to express notes <br>
-<textarea name="notes" id="notes" cols="80" rows="4"><?php //echo stripslashes($record['notes']);?></textarea>
 
 </div>
+
 </div>
 
 </div> <!-- end form_container -->
@@ -110,30 +107,6 @@ Use this space to express notes <br>
 </form>
 
 </body>
-<script type="text/javascript" language="javascript">
-    $(".isfirstpregnacy").on("change", function() {
-        if (this.checked) {
-            var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
-            this.checked = sure;
-            this.disabled = true;
-            $('.isfirstpregnacy').prop("value", 1);
-            $('.isfirstpregnacyhd').prop("value", 1);
-            $('#notes').val(sure.toString());
-        }
-    });
-</script>
-
-<script type="text/javascript" language="javascript">
-    function myFunction() {
-        var x;
-        if (confirm("Press a button!") == true) {
-            x = "Yes!";
-        } else {
-            x = "No!";
-        }
-        document.getElementById("firstpregbtnansw").innerHTML = x;
-    }
-</script>
 
 <script language="javascript">
 /* required for popup calendar */

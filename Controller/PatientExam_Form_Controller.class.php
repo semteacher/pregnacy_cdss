@@ -25,6 +25,7 @@ class PatientExam_Form_Controller {
     public $form_encounter;
     public $form_userauthorized;
     public $is_firstpregnacy;
+    public $createdate;
 
     public $symptbypatient;
 
@@ -37,6 +38,7 @@ class PatientExam_Form_Controller {
         $this->form_userauthorized = $_SESSION['userauthorized'];
         $this->returnurl =$GLOBALS['form_exit_url'];
         $this->is_firstpregnacy = NULL;
+        $this->createdate = NULL;
         //formHeader("Form: ".$this->form_name);//?????
         //$this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     }
@@ -56,8 +58,7 @@ class PatientExam_Form_Controller {
         if ($gender[sex]=='Female'){
             $this->form_name = "Pregnacy CDSS (new) Form";
             $this->form_mode = "new";
-            //$this->form_encounter = $_SESSION['encounter'];
-            //$this->is_firstpregnacy = false;
+            $this->createdate = date("Y-m-d H:i:s", time());
 
             //get all form options (nested mode)
             $SymptCategory = SymptCategory_Model::all();
@@ -82,6 +83,7 @@ class PatientExam_Form_Controller {
             $this->form_idexam = $form_idexam;
             //var_dump($form_data);
             $this->is_firstpregnacy = $form_data[is_firstpregnacy];
+            $this->createdate = $form_data[createdate];
            // $this->form_pid = $_SESSION['pid'];
     	}
     	else {
@@ -194,7 +196,7 @@ class PatientExam_Form_Controller {
 
             /* save the data into the form's own table */
             //TODO: replace array(2,$curr_decease[2]) with highest value!!!!
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>date("Y-m-d H:i:s"), 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
             print_r('<br>form new id:');
             var_dump($newid);
             $this->form_idexam = $newid;

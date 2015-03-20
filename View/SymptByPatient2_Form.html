@@ -3,35 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <!-- supporting javascript code -->
-<script type="text/javascript" src="/library/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/js/jquery-1.7.2.min.js"></script>
 
-<script type="text/javascript" src="/library/textformat.js"></script>
-
-
-<!-- page styles -->
+    <!-- page styles -->
 <link rel="stylesheet" href="/interface/themes/style_oemr.css" type="text/css">
 <link rel="stylesheet" href="/interface/forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
 
-<!-- pop up calendar -->
-<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_en.js"></script>
-<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+    <script type="text/javascript" language="javascript">
+    // this line is to assist the calendar text boxes
+    var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
 
-<script type="text/javascript" language="javascript">
-// this line is to assist the calendar text boxes
-var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
-
-function PrintForm() {
-    newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
-}
-</script>
+    function PrintForm() {
+        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
+    }
+    </script>
 
 </head>
 
 <body class="body_top">
 
-<?php echo '<strong>Сьогодні:&nbsp;'.date("d, F, Y", time()).'</strong>'; ?>
+<span class="bold"><?php echo 'Сьогодні:&nbsp;'.date("d, F, Y", time()); ?></span><br>
 
 <form method=post action="/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
@@ -52,8 +43,9 @@ function PrintForm() {
 
 <div id="general">
 
+<div><span class="bold">Анкету створено:&nbsp;</span><span class="bold warningtext"><?php echo $this->createdate; ?></span></div>
+
 <?php
-    //$isfirstpregtext = ($this->is_firstpregnacy) ? FIRSTPREGNACYTXT : NEXTPREGNACYTXT;
 
     if (!is_null($this->is_firstpregnacy)) {
         if ($this->is_firstpregnacy==1) {
@@ -69,7 +61,7 @@ function PrintForm() {
     }
 
     echo '<div id="isfirspregbtn">';
-    echo '<span class="bold" >Вагітність:&nbsp;</span><span class="bold warningtext" id="firstpregbtnansw">'.$isfirstpregtext.'</span>&nbsp;';
+    echo '<span class="bold" >Вагітність:&nbsp;</span><span class="bold warningtext" id="firstpregbtnansw">'.$isfirstpregtext.'</span>&nbsp;&nbsp;';
     echo '<input type="button" class="firspregbtn" value="Це перша вагітність?" '.$buttonstate.'>';
     echo '</div>';
 
@@ -107,10 +99,6 @@ foreach ($SymptCategory as $key=>$SymptCat)
 
 </div>
 
-<div id="bottom">
-
-</div>
-
 </div> <!-- end form_container -->
 
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -122,20 +110,14 @@ foreach ($SymptCategory as $key=>$SymptCat)
 </body>
 
 <script language="javascript">
-/* required for popup calendar */
-//Calendar.setup({inputField:"dob", ifFormat:"%Y-%m-%d", button:"img_dob"});
-//Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
-//Calendar.setup({inputField:"sig_date", ifFormat:"%Y-%m-%d", button:"img_sig_date"});
-
 // jQuery stuff to make the page a little easier to use
-
 $(document).ready(function(){
     $(".save").click(function() { top.restoreSession(); document.pregnacy_cdss_form.submit(); });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });
     $(".firspregbtn").click(function() {
         var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
-        if (sure == true){
+        if (sure == true) {
             $('#firstpregbtnansw').text(<?php echo '"'.FIRSTPREGNACYTXT.'"';?>);
             $('.isfirstpregnacyhd').prop("value", 1);
             $('.symptcategory[rel=cat3]').hide();

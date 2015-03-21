@@ -48,7 +48,7 @@ class PatientExam_Form_Controller {
         //get all form options (nested mode)
         $SymptCategory = SymptCategory_Model::all();
         //display form
-        require_once(VIEW_DIR.'SymptByPatient_Form.html');
+        require_once(VIEW_DIR.'SymptByPatient2_Form.html');
         return;
 	}
 
@@ -154,7 +154,7 @@ class PatientExam_Form_Controller {
         }
         $expectdeceasecount = 0;
         $expectdeceaseid = 0;
-        $expectdeceasename = 0;
+        $expectdeceasename = '';
 
         //process form submissions
         $deceasesymptopt = new DeceasesSymptOpt2_Model();

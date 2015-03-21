@@ -12,7 +12,7 @@ require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
 require_once(VIEW_DIR."SymptByPatient_Form2Report.class.php");
 require_once(VIEW_DIR."SymptByPatient_Form2Print.class.php");
-require_once(VIEW_DIR."SymptByPatient_Form.class.php");
+//require_once(VIEW_DIR."SymptByPatient_Form.class.php");
 
 //main controller class
 class PatientExam_Form_Controller {
@@ -40,8 +40,6 @@ class PatientExam_Form_Controller {
         $this->returnurl =$GLOBALS['form_exit_url'];
         $this->is_firstpregnacy = NULL;
         $this->createdate = NULL;
-        //formHeader("Form: ".$this->form_name);//?????
-        //$this->returnurl = $GLOBALS['concurrent_layout'] ? 'encounter_top.php' : 'patient_encounter.php';
     }
     
     public function default_action() {
@@ -134,9 +132,10 @@ class PatientExam_Form_Controller {
         $form_idexam = intval($form_idexam);
         //get patient data
         $patient = getPatientData($_SESSION['pid']);
-        var_dump($patient);
+        //var_dump($patient);
         //fetch form data
         $form_data = formFetch($this->table_name, $form_idexam);
+        //var_dump($form_data);
         if ($form_data) {
             $curr_deceases_multi = array();
             $curr_deceases_multi = unserialize($form_data[deceases]);
@@ -152,8 +151,29 @@ class PatientExam_Form_Controller {
                     $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
                 }
             }
+            //get patient exam data
+            $symptcat = new SymptCategory2_Model;
+            $symprom = new Symptoms2_Model;
+            $sympt_opt = new SymptOptions2_Model;
+            $symptbypatientarr = array();
+            $symptbypatient = SymptByPatient_Model::find($form_idexam);
+            foreach ($symptbypatient as $key=>$SymptByPatientModel) {
+                $symptcat->Load('id='.$SymptByPatientModel->id_sympt_cat);
+                $symprom->Load('id='.$SymptByPatientModel->id_symptom);
+                $sympt_opt->Load('id='.$SymptByPatientModel->id_sympt_opt);
+                $deceases->Load('id='.$SymptByPatientModel->id_deceases);
+                $symptbypatientarr[$key][id_sympt_cat]=$SymptByPatientModel->id_sympt_cat;
+                $symptbypatientarr[$key][sympt_cat_name]=$symptcat->cat_name;
+                $symptbypatientarr[$key][id_symptom]=$SymptByPatientModel->id_symptom;
+                $symptbypatientarr[$key][symptom_name]=$symprom->symp_name;
+                $symptbypatientarr[$key][id_sympt_opt]=$SymptByPatientModel->id_sympt_opt;
+                $symptbypatientarr[$key][sympt_opt_name]=$sympt_opt->opt_name;
+                $symptbypatientarr[$key][id_deceases]=$SymptByPatientModel->id_deceases;
+                $symptbypatientarr[$key][dec_name]=$deceases->dec_name;
+            }
+            //var_dump($symptbypatientarr);
             //display form
-            $report_form = new SymptByPatient_Form2Print($patient, $form_data, $curr_deceases_multi);
+            $report_form = new SymptByPatient_Form2Print($this, $patient, $form_data, $curr_deceases_multi, $symptbypatientarr);
         } else {
             return;
         }

@@ -34,6 +34,10 @@ h1 {
     font-size: 100%;
 }
 
+.text {
+    font-size: 100%;
+}
+
 .link {
     font-size: 90%;
 }
@@ -72,8 +76,39 @@ h1 {
     font-size: 110%;
     font-weight: bold;
 }
-.warningtext { 
+
+.warningtext {
     background-color: gold;
+}
+
+.centertext {
+    text-align: center;
+}
+
+.borderedtable, .borderedtable th, .borderedtable td {
+    border: 1px solid black;
+}
+
+.display-inline-block {
+    border: 1px black solid;
+    margin: 5px;
+    padding: 5px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.inline-block-table {
+    border: 1px black solid;
+    padding: 5px;
+    vertical-align: top;
+    display: inline-block;
+    line-height:30px;
+}
+.block-width {
+    width: 800px;
+    border: 1px black solid;
+    padding: 5px;
+    vertical-align: top;
 }
 
 #print_form_container {
@@ -84,7 +119,10 @@ h1 {
 }
 
 #print_general {
-    padding: 10px;
+    padding: 5px;
+   /* font-family: courier;*/
+    font-size: 14px;
+    width: 800px;
 }
 
 #print_history {

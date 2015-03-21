@@ -110,7 +110,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
         // this line is to assist the calendar text boxes
         echo 'var mypcc = '.$GLOBALS["phone_country_code"].';';
         echo 'function PrintForm() {';
-        echo 'newwin = window.open("http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$PatientExam_Form->form_folder.'/print.php?id='.$_GET["id"].'","mywin");';
+        echo 'newwin = window.open("http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$PatientExam_Form->form_folder.'/print-old.php?id='.$_GET["id"].'","mywin");';
         echo '}';
         echo '</script>';
 

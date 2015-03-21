@@ -11,6 +11,7 @@ require_once(MODEL_DIR."DeceasesSymptOpt_Model.class.php");
 require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
 require_once(VIEW_DIR."SymptByPatient_Form2Report.class.php");
+require_once(VIEW_DIR."SymptByPatient_Form2Print.class.php");
 require_once(VIEW_DIR."SymptByPatient_Form.class.php");
 
 //main controller class
@@ -122,6 +123,37 @@ class PatientExam_Form_Controller {
             }
             //display form
             $report_form = new SymptByPatient_Form2Report($form_data, $curr_deceases_multi);
+        } else {
+            return;
+        }
+        return;
+    }
+
+    public function print_action($form_idexam) {
+        //print patient form exam data
+        $form_idexam = intval($form_idexam);
+        //get patient data
+        $patient = getPatientData($_SESSION['pid']);
+        var_dump($patient);
+        //fetch form data
+        $form_data = formFetch($this->table_name, $form_idexam);
+        if ($form_data) {
+            $curr_deceases_multi = array();
+            $curr_deceases_multi = unserialize($form_data[deceases]);
+            //set deceases names
+            $deceases = new Deceases2_Model();
+            foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
+                if ($deceases->Load('id='.$decease_id)){
+                    $dec_symmary[dec_name] = $deceases->dec_name;
+                    $curr_deceases_multi[$decease_id][dec_name] = $deceases->dec_name;
+                } else {
+                    //db error
+                    $dec_symmary[dec_name] = "Інший діагноз";
+                    $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
+                }
+            }
+            //display form
+            $report_form = new SymptByPatient_Form2Print($patient, $form_data, $curr_deceases_multi);
         } else {
             return;
         }

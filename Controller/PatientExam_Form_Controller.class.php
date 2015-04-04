@@ -181,15 +181,15 @@ class PatientExam_Form_Controller {
     }
 	
 	public function default_action_process() {
-        //var_dump($GLOBALS);
-        var_dump($_POST);
-//die;
+
 		if ($_POST['process'] != "true"){
             return;
         }
 
         $this->form_idexam = $_POST['id'];
         if ($_POST['pid']) {$this->form_pid = $_POST['pid'];}else{$this->form_pid = $_SESSION['pid'];}
+        if ($_POST['isfirstpregnacyhd']) {$this->is_firstpregnacy = intval($_POST['isfirstpregnacyhd']);}else{$this->is_firstpregnacy = NULL;}
+        if ($_POST['createdate']) {$this->createdate = $_POST['createdate'];}else{$this->createdate = NULL;}
         $this->form_encounter = $_SESSION['encounter'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
 
@@ -229,12 +229,12 @@ class PatientExam_Form_Controller {
         $decease->Load('id='.$expectdeceaseid);
         $expectdeceasename = $decease->dec_name;
 
-        print_r('<br>each decease probability after processing:');
-        var_dump($expectdeceaseid);
-        var_dump($expectdeceasename);
-        var_dump($curr_decease_multi);
+//        print_r('<br>each decease probability after processing:');
+//        var_dump($expectdeceaseid);
+//        var_dump($expectdeceasename);
+//        var_dump($curr_decease_multi);
         $ser_curr_decease_multi=serialize($curr_decease_multi);
-        var_dump($ser_curr_decease_multi);
+//        var_dump($ser_curr_decease_multi);
 //die;
         //save new/update patient form data
         if ($_GET["mode"] == "new") {
@@ -248,47 +248,48 @@ class PatientExam_Form_Controller {
 
             /* save the data into the form's own table */
             //TODO: replace array(2,$curr_decease[2]) with highest value!!!!
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
-            print_r('<br>form new id:');
-            var_dump($newid);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnacy'=>$this->is_firstpregnacy, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+//            print_r('<br>form new id:');
+//            var_dump($newid);
+//            var_dump($this->createdate);
             $this->form_idexam = $newid;
             /* link the form to the encounter in the 'forms' table */
             addForm($this->form_encounter, $this->form_name, $newid, $this->form_folder, $this->form_pid, $this->form_userauthorized);
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnacy'=>$this->is_firstpregnacy, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
         }
 
-        print_r('<br>form data:');
-        var_dump($this->form_idexam);
-        var_dump($_GET["id"]);
-        var_dump($this->form_pid);
+//        print_r('<br>form data:');
+//        var_dump($this->form_idexam);
+//        var_dump($_GET["id"]);
+//        var_dump($this->form_pid);
         //var_dump($this->symptbypatient);
-        var_dump(unserialize($ser_curr_decease_multi));
+//        var_dump(unserialize($ser_curr_decease_multi));
 //die;
-        print_r('<br>load and process all symptoms:');
+//        print_r('<br>load and process all symptoms:');
         //save new/update patient details
         $Symptoms = Symptoms_Model::all();
         //process all symptoms:
         foreach ($Symptoms as $key=>$Symptom) {
-            print_r('<br>Is it this symptom in POST?:');
+//            print_r('<br>Is it this symptom in POST?:');
             //check is it symptom selected is?
             if (array_key_exists($Symptom->id,$_POST['symptom_options'])){
                 //Symptom is selected!
                 //check symptom type:
                 if (Symptoms_Model::is_multy($Symptom->id)) {
                     //Symptom can have multiple options
-                    print_r('<br>multi-YES');
+//                    print_r('<br>multi-YES');
                     foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
                         //is it symptom option in POST?
                         $key = array_search($SympOption->id,$_POST['symptom_options'][$Symptom->id]);
-                        var_dump($key);
+//                        var_dump($key);
                         //is it symptom option in database?
                         if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id)) {
                             if ($key === false){
                                 //symptom option is in database but not in POST:it is unchecked and will be deleted
-                                print_r($SympOption->opt_name.' will be deleted<br>');
+//                                print_r($SympOption->opt_name.' will be deleted<br>');
                                 $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
                                 $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
                                 $symptoptbyperson->delete();
@@ -296,8 +297,8 @@ class PatientExam_Form_Controller {
 
                         } else {
                             if ($key !== false) {
-                                print_r($SympOption->opt_name.' will be added<br>');
-                                var_dump($_POST['symptom_options'][$Symptom->id][$key]);
+//                                print_r($SympOption->opt_name.' will be added<br>');
+//                                var_dump($_POST['symptom_options'][$Symptom->id][$key]);
                                 //Insert one new record
                                 $symptoptbyperson = new SymptByPatient2_Model();
                                 $symptoptbyperson->id_exam = $this->form_idexam;
@@ -319,17 +320,17 @@ class PatientExam_Form_Controller {
                     }
                 } else {
                     //Symptom can have only single option
-                    print_r('<br>multi-NO');
+//                    print_r('<br>multi-NO');
                     //Is this symptom in database?
                     //get record count
                     //$currSelectedOptionsCount = SymptByPatient_Model::selectedOptionsCount($this->form_id, $this->form_pid, $Symptom->id);
                     $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
                     $currSelectedOptionsCount = $symptoptbyperson->Find('(id_exam=?)AND(pid=?)AND(id_symptom=?)',array($this->form_idexam, $this->form_pid, $Symptom->id));
                     //print_r('<br>found records:'.$currSelectedOptionsCount);
-                    print_r('<br>found records:'.sizeof($currSelectedOptionsCount));
+//                    print_r('<br>found records:'.sizeof($currSelectedOptionsCount));
                     if (sizeof($currSelectedOptionsCount) ==1) {
                         //Update single record
-                        print_r('<br>Update single record:');
+//                        print_r('<br>Update single record:');
                         $symptoptbyperson = new SymptByPatient2_Model();
                         $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')');
                        // var_dump($symptoptbyperson);
@@ -392,8 +393,7 @@ class PatientExam_Form_Controller {
                 }
             }
         }
-die;
-
+//die;
 		$_POST['process'] = "";
 		return;
 	}

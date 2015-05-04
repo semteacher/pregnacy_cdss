@@ -25,7 +25,7 @@ class PatientExam_Form_Controller {
     public $table_name;
     public $form_encounter;
     public $form_userauthorized;
-    public $is_firstpregnacy;
+    public $is_firstpregnancy;
     public $createdate;
 
     public $symptbypatient;
@@ -38,12 +38,12 @@ class PatientExam_Form_Controller {
         $this->form_pid = $_SESSION['pid'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
         $this->returnurl =$GLOBALS['form_exit_url'];
-        $this->is_firstpregnacy = NULL;
+        $this->is_firstpregnancy = NULL;
         $this->createdate = NULL;
     }
     
     public function default_action() {
-        $this->form_name = "Pregnacy CDSS (default) Form";
+        $this->form_name = "Pregnancy CDSS (default) Form";
         //get all form options (nested mode)
         $SymptCategory = SymptCategory_Model::all();
         //display form
@@ -55,7 +55,7 @@ class PatientExam_Form_Controller {
         //check gender
         $gender = getPatientData($_SESSION['pid'], 'sex');
         if ($gender[sex]=='Female'){
-            $this->form_name = "Pregnacy CDSS (new) Form";
+            $this->form_name = "Pregnancy CDSS (new) Form";
             $this->form_mode = "new";
             $this->createdate = date("Y-m-d H:i:s", time());
 
@@ -81,14 +81,14 @@ class PatientExam_Form_Controller {
 		if ($form_data) {
             $this->form_idexam = $form_idexam;
             //var_dump($form_data);
-            $this->is_firstpregnacy = $form_data[is_firstpregnacy];
+            $this->is_firstpregnancy = $form_data[is_firstpregnancy];
             $this->createdate = $form_data[createdate];
            // $this->form_pid = $_SESSION['pid'];
     	}
     	else {
     		//error??
     	}
-        $this->form_name = "Pregnacy CDSS (view) Form";
+        $this->form_name = "Pregnancy CDSS (view) Form";
         $this->form_mode = "update";
         //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
@@ -188,7 +188,7 @@ class PatientExam_Form_Controller {
 
         $this->form_idexam = $_POST['id'];
         if ($_POST['pid']) {$this->form_pid = $_POST['pid'];}else{$this->form_pid = $_SESSION['pid'];}
-        if ($_POST['isfirstpregnacyhd']) {$this->is_firstpregnacy = intval($_POST['isfirstpregnacyhd']);}else{$this->is_firstpregnacy = NULL;}
+        if ($_POST['isfirstpregnancyhd']) {$this->is_firstpregnancy = intval($_POST['isfirstpregnancyhd']);}else{$this->is_firstpregnancy = NULL;}
         if ($_POST['createdate']) {$this->createdate = $_POST['createdate'];}else{$this->createdate = NULL;}
         $this->form_encounter = $_SESSION['encounter'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
@@ -242,7 +242,7 @@ class PatientExam_Form_Controller {
              */
 
             /* save the data into the form's own table */
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnacy'=>$this->is_firstpregnacy, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
 
             $this->form_idexam = $newid;
             /* link the form to the encounter in the 'forms' table */
@@ -250,7 +250,7 @@ class PatientExam_Form_Controller {
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnacy'=>$this->is_firstpregnacy, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
         }
 
         //save new/update patient details

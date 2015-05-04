@@ -33,8 +33,8 @@ class SymptByPatient_Form2Print {
         print "<div class='bold display-inline-block'>Діагностичні дані:";
        // print "<span class=bold>Діагностичні дані:</span>";
        // print "<br>";
-        if (!is_null($form_data[is_firstpregnacy])) {
-            $isfirstpregtext = ($form_data[is_firstpregnacy] == 1) ? FIRSTPREGNACYTXT : NEXTPREGNACYTXT;
+        if (!is_null($form_data[is_firstpregnancy])) {
+            $isfirstpregtext = ($form_data[is_firstpregnancy] == 1) ? FIRSTPREGNACYTXT : NEXTPREGNACYTXT;
         } else {
             $isfirstpregtext = UNDEFINED;
         }

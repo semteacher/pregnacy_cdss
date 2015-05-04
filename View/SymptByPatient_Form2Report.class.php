@@ -15,8 +15,8 @@ class SymptByPatient_Form2Report {
 
         print "<div class=bold>Діагностичні дані:";
         print "<br>";
-        if (!is_null($form_data[is_firstpregnacy])) {
-            $isfirstpregtext = ($form_data[is_firstpregnacy] == 1) ? FIRSTPREGNACYTXT : NEXTPREGNACYTXT;
+        if (!is_null($form_data[is_firstpregnancy])) {
+            $isfirstpregtext = ($form_data[is_firstpregnancy] == 1) ? FIRSTPREGNACYTXT : NEXTPREGNACYTXT;
         } else {
             $isfirstpregtext = UNDEFINED;
         }

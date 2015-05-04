@@ -6,10 +6,10 @@
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `form_pregnacycdss_deceaces`
+-- Структура таблиці `form_pregnancycdss_deceaces`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_deceaces` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_deceaces` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dec_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
   `dec_note` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
@@ -18,20 +18,20 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_deceaces` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=3 ;
 
 --
--- Дамп даних таблиці `form_pregnacycdss_deceaces`
+-- Дамп даних таблиці `form_pregnancycdss_deceaces`
 --
 
-INSERT INTO `form_pregnacycdss_deceaces` (`id`, `dec_name`, `dec_note`, `p`) VALUES
+INSERT INTO `form_pregnancycdss_deceaces` (`id`, `dec_name`, `dec_note`, `p`) VALUES
 (1, 'Своєчасні роди', NULL, 0.5),
 (2, 'Передчасні роди', NULL, 0.5);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `form_pregnacycdss_deceases_sympt_opt`
+-- Структура таблиці `form_pregnancycdss_deceases_sympt_opt`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_deceases_sympt_opt` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_deceases_sympt_opt` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_deceaces` int(11) DEFAULT '0',
   `id_sympt_opt` bigint(20) DEFAULT '0',
@@ -43,10 +43,10 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_deceases_sympt_opt` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=205 ;
 
 --
--- Дамп даних таблиці `form_pregnacycdss_deceases_sympt_opt`
+-- Дамп даних таблиці `form_pregnancycdss_deceases_sympt_opt`
 --
 
-INSERT INTO `form_pregnacycdss_deceases_sympt_opt` (`id`, `id_deceaces`, `id_sympt_opt`, `py`, `pn`) VALUES
+INSERT INTO `form_pregnancycdss_deceases_sympt_opt` (`id`, `id_deceaces`, `id_sympt_opt`, `py`, `pn`) VALUES
 (1, 2, 1, 0.999, 0),
 (2, 1, 2, 0.999, 0),
 (3, 2, 4, 0.95, 0),
@@ -250,10 +250,10 @@ INSERT INTO `form_pregnacycdss_deceases_sympt_opt` (`id`, `id_deceaces`, `id_sym
 
 -- --------------------------------------------------------
 --
--- Структура таблиці `form_pregnacycdss_sympt_category`
+-- Структура таблиці `form_pregnancycdss_sympt_category`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_sympt_category` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_sympt_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cat_name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
   `cat_notes` varchar(150) COLLATE utf8_general_ci DEFAULT NULL,
@@ -262,10 +262,10 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_sympt_category` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=8 ;
 
 --
--- Дамп даних таблиці `form_pregnacycdss_sympt_category`
+-- Дамп даних таблиці `form_pregnancycdss_sympt_category`
 --
 
-INSERT INTO `form_pregnacycdss_sympt_category` (`id`, `cat_name`, `cat_notes`, `is_selected`) VALUES
+INSERT INTO `form_pregnancycdss_sympt_category` (`id`, `cat_name`, `cat_notes`, `is_selected`) VALUES
 (1, 'Анкетні дані вагітної', NULL, 1),
 (2, 'Стан при поступленні в стаціонар', NULL, 1),
 (3, 'Перебіг попередніх пологів', NULL, 1),
@@ -277,10 +277,10 @@ INSERT INTO `form_pregnacycdss_sympt_category` (`id`, `cat_name`, `cat_notes`, `
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `form_pregnacycdss_symptoms`
+-- Структура таблиці `form_pregnancycdss_symptoms`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_symptoms` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_symptoms` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `symp_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
   `symp_notes` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
@@ -293,10 +293,10 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_symptoms` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=73 ;
 
 --
--- Дамп даних таблиці `form_pregnacycdss_symptoms`
+-- Дамп даних таблиці `form_pregnancycdss_symptoms`
 --
 
-INSERT INTO `form_pregnacycdss_symptoms` (`id`, `symp_name`, `symp_notes`, `id_order`, `id_category`, `is_multi`) VALUES
+INSERT INTO `form_pregnancycdss_symptoms` (`id`, `symp_name`, `symp_notes`, `id_order`, `id_category`, `is_multi`) VALUES
 (1, '1.1. Вік жінки', NULL, 1, 1, 0),
 (2, '1.2. Сезон року', NULL, 2, 1, 0),
 (3, '1.3. Адреса проживання', NULL, 3, 1, 0),
@@ -374,10 +374,10 @@ INSERT INTO `form_pregnacycdss_symptoms` (`id`, `symp_name`, `symp_notes`, `id_o
 
 
 --
--- Структура таблиці `form_pregnacycdss_sympt_options`
+-- Структура таблиці `form_pregnancycdss_sympt_options`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_sympt_options` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_sympt_options` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_symptom` bigint(20) DEFAULT '0',
   `opt_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
@@ -389,10 +389,10 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_sympt_options` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=238 ;
 
 --
--- Дамп даних таблиці `form_pregnacycdss_sympt_options`
+-- Дамп даних таблиці `form_pregnancycdss_sympt_options`
 --
 
-INSERT INTO `form_pregnacycdss_sympt_options` (`id`, `id_symptom`, `opt_name`, `id_order`, `is_selected`) VALUES
+INSERT INTO `form_pregnancycdss_sympt_options` (`id`, `id_symptom`, `opt_name`, `id_order`, `is_selected`) VALUES
 (1, 1, '1. до 18 років', 0, 1),
 (2, 1, '2. 19-25', 0, 1),
 (3, 1, '3. 26-30', 0, 1),
@@ -631,10 +631,10 @@ INSERT INTO `form_pregnacycdss_sympt_options` (`id`, `id_symptom`, `opt_name`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `form_pregnacycdss_patient_exam`
+-- Table structure for table `form_pregnancycdss_patient_exam`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_patient_exam` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_patient_exam` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   date datetime default NULL,
   `pid` bigint(20) DEFAULT '0',
@@ -645,7 +645,7 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_patient_exam` (
   `encounter` bigint(20) DEFAULT NULL,
   `createuser` varchar(255) DEFAULT NULL,
   `createdate` datetime DEFAULT NULL,
-  `is_firstpregnacy` tinyint(4) DEFAULT NULL,
+  `is_firstpregnancy` tinyint(4) DEFAULT NULL,
   `expect_decease` varchar(255) DEFAULT NULL,
   `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
@@ -655,10 +655,10 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_patient_exam` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `form_pregnacycdss_symptopt_by_patient`
+-- Table structure for table `form_pregnancycdss_symptopt_by_patient`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnacycdss_symptopt_by_patient` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_symptopt_by_patient` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_exam` bigint(20) DEFAULT '0',
   `pid` bigint(20) DEFAULT '0',
@@ -688,29 +688,29 @@ CREATE TABLE IF NOT EXISTS `form_pregnacycdss_symptopt_by_patient` (
 --
 
 --
--- Constraints for table `form_pregnacycdss_symptopt_by_patient`
+-- Constraints for table `form_pregnancycdss_symptopt_by_patient`
 --
-ALTER TABLE `form_pregnacycdss_symptopt_by_patient`
-  ADD CONSTRAINT `form_pregnacycdss_symptopt_by_patient_ibfk_1` FOREIGN KEY (`id_exam`) REFERENCES `form_pregnacycdss_patient_exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `form_pregnancycdss_symptopt_by_patient`
+  ADD CONSTRAINT `form_pregnancycdss_symptopt_by_patient_ibfk_1` FOREIGN KEY (`id_exam`) REFERENCES `form_pregnancycdss_patient_exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
 --
--- Constraints for table `form_pregnacycdss_deceases_sympt_opt`
+-- Constraints for table `form_pregnancycdss_deceases_sympt_opt`
 --
-ALTER TABLE `form_pregnacycdss_deceases_sympt_opt`
-  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_1` FOREIGN KEY (`id_deceaces`) REFERENCES `form_pregnacycdss_deceaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_2` FOREIGN KEY (`id_sympt_opt`) REFERENCES `form_pregnacycdss_sympt_options` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `form_pregnancycdss_deceases_sympt_opt`
+  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_1` FOREIGN KEY (`id_deceaces`) REFERENCES `form_pregnancycdss_deceaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_2` FOREIGN KEY (`id_sympt_opt`) REFERENCES `form_pregnancycdss_sympt_options` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `form_pregnacycdss_symptoms`
+-- Constraints for table `form_pregnancycdss_symptoms`
 --
-ALTER TABLE `form_pregnacycdss_symptoms`
-  ADD CONSTRAINT `form_symptoms_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `form_pregnacycdss_sympt_category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `form_pregnancycdss_symptoms`
+  ADD CONSTRAINT `form_symptoms_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `form_pregnancycdss_sympt_category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `form_pregnacycdss_sympt_options`
+-- Constraints for table `form_pregnancycdss_sympt_options`
 --
-ALTER TABLE `form_pregnacycdss_sympt_options`
-  ADD CONSTRAINT `form_sympt_options_ibfk_1` FOREIGN KEY (`id_symptom`) REFERENCES `form_pregnacycdss_symptoms` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `form_pregnancycdss_sympt_options`
+  ADD CONSTRAINT `form_sympt_options_ibfk_1` FOREIGN KEY (`id_symptom`) REFERENCES `form_pregnancycdss_symptoms` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

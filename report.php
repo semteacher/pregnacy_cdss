@@ -10,7 +10,7 @@ include_once("config.inc.php");
 
 require ("/Controller/PatientExam_Form_Controller.class.php");
 
-function pregnacy_cdss_report( $pid, $encounter, $cols, $id) {
+function pregnancy_cdss_report( $pid, $encounter, $cols, $id) {
 
     $c = new PatientExam_Form_Controller();
     echo $c->report_action($id);

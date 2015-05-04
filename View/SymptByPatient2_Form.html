@@ -24,7 +24,7 @@
 
 <span class="bold"><?php echo 'Сьогодні:&nbsp;'.date("d, F, Y", time()); ?></span><br>
 
-<form method=post action="/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
+<form method=post action="/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnancy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
 
 <input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />
@@ -32,7 +32,7 @@
 <input type="hidden" name="pid" value="<?php echo $this->form_pid; ?>">
 <input type="hidden" name="createdate" value="<?php echo $this->createdate; ?>">
 <input type="hidden" name="process" value="true">
-<input type="hidden" class="isfirstpregnacyhd" name="isfirstpregnacyhd" value="<?php echo $this->is_firstpregnacy; ?>">
+<input type="hidden" class="isfirstpregnancyhd" name="isfirstpregnancyhd" value="<?php echo $this->is_firstpregnancy; ?>">
 
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -48,8 +48,8 @@
 
 <?php
 
-    if (!is_null($this->is_firstpregnacy)) {
-        if ($this->is_firstpregnacy==1) {
+    if (!is_null($this->is_firstpregnancy)) {
+        if ($this->is_firstpregnancy==1) {
             $isfirstpregtext = FIRSTPREGNACYTXT;
             $buttonstate ='disabled';
         } else {
@@ -68,7 +68,7 @@
 
 foreach ($SymptCategory as $key=>$SymptCat)
 {
-    $hiddencat = (($this->is_firstpregnacy==1)&&($SymptCat->id==3)) ? 'hidden' : '';
+    $hiddencat = (($this->is_firstpregnancy==1)&&($SymptCat->id==3)) ? 'hidden' : '';
     //begin category
     echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'" '.$hiddencat.'>';
     echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
@@ -113,18 +113,18 @@ foreach ($SymptCategory as $key=>$SymptCat)
 <script language="javascript">
 // jQuery stuff to make the page a little easier to use
 $(document).ready(function(){
-    $(".save").click(function() { top.restoreSession(); document.pregnacy_cdss_form.submit(); });
+    $(".save").click(function() { top.restoreSession(); document.pregnancy_cdss_form.submit(); });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });
     $(".firspregbtn").click(function() {
         var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
         if (sure == true) {
             $('#firstpregbtnansw').text(<?php echo '"'.FIRSTPREGNACYTXT.'"';?>);
-            $('.isfirstpregnacyhd').prop("value", 1);
+            $('.isfirstpregnancyhd').prop("value", 1);
             $('.symptcategory[rel=cat3]').hide();
         } else {
             $('#firstpregbtnansw').text(<?php echo '"'.NEXTPREGNACYTXT.'"';?>);
-            $('.isfirstpregnacyhd').prop("value", 0);
+            $('.isfirstpregnancyhd').prop("value", 0);
         }
         this.disabled = true;
     });

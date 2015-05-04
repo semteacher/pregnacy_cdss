@@ -13,7 +13,7 @@ define('VIEW_DIR', HOME . DS.'View'.DS);
 define('MODEL_DIR', HOME . DS.'Model'.DS);
 
 //define form general
-define("FORM_NAME", "Pregnancy CDSS (test) Form");
+define("FORM_NAME", "Pregnancy CDSS Form");
 define("FORM_FOLDER", "pregnancy_cdss");
 
 //define database table names

@@ -15,6 +15,12 @@
 
     function PrintForm() {
         newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
+    };
+    function AdminForm() {
+        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/admin/web/'; ?>","admincdsswin");
+    };
+    function AdminFormFrame() {
+        top.frames['RBot'].location = "<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/admin/web/index.php?authUser='.$_SESSION['authUser']; ?>";
     }
     </script>
 
@@ -37,7 +43,8 @@
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
 <input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
-<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp; 
+<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp;
+<input type="button" class="adminform" value="<?php xl('CDSS Admin','e'); ?>"> &nbsp;
 
 <!-- container for the main body of the form -->
 <div id="form_container">
@@ -104,7 +111,8 @@ foreach ($SymptCategory as $key=>$SymptCat)
 
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
 <input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
-<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp; 
+<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp;
+<input type="button" class="adminform" value="<?php xl('CDSS Admin','e'); ?>"> &nbsp;
 
 </form>
 
@@ -116,6 +124,7 @@ $(document).ready(function(){
     $(".save").click(function() { top.restoreSession(); document.pregnancy_cdss_form.submit(); });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });
+    $(".adminform").click(function() { AdminFormFrame(); });
     $(".firspregbtn").click(function() {
         var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
         if (sure == true) {

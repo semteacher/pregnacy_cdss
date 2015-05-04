@@ -11,8 +11,9 @@
 
 CREATE TABLE IF NOT EXISTS `form_pregnancycdss_deceaces` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dec_name` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
-  `dec_note` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `dec_name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `dec_note` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `dec_icd10` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `p` float DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=3 ;
@@ -648,6 +649,9 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_patient_exam` (
   `is_firstpregnancy` tinyint(4) DEFAULT NULL,
   `expect_decease` varchar(255) DEFAULT NULL,
   `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `id_finaldecease` int(11) DEFAULT '0',
+  `finaldecease` varchar(255) DEFAULT NULL,
+  `finaldecease_icd10` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
 

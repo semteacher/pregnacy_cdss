@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- supporting javascript code -->
+<script type="text/javascript" src="/library/js/jquery-1.7.2.min.js"></script>
+
+    <!-- page styles -->
+<link rel="stylesheet" href="/interface/themes/style_oemr.css" type="text/css">
+<link rel="stylesheet" href="/interface/forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
+
+    <script type="text/javascript" language="javascript">
+    // this line is to assist the calendar text boxes
+    var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
+
+    function PrintForm() {
+        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
+    }
+    </script>
+
+</head>
+
+<body class="body_top">
+
+<span class="bold"><?php echo 'Сьогодні:&nbsp;'.date("d, F, Y", time()); ?></span><br>
+
+<form method=post action="/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnacy_cdss_form">
+<span class="title"><?php xl($this->form_name,'e'); ?></span><br>
+
+<input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />
+<!--<input type="hidden" name="activity" value="{$data->get_activity()}">-->
+<input type="hidden" name="pid" value="<?php echo $this->form_pid; ?>">
+<input type="hidden" name="createdate" value="<?php echo $this->createdate; ?>">
+<input type="hidden" name="process" value="true">
+<input type="hidden" class="isfirstpregnacyhd" name="isfirstpregnacyhd" value="<?php echo $this->is_firstpregnacy; ?>">
+
+<!-- Save/Cancel links -->
+<input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp; 
+
+<!-- container for the main body of the form -->
+<div id="form_container">
+
+<div id="general">
+
+<div><span class="bold">Анкету створено:&nbsp;</span><span class="bold warningtext"><?php echo $this->createdate; ?></span></div>
+
+<?php
+
+    if (!is_null($this->is_firstpregnacy)) {
+        if ($this->is_firstpregnacy==1) {
+            $isfirstpregtext = FIRSTPREGNACYTXT;
+            $buttonstate ='disabled';
+        } else {
+            $isfirstpregtext = NEXTPREGNACYTXT;
+            $buttonstate ='disabled';
+        }
+    } else {
+        $isfirstpregtext = UNDEFINED;
+        $buttonstate='';
+    }
+
+    echo '<div id="isfirspregbtn">';
+    echo '<span class="bold" >Вагітність:&nbsp;</span><span class="bold warningtext" id="firstpregbtnansw">'.$isfirstpregtext.'</span>&nbsp;&nbsp;';
+    echo '<input type="button" class="firspregbtn" value="Це перша вагітність?" '.$buttonstate.'>';
+    echo '</div>';
+
+foreach ($SymptCategory as $key=>$SymptCat)
+{
+    $hiddencat = (($this->is_firstpregnacy==1)&&($SymptCat->id==3)) ? 'hidden' : '';
+    //begin category
+    echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'" '.$hiddencat.'>';
+    echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
+
+    foreach ($SymptCat->symptoms as $key=>$Symptoms)
+    {
+        //begin symptom
+        echo '<div class="symptom" rel="sympt'.$Symptoms->id.'">';
+        echo '<span class="symptomtext">'.$Symptoms->symp_name.'</span>';
+
+        foreach ($Symptoms->symptoptions as $key=>$SymptOptions)
+        {
+            //begin symptom option
+            echo '<div class="symptoption" rel="opt'.$SymptOptions->id.'">';
+            if ($Symptoms->is_multi) { $sel_type = 'checkbox'; } else { $sel_type = 'radio'; }
+            $selection = '';
+            if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptoms->id, $SymptOptions->id)) { $selection = 'checked'; } else { $selection = ''; }
+            echo '<span class="formtext"><input type="'.$sel_type.'" id="'.$SymptOptions->id.'" name="symptom_options['.$Symptoms->id.'][]" value="'.$SymptOptions->id.'" '.$selection.' />'.$SymptOptions->opt_name.'</span>';
+            //end symptom option
+            echo '</div>';
+        }
+        //end symptom
+        echo '</div>';
+    }
+    //end category
+    echo '</div>';
+}
+?>
+
+</div>
+
+</div> <!-- end form_container -->
+
+<input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp; 
+
+</form>
+
+</body>
+
+<script language="javascript">
+// jQuery stuff to make the page a little easier to use
+$(document).ready(function(){
+    $(".save").click(function() { top.restoreSession(); document.pregnacy_cdss_form.submit(); });
+    $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
+    $(".printform").click(function() { PrintForm(); });
+    $(".firspregbtn").click(function() {
+        var sure = confirm("Ви впевнені? Вибір не може бути змінено!");
+        if (sure == true) {
+            $('#firstpregbtnansw').text(<?php echo '"'.FIRSTPREGNACYTXT.'"';?>);
+            $('.isfirstpregnacyhd').prop("value", 1);
+            $('.symptcategory[rel=cat3]').hide();
+        } else {
+            $('#firstpregbtnansw').text(<?php echo '"'.NEXTPREGNACYTXT.'"';?>);
+            $('.isfirstpregnacyhd').prop("value", 0);
+        }
+        this.disabled = true;
+    });
+});
+
+</script>
+
+</html>

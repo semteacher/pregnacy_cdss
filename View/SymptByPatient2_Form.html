@@ -39,6 +39,7 @@
 <input type="hidden" name="createdate" value="<?php echo $this->createdate; ?>">
 <input type="hidden" name="process" value="true">
 <input type="hidden" class="isfirstpregnancyhd" name="isfirstpregnancyhd" value="<?php echo $this->is_firstpregnancy; ?>">
+<input type="hidden" class="idfinaldeceasehd" name="idfinaldeceasehd" value="<?php echo $this->id_finaldecease; ?>">
 
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -51,9 +52,27 @@
 
 <div id="general">
 
-<div><span class="bold">Анкету створено:&nbsp;</span><span class="bold warningtext"><?php echo $this->createdate; ?></span></div>
-
 <?php
+
+    if ($this->id_finaldecease == 0) { $first_row_sel = 'selected'; } else { $first_row_sel = ''; }
+
+    $dec_selector = '<select id="final_deceasedd" name="finaldeceasedd">';
+    $dec_selector .= '<option value="0" '.$first_row_sel.'>---Виберіть остаточний діагноз:---</option>';
+    //var_dump($dec_selector);
+
+    foreach ($Deceases as $key=>$Decease)
+    {
+        if ($this->id_finaldecease == $Decease->id) { $row_sel = 'selected'; } else { $row_sel = ''; }
+        $dec_selector .= '<option value="'.$Decease->id.'" '.$row_sel.'>'.$Decease->dec_name.'</option>';
+    }
+    $dec_selector .= '</select>';
+
+    echo '<div class="deceases">';
+    echo $dec_selector;
+    echo '</div>';
+
+    echo '<hr>';
+    echo '<div><span class="bold">Анкету створено:&nbsp;</span><span class="bold warningtext">'.$this->createdate.'</span></div>';
 
     if (!is_null($this->is_firstpregnancy)) {
         if ($this->is_firstpregnancy==1) {

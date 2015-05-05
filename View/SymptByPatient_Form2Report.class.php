@@ -23,6 +23,7 @@ class SymptByPatient_Form2Report {
 
         print "<div><span>Вагітність: </span><span class='bold warningtext'>$isfirstpregtext</span></div>";
         print "<div><span>Вірогідний діагноз: </span><span class='bold warningtext'>$form_data[expect_decease]</span></div>";
+        print "<div><span>Остаточний діагноз: </span><span class='bold warningtext'>$form_data[finaldecease]</span></div>";
         print "<br>";
 
         print "<span class=bold>Детальніше про вірогідні діагнози:</span>";

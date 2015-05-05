@@ -7,6 +7,7 @@ require_once(MODEL_DIR."SymptCategory_Model.class.php");
 require_once(MODEL_DIR."Symptoms_Model.class.php");
 require_once(MODEL_DIR."SymptOptions_Model.class.php");
 require_once(MODEL_DIR."DeceasesSymptOpt_Model.class.php");
+require_once(MODEL_DIR."Deceases_Model.class.php");
 
 require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
@@ -27,6 +28,8 @@ class PatientExam_Form_Controller {
     public $form_userauthorized;
     public $is_firstpregnancy;
     public $createdate;
+    public $id_finaldecease;
+    public $finaldecease;
 
     public $symptbypatient;
 
@@ -40,6 +43,8 @@ class PatientExam_Form_Controller {
         $this->returnurl =$GLOBALS['form_exit_url'];
         $this->is_firstpregnancy = NULL;
         $this->createdate = NULL;
+        $this->id_finaldecease = 0;
+        $this->finaldecease = NULL;
     }
     
     public function default_action() {
@@ -61,6 +66,8 @@ class PatientExam_Form_Controller {
 
             //get all form options (nested mode)
             $SymptCategory = SymptCategory_Model::all();
+        //get all deceases names
+        $Deceases = Deceases_Model::all();            
             //display form
             require_once(VIEW_DIR.'SymptByPatient2_Form.html');
         } else{
@@ -83,6 +90,7 @@ class PatientExam_Form_Controller {
             //var_dump($form_data);
             $this->is_firstpregnancy = $form_data[is_firstpregnancy];
             $this->createdate = $form_data[createdate];
+            $this->id_finaldecease = $form_data[id_finaldecease];
            // $this->form_pid = $_SESSION['pid'];
     	}
     	else {
@@ -92,6 +100,10 @@ class PatientExam_Form_Controller {
         $this->form_mode = "update";
         //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
+        //get all deceases names
+        $Deceases = Deceases_Model::all();
+        //var_dump($SymptCategory);
+        //var_dump($Deceases);
         //display form
         require_once(VIEW_DIR.'SymptByPatient2_Form.html');
         //$report_form = new SymptByPatient_Form($this, $SymptCategory);
@@ -105,9 +117,11 @@ class PatientExam_Form_Controller {
         //fetch form data
         $form_data = formFetch($this->table_name, $form_idexam);
         if ($form_data) {
+            $this->id_finaldecease = $form_data[id_finaldecease];
+            $this->finaldecease = $form_data[finaldecease];
+            //set deceases names
             $curr_deceases_multi = array();
             $curr_deceases_multi = unserialize($form_data[deceases]);
-            //set deceases names
             $deceases = new Deceases2_Model();
             foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
                 if ($deceases->Load('id='.$decease_id)){
@@ -189,6 +203,7 @@ class PatientExam_Form_Controller {
         $this->form_idexam = $_POST['id'];
         if ($_POST['pid']) {$this->form_pid = $_POST['pid'];}else{$this->form_pid = $_SESSION['pid'];}
         if ($_POST['isfirstpregnancyhd']) {$this->is_firstpregnancy = intval($_POST['isfirstpregnancyhd']);}else{$this->is_firstpregnancy = NULL;}
+        if ($_POST['finaldeceasedd']) {$this->id_finaldecease = intval($_POST['finaldeceasedd']);}else{$this->is_firstpregnancy = 0;}
         if ($_POST['createdate']) {$this->createdate = $_POST['createdate'];}else{$this->createdate = NULL;}
         $this->form_encounter = $_SESSION['encounter'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
@@ -229,6 +244,15 @@ class PatientExam_Form_Controller {
         $decease->Load('id='.$expectdeceaseid);
         $expectdeceasename = $decease->dec_name;
 
+        //Get final decease name (if exist)
+
+        if  ($this->id_finaldecease > 0) {
+            $decease->Load('id='.$this->id_finaldecease);
+            $this->finaldecease = $decease->dec_name;
+        } else {
+            $this->finaldecease = '';
+        }
+
         $ser_curr_decease_multi=serialize($curr_decease_multi);
 
         //save new/update patient form data
@@ -242,7 +266,7 @@ class PatientExam_Form_Controller {
              */
 
             /* save the data into the form's own table */
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi, 'id_finaldecease'=>$this->id_finaldecease, 'finaldecease'=>$this->finaldecease), $_GET["id"], $this->form_userauthorized);
 
             $this->form_idexam = $newid;
             /* link the form to the encounter in the 'forms' table */
@@ -250,7 +274,7 @@ class PatientExam_Form_Controller {
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi, 'id_finaldecease'=>$this->id_finaldecease, 'finaldecease'=>$this->finaldecease), $_GET["id"], $this->form_userauthorized);
         }
 
         //save new/update patient details

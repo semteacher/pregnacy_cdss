@@ -203,7 +203,7 @@ class PatientExam_Form_Controller {
         $this->form_idexam = $_POST['id'];
         if ($_POST['pid']) {$this->form_pid = $_POST['pid'];}else{$this->form_pid = $_SESSION['pid'];}
         if ($_POST['isfirstpregnancyhd']) {$this->is_firstpregnancy = intval($_POST['isfirstpregnancyhd']);}else{$this->is_firstpregnancy = NULL;}
-        if ($_POST['finaldeceasedd']) {$this->id_finaldecease = intval($_POST['finaldeceasedd']);}else{$this->is_firstpregnancy = 0;}
+        if ($_POST['finaldeceasedd']) {$this->id_finaldecease = intval($_POST['finaldeceasedd']);}else{$this->id_finaldecease = 0;}
         if ($_POST['createdate']) {$this->createdate = $_POST['createdate'];}else{$this->createdate = NULL;}
         $this->form_encounter = $_SESSION['encounter'];
         $this->form_userauthorized = $_SESSION['userauthorized'];

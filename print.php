@@ -10,7 +10,7 @@ include_once("config.inc.php");
 //string '/interface/themes/style_oemr.css' (length=32)
 //string '/interface' (length=10)
 
-require ("/Controller/PatientExam_Form_Controller.class.php");
+require_once ("Controller/PatientExam_Form_Controller.class.php");
 
 $c = new PatientExam_Form_Controller();
 echo $c->print_action($_GET['id']);

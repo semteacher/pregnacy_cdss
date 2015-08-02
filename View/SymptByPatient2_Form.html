@@ -30,7 +30,7 @@
 
 <span class="bold"><?php echo 'Сьогодні:&nbsp;'.date("d, F, Y", time()); ?></span><br>
 
-<form method=post action="/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnancy_cdss_form">
+<form method=post action="<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir?>/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnancy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
 
 <input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />

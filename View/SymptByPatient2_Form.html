@@ -97,7 +97,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
     $hiddencat = (($this->is_firstpregnancy==1)&&($SymptCat->id==3)) ? 'hidden' : '';
     //begin category
     echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'" '.$hiddencat.'>';
-    echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
+    echo '<div class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</div>';
 
     foreach ($SymptCat->symptoms as $key=>$Symptoms)
     {

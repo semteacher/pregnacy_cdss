@@ -140,6 +140,44 @@ class PatientExam_Form_Controller {
         }
         return;
     }
+    
+    public function decisiontreegae_action($form_idexam) {
+        //var_dump($this->returnurl);
+        //TODO: process GAE submission there....
+        
+        //redirect back to encounter....
+        header('Location: '.$GLOBALS['webroot'] .$this->returnurl);
+        
+        //show form report on the encounter page
+        $form_idexam = intval($form_idexam);
+        var_dump($form_idexam);
+        //fetch form data
+        $form_data = formFetch($this->table_name, $form_idexam);
+        var_dump($form_data);
+        if ($form_data) {
+            $this->id_finaldecease = $form_data[id_finaldecease];
+            $this->finaldecease = $form_data[finaldecease];
+            //set deceases names
+            $curr_deceases_multi = array();
+            $curr_deceases_multi = unserialize($form_data[deceases]);
+            $deceases = new Deceases2_Model();
+            foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
+                if ($deceases->Load('id='.$decease_id)){
+                    $dec_symmary[dec_name] = $deceases->dec_name;
+                    $curr_deceases_multi[$decease_id][dec_name] = $deceases->dec_name;
+                } else {
+                    //db error
+                    $dec_symmary[dec_name] = "Інший діагноз";
+                    $curr_deceases_multi[$decease_id][dec_name] = "Інший діагноз";
+                }
+            }
+            //display form
+            $report_form = new SymptByPatient_Form2Report($form_data, $curr_deceases_multi);
+        } else {
+            return;
+        }
+        return;
+    }
 
     public function print_action($form_idexam) {
         //print patient form exam data

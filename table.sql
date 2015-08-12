@@ -648,10 +648,12 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_patient_exam` (
   `createdate` datetime DEFAULT NULL,
   `is_firstpregnancy` tinyint(4) DEFAULT NULL,
   `expect_decease` varchar(255) DEFAULT NULL,
-  `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `id_finaldecease` int(11) DEFAULT '0',
   `finaldecease` varchar(255) DEFAULT NULL,
   `finaldecease_icd10` varchar(255) DEFAULT NULL,
+  `id_decisiontree_decease` int(11) DEFAULT NULL,
+  `decisiontree_img` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
 

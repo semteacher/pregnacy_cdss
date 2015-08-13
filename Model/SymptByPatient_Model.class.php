@@ -69,7 +69,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
 
         //ADODB:
         $db = get_db();
-        $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE id_exam = '.$form_idexam);
+        $req = $db->Execute('SELECT * FROM '.SYMPTBYPATIENT_DBTABLE.' WHERE id_exam = '.$form_idexam.' ORDER BY id_sympt_cat, id_symptom, id_sympt_opt');
 //var_dump($req);
         // the query was prepared, now we replace :id_category with our actual $id_category value
         foreach($req as $symptbypt) {

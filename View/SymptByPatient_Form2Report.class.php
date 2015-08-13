@@ -12,6 +12,8 @@ class SymptByPatient_Form2Report {
         print "<style>.borderedtable, .borderedtable th, .borderedtable td { border: 1px solid black; }</style>";
         print "<style>.centertext { text-align: center; }</style>";
         print "<style>.warningtext { background-color: gold; }</style>";
+        print "<style>.display-flex { display: flex; }</style>";
+        print "<style>.display-margin { margin: 5px; }</style>";
         
         print "<div class='navigateLink'>";
 		print "<form method='post' action='../../forms/pregnancy_cdss/decisiontreegae.php' onsubmit='return top.restoreSession()'>"; 
@@ -33,7 +35,7 @@ class SymptByPatient_Form2Report {
         print "<br>";
         
         print "<div>";
-        print "<div><span class='bold'>Кількісна оцінка</span></div>";
+        print "<div><span class='bold'>Вірогіднісна (кількісна) оцінка</span></div>";
         print "<div><span>Вірогідний діагноз: </span><span class='bold warningtext'>$form_data[expect_decease]</span></div>";
         print "<span class=bold>Детальніше:</span>";
         print "<table class=borderedtable>";
@@ -46,14 +48,16 @@ class SymptByPatient_Form2Report {
         print "</div>";
 
         print "<hr>";
-        print "<div class=bold>Анкету створено:";
+        print "<div class='display-margin display-flex'>";
+        print "<div class='display-margin bold'>Анкету створено:";
         print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[createuser]</span></div>";
         print "<div><span class=bold>- Дата і час: </span><span class=text>$form_data[createdate]</span></div>";
         print "</div>";
         print "<br>";
-        print "<div class=bold>Анкету востаннє змінювали:";
+        print "<div class='display-margin bold'>Анкету востаннє змінювали:";
         print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[user]</span></div>";
         print "<div><span class=bold>- Дата і час: </span><span class=text>$form_data[date]</span></div>";
+        print "</div>";
         print "</div>";
         print "<hr>";
 

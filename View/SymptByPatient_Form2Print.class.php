@@ -20,7 +20,8 @@ class SymptByPatient_Form2Print {
         echo '<body id="print_general">';
         echo '<div class=centertext><span class="title">'.$PatientExam_Form->form_name.'</span><br></div>';
 
-        print "<div class=block-width><span class=bold>Пацієнт:</span>";
+        print "<div>";
+        print "<div class=display-inline-block><span class=bold>Пацієнт:</span>";
         print "<div><span class=text>Код:&nbsp;</span><span class=bold>$patient[pid]</span>&nbsp;";
         print "<span class=text>Прізвище:&nbsp;</span><span class=bold>$patient[lname]</span>&nbsp;";
         print "<span class=text>І\"мя:&nbsp;</span><span class=bold>$patient[fname]</span>&nbsp;";
@@ -29,7 +30,7 @@ class SymptByPatient_Form2Print {
         print "<div><span class=text>Адреса:&nbsp;</span><span class=bold>$patient[country_code]</span>&nbsp;";
         print "<span class=bold>$patient[state]</span>&nbsp;<span class=bold>$patient[city]</span>&nbsp;<span class=bold>$patient[street]</span></div>";
         print "<div><span class=text>Телефони:&nbsp;</span><span class=bold>$patient[phone_home]</span>&nbsp;<span class=bold>$patient[phone_cell]</span></div>";
-        print "</div><br>";
+        print "</div>";
         print "<div class='bold display-inline-block'>Діагностичні дані:";
        // print "<span class=bold>Діагностичні дані:</span>";
        // print "<br>";
@@ -40,10 +41,15 @@ class SymptByPatient_Form2Print {
         }
 
         print "<div class=bold><span>Вагітність: </span><span class=warningtext>$isfirstpregtext</span></div>";
-        print "<div class=bold><span>Вірогідний діагноз: </span><span class=warningtext>$form_data[expect_decease]</span></div>";
+        print "<div class=bold><span>Остаточний діагноз: </span><span class='bold warningtext'>$form_data[finaldecease]</span></div>";
+        
         print "</div>";
-
-        print "<div class='bold display-inline-block'>Детальніше про вірогідні діагнози:";
+        print "</div>";
+        print "<div>";
+        
+        print "<div class='bold display-inline-block'>Вірогіднісна (кількісна) оцінка:";
+        print "<div class=bold><span>Вірогідний діагноз: </span><span class=warningtext>$form_data[expect_decease]</span></div>";
+        print "<div>Детальніше:</div>";
        // print "<span class=bold>Детальніше про вірогідні діагнози:</span>";
         print "<table class=borderedtable>";
         print "<tr><th>Діагноз</th><th>Кільк. значущих симптомів</th></tr>";
@@ -52,7 +58,8 @@ class SymptByPatient_Form2Print {
         }
         print "</table>";
         print "</div>";
-
+        print "</div>";
+        
         print "<hr><div>";
         print "<div class=centertext><span class=bold>Дані анкетування:</span></div>";
         print "<hr>";
@@ -81,7 +88,6 @@ class SymptByPatient_Form2Print {
         print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[createuser]</span></div>";
         print "<div><span class=bold>- Дата і час: </span><span class=text>$form_data[createdate]</span></div>";
         print "</div>";
-        // print "<br>";
         print "<div class='bold display-inline-block'>Анкету востаннє змінювали:";
         print "<div><span class=bold>- Користувач: </span><span class=text>$form_data[user]</span></div>";
         print "<div><span class=bold>- Дата і час: </span><span class=text>$form_data[date]</span></div>";

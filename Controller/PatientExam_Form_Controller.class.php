@@ -28,8 +28,10 @@ class PatientExam_Form_Controller {
     public $form_userauthorized;
     public $is_firstpregnancy;
     public $createdate;
+    public $expectdeceaseid;
     public $id_finaldecease;
     public $finaldecease;
+    public $expectdeceasename;
 
     public $symptbypatient;
 
@@ -45,6 +47,8 @@ class PatientExam_Form_Controller {
         $this->createdate = NULL;
         $this->id_finaldecease = 0;
         $this->finaldecease = NULL;
+        $this->expectdeceaseid = 0;
+        $this->expectdeceasename = NULL;
     }
     
     public function default_action() {
@@ -142,18 +146,72 @@ class PatientExam_Form_Controller {
     }
     
     public function decisiontreegae_action($form_idexam) {
-        //var_dump($this->returnurl);
+        //show form report on the encounter page
+        $form_idexam = intval($form_idexam);
+        //fetch form data
+        $form_data = formFetch($this->table_name, $form_idexam);
+
         //TODO: process GAE submission there....
+        //construct row
+        $submitArray = array();
+        $row = array();
+        $client_description = array();
+        $client_decease = array();
+        $client_data = array();
+        //prepare array with form data
+        $client_description = array_merge($client_description, ['url'=>$_SERVER['SERVER_NAME'], 'form_name' => $this->form_name, 'exam_id'=>$form_idexam, 'patient_id'=>$this->form_pid]);
+        $row = array_merge($row,['client_description'=>$client_description]);
+        $row = array_merge($row,['client_decease'=>$client_decease]);
+        //var_dump($client_description);
+        //prepare array with symptoms list
+        $Symptoms = Symptoms_Model::all();
+        //process all symptoms:
+        foreach ($Symptoms as $key=>$Symptom) {
+            $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
+            //check symptom type:
+            if (Symptoms_Model::is_multy($Symptom->id)) {
+                //Symptom can have multiple options
+                foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
+                //TODO:???????????????????????????????????????????????????????
+                    //load EACH symptom options by this patient
+                    $symptoptbyperson->Load('(id_exam='.$form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
+                }
+            } else {
+                //load single symptom option by this patient
+                $symptoptbyperson->Load('(id_exam='.$form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')');
+                $tmpsymptoptdata = new SymptOptions2_Model();//prepare tmp record
+                $tmpsymptoptdata->Load('id='.$symptoptbyperson->id_sympt_opt);
+                
+                $client_data = array_merge($client_data,[$Symptom->id=>['symp_id'=>$Symptom->id,'symp_name'=>$Symptom->symp_name,'opt_id'=>$symptoptbyperson->id_sympt_opt, 'opt_name'=>$tmpsymptoptdata->opt_name]]);
+            }
+            //Var_dump($Symptom->id);            
+            //var_dump($symptoptbyperson);   
+        }
+        $row = array_merge($row, ['client_data'=>$client_data]);
+        //ad new row to array
+        $submitArray[]= $row;
+        //convert to json
+        $submitArrayjson = json_encode($submitArray);
+var_dump($submitArray); 
+        //TODO: submit array to GAE....
+        $url = 'http://contactmgr.loc/site/yii2curltest';
+// The submitted form data, encoded as query-string-style
+// name-value pairs
+$c = curl_init($url);
+curl_setopt($c, CURLOPT_POST, true);
+curl_setopt($c, CURLOPT_POSTFIELDS, $submitArrayjson);
+curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+$page = curl_exec($c);
+curl_close($c);
+var_dump($page);
+        die;
         
         //redirect back to encounter....
         header('Location: '.$GLOBALS['webroot'] .$this->returnurl);
         
-        //show form report on the encounter page
-        $form_idexam = intval($form_idexam);
-        var_dump($form_idexam);
-        //fetch form data
-        $form_data = formFetch($this->table_name, $form_idexam);
-        var_dump($form_data);
+
+        
+        
         if ($form_data) {
             $this->id_finaldecease = $form_data[id_finaldecease];
             $this->finaldecease = $form_data[finaldecease];
@@ -232,6 +290,51 @@ class PatientExam_Form_Controller {
         return;
     }
 	
+    public function probability_deceases_action($symptom_array){
+        //prepare default deceases array
+        $curr_decease_multi = array();
+        $decease = new Deceases2_Model();
+        $deceases_arr = $decease->Find('');
+
+        foreach ($deceases_arr as $dec){
+            //default - each decease probability =1
+            $curr_decease_multi[$dec->id][py]=1;
+            $curr_decease_multi[$dec->id][pn]=1;
+            $curr_decease_multi[$dec->id][count]=0;
+        }
+        $expectdeceasecount = 0;
+
+        //process form submissions
+        $deceasesymptopt = new DeceasesSymptOpt2_Model();
+        foreach ($symptom_array as $sympt_id=>$sympt_options) {
+            foreach ($sympt_options as $key=>$id_sympt_opt) {
+                if ($deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt))
+                {
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease_multi[$deceasesymptopt->id_deceaces][py]*$deceasesymptopt->py;
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][pn]=$curr_decease_multi[$deceasesymptopt->id_deceaces][pn]*$deceasesymptopt->pn;
+                    $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
+                    //define most expected decease
+                    if ($curr_decease_multi[$deceasesymptopt->id_deceaces][count] > $expectdeceasecount) {
+                        $this->expectdeceaseid = $deceasesymptopt->id_deceaces;
+                        $expectdeceasecount = $curr_decease_multi[$deceasesymptopt->id_deceaces][count];
+                    }
+                }
+            }
+        }
+        //Get most expected decease name
+        $decease->Load('id='.$this->expectdeceaseid);
+        $this->expectdeceasename = $decease->dec_name;
+        //Get final decease name (if exist)
+        if  ($this->id_finaldecease > 0) {
+            $decease->Load('id='.$this->id_finaldecease);
+            $this->finaldecease = $decease->dec_name;
+        } else {
+            $this->finaldecease = '';
+        }
+        
+        return $curr_decease_multi;
+    }
+    
 	public function default_action_process() {
 
 		if ($_POST['process'] != "true"){
@@ -246,51 +349,9 @@ class PatientExam_Form_Controller {
         $this->form_encounter = $_SESSION['encounter'];
         $this->form_userauthorized = $_SESSION['userauthorized'];
 
-        //prepare default deceases array
+        //get decease - probability method
         $curr_decease_multi = array();
-        $decease = new Deceases2_Model();
-        $deceases_arr = $decease->Find('');
-
-        foreach ($deceases_arr as $dec){
-            //default - each decease probability =1
-            $curr_decease_multi[$dec->id][py]=1;
-            $curr_decease_multi[$dec->id][pn]=1;
-            $curr_decease_multi[$dec->id][count]=0;
-        }
-        $expectdeceasecount = 0;
-        $expectdeceaseid = 0;
-        $expectdeceasename = '';
-
-        //process form submissions
-        $deceasesymptopt = new DeceasesSymptOpt2_Model();
-        foreach ($_POST['symptom_options'] as $sympt_id=>$sympt_options) {
-            foreach ($sympt_options as $key=>$id_sympt_opt) {
-                if ($deceasesymptopt->Load('id_sympt_opt='.$id_sympt_opt))
-                {
-                    $curr_decease_multi[$deceasesymptopt->id_deceaces][py]=$curr_decease_multi[$deceasesymptopt->id_deceaces][py]*$deceasesymptopt->py;
-                    $curr_decease_multi[$deceasesymptopt->id_deceaces][pn]=$curr_decease_multi[$deceasesymptopt->id_deceaces][pn]*$deceasesymptopt->pn;
-                    $curr_decease_multi[$deceasesymptopt->id_deceaces][count]=$curr_decease_multi[$deceasesymptopt->id_deceaces][count]+1;
-                    //define most expected decease
-                    if ($curr_decease_multi[$deceasesymptopt->id_deceaces][count] > $expectdeceasecount) {
-                        $expectdeceaseid = $deceasesymptopt->id_deceaces;
-                        $expectdeceasecount = $curr_decease_multi[$deceasesymptopt->id_deceaces][count];
-                    }
-                }
-            }
-        }
-        //Get most expected decease name
-        $decease->Load('id='.$expectdeceaseid);
-        $expectdeceasename = $decease->dec_name;
-
-        //Get final decease name (if exist)
-
-        if  ($this->id_finaldecease > 0) {
-            $decease->Load('id='.$this->id_finaldecease);
-            $this->finaldecease = $decease->dec_name;
-        } else {
-            $this->finaldecease = '';
-        }
-
+        $curr_decease_multi = $this->probability_deceases_action($_POST['symptom_options']);
         $ser_curr_decease_multi=serialize($curr_decease_multi);
 
         //save new/update patient form data
@@ -304,7 +365,7 @@ class PatientExam_Form_Controller {
              */
 
             /* save the data into the form's own table */
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename,'deceases'=>$ser_curr_decease_multi, 'id_finaldecease'=>$this->id_finaldecease, 'finaldecease'=>$this->finaldecease), $_GET["id"], $this->form_userauthorized);
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $this->expectdeceasename,'deceases'=>$ser_curr_decease_multi, 'id_finaldecease'=>$this->id_finaldecease, 'finaldecease'=>$this->finaldecease), $_GET["id"], $this->form_userauthorized);
 
             $this->form_idexam = $newid;
             /* link the form to the encounter in the 'forms' table */
@@ -312,10 +373,11 @@ class PatientExam_Form_Controller {
         }
         elseif ($_GET["mode"] == "update") {
             /* update existing record */
-            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $expectdeceasename, 'deceases'=>$ser_curr_decease_multi, 'id_finaldecease'=>$this->id_finaldecease, 'finaldecease'=>$this->finaldecease), $_GET["id"], $this->form_userauthorized);
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_decease'=> $this->expectdeceasename, 'deceases'=>$ser_curr_decease_multi, 'id_finaldecease'=>$this->id_finaldecease, 'finaldecease'=>$this->finaldecease), $_GET["id"], $this->form_userauthorized);
         }
 
         //save new/update patient details
+        $deceasesymptopt = new DeceasesSymptOpt2_Model();
         $Symptoms = Symptoms_Model::all();
         //process all symptoms:
         foreach ($Symptoms as $key=>$Symptom) {

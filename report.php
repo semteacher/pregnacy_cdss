@@ -8,7 +8,7 @@ include_once($GLOBALS["srcdir"]."/api.inc");
 
 include_once("config.inc.php");
 
-require ("/Controller/PatientExam_Form_Controller.class.php");
+require_once ("Controller/PatientExam_Form_Controller.class.php");
 
 function pregnancy_cdss_report( $pid, $encounter, $cols, $id) {
 

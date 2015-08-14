@@ -5,7 +5,7 @@ include_once($GLOBALS["srcdir"]."/api.inc");
 
 include_once("config.inc.php");
 
-require ("/Controller/PatientExam_Form_Controller.class.php");
+require_once ("Controller/PatientExam_Form_Controller.class.php");
 
 $c = new PatientExam_Form_Controller();
 echo $c->default_action_process($_POST);

@@ -6,48 +6,48 @@
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `form_pregnancycdss_deceaces`
+-- Структура таблиці `form_pregnancycdss_diseases`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnancycdss_deceaces` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_diseases` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dec_name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
-  `dec_note` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
-  `dec_icd10` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `dis_name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `dis_note` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `dos_icd10` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `p` float DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=3 ;
 
 --
--- Дамп даних таблиці `form_pregnancycdss_deceaces`
+-- Дамп даних таблиці `form_pregnancycdss_diseases`
 --
 
-INSERT INTO `form_pregnancycdss_deceaces` (`id`, `dec_name`, `dec_note`, `p`) VALUES
+INSERT INTO `form_pregnancycdss_diseases` (`id`, `dis_name`, `dis_name`, `p`) VALUES
 (1, 'Своєчасні роди', NULL, 0.5),
 (2, 'Передчасні роди', NULL, 0.5);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблиці `form_pregnancycdss_deceases_sympt_opt`
+-- Структура таблиці `form_pregnancycdss_diseases_sympt_opt`
 --
 
-CREATE TABLE IF NOT EXISTS `form_pregnancycdss_deceases_sympt_opt` (
+CREATE TABLE IF NOT EXISTS `form_pregnancycdss_diseases_sympt_opt` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `id_deceaces` int(11) DEFAULT '0',
+  `id_diseases` int(11) DEFAULT '0',
   `id_sympt_opt` bigint(20) DEFAULT '0',
   `py` float DEFAULT '0',
   `pn` float DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `deceases_sympt_opt_id_deceaces_ndx` (`id_deceaces`),
-  KEY `deceases_sympt_opt_id_symptom_ndx` (`id_sympt_opt`)
+  KEY `diseases_sympt_opt_id_diseases_ndx` (`id_diseases`),
+  KEY `diseases_sympt_opt_id_symptom_ndx` (`id_sympt_opt`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=205 ;
 
 --
--- Дамп даних таблиці `form_pregnancycdss_deceases_sympt_opt`
+-- Дамп даних таблиці `form_pregnancycdss_diseases_sympt_opt`
 --
 
-INSERT INTO `form_pregnancycdss_deceases_sympt_opt` (`id`, `id_deceaces`, `id_sympt_opt`, `py`, `pn`) VALUES
+INSERT INTO `form_pregnancycdss_diseases_sympt_opt` (`id`, `id_diseases`, `id_sympt_opt`, `py`, `pn`) VALUES
 (1, 2, 1, 0.999, 0),
 (2, 1, 2, 0.999, 0),
 (3, 2, 4, 0.95, 0),
@@ -647,11 +647,12 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_patient_exam` (
   `createuser` varchar(255) DEFAULT NULL,
   `createdate` datetime DEFAULT NULL,
   `is_firstpregnancy` tinyint(4) DEFAULT NULL,
-  `expect_decease` varchar(255) DEFAULT NULL,
-  `deceases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `id_finaldecease` int(11) DEFAULT '0',
-  `finaldecease` varchar(255) DEFAULT NULL,
-  `finaldecease_icd10` varchar(255) DEFAULT NULL,
+  `expect_disease` varchar(255) DEFAULT NULL,
+  `diseases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `diseases_tree` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `id_finaldisease` int(11) DEFAULT '0',
+  `finaldisease` varchar(255) DEFAULT NULL,
+  `finaldisease_icd10` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
 
@@ -669,13 +670,13 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_symptopt_by_patient` (
   `user` varchar(255) default NULL,
   `id_symptom` bigint(20) DEFAULT '0',
   `id_sympt_opt` bigint(20) DEFAULT '0',
-  `id_deceases` int(11) DEFAULT '0',
+  `id_disease` int(11) DEFAULT '0',
   `py` float DEFAULT '0',
   `pn` float DEFAULT '0',
   `id_sympt_cat` int(11) DEFAULT '0',
   `id_order` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `symptoms_by_patient_id_deceases_ndx` (`id_deceases`),
+  KEY `symptoms_by_patient_id_disease_ndx` (`id_diseases`),
   KEY `symptoms_by_patient_id_exam_ndx` (`id_exam`),
   KEY `symptoms_by_patient_id_patient_ndx` (`pid`),
   KEY `symptoms_by_patient_id_sympt_cat_ndx` (`id_sympt_cat`),
@@ -698,11 +699,11 @@ ALTER TABLE `form_pregnancycdss_symptopt_by_patient`
   ADD CONSTRAINT `form_pregnancycdss_symptopt_by_patient_ibfk_1` FOREIGN KEY (`id_exam`) REFERENCES `form_pregnancycdss_patient_exam` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
 --
--- Constraints for table `form_pregnancycdss_deceases_sympt_opt`
+-- Constraints for table `form_pregnancycdss_diseases_sympt_opt`
 --
-ALTER TABLE `form_pregnancycdss_deceases_sympt_opt`
-  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_1` FOREIGN KEY (`id_deceaces`) REFERENCES `form_pregnancycdss_deceaces` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `form_deceases_sympt_opt_ibfk_2` FOREIGN KEY (`id_sympt_opt`) REFERENCES `form_pregnancycdss_sympt_options` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `form_pregnancycdss_diseases_sympt_opt`
+  ADD CONSTRAINT `form_diseases_sympt_opt_ibfk_1` FOREIGN KEY (`id_diseases`) REFERENCES `form_pregnancycdss_diseases` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `form_diseases_sympt_opt_ibfk_2` FOREIGN KEY (`id_sympt_opt`) REFERENCES `form_pregnancycdss_sympt_options` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `form_pregnancycdss_symptoms`

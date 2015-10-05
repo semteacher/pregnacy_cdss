@@ -23,8 +23,8 @@ define("SYMPTOPTIONS_DBTABLE", "form_pregnancycdss_sympt_options");
 define("SYMPTBYPATIENT_DBTABLE", "form_pregnancycdss_symptopt_by_patient");
 define("PATIENTEXAM_DBTABLE", "form_pregnancycdss_patient_exam");
 
-define("DECEASESSYMPTOMOPTIONS_DBTABLE", "form_pregnancycdss_deceases_sympt_opt");
-define("DECEASES_DBTABLE", "form_pregnancycdss_deceaces");
+define("DISEASESSYMPTOMOPTIONS_DBTABLE", "form_pregnancycdss_diseases_sympt_opt");
+define("DISEASES_DBTABLE", "form_pregnancycdss_diseases");
 
 define("FIRSTPREGNACYTXT","Перша");
 define("NEXTPREGNACYTXT","Повторна");

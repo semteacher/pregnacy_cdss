@@ -19,7 +19,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $this->opt_name  = $opt_name;
         $this->id_order  = $id_order;
         $this->is_selected  = $is_selected;
-        $this->deceasessymptopt = DeceasesSymptOpt_Model::findbysymptopt($id);
+        $this->deceasessymptopt = DiseasesSymptOpt_Model::findbysymptopt($id);
     }
 
     public static function all() {

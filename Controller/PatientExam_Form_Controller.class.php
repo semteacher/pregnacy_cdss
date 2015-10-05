@@ -6,8 +6,8 @@ require_once(MODEL_DIR."SymptByPatient_Model.class.php");
 require_once(MODEL_DIR."SymptCategory_Model.class.php");
 require_once(MODEL_DIR."Symptoms_Model.class.php");
 require_once(MODEL_DIR."SymptOptions_Model.class.php");
-require_once(MODEL_DIR."DeceasesSymptOpt_Model.class.php");
-require_once(MODEL_DIR."Deceases_Model.class.php");
+require_once(MODEL_DIR."DiseasesSymptOpt_Model.class.php");
+require_once(MODEL_DIR."Diseases_Model.class.php");
 
 require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
@@ -71,7 +71,7 @@ class PatientExam_Form_Controller {
             //get all form options (nested mode)
             $SymptCategory = SymptCategory_Model::all();
         //get all deceases names
-        $Deceases = Deceases_Model::all();            
+        $Deceases = Diseases_Model::all();
             //display form
             require_once(VIEW_DIR.'SymptByPatient2_Form.html');
         } else{
@@ -105,7 +105,7 @@ class PatientExam_Form_Controller {
         //get all form options (nested mode)
     	$SymptCategory = SymptCategory_Model::all();
         //get all deceases names
-        $Deceases = Deceases_Model::all();
+        $Deceases = Diseases_Model::all();
         //var_dump($SymptCategory);
         //var_dump($Deceases);
         //display form

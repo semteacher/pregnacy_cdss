@@ -6,15 +6,15 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
   class Diseases_Model {
     // we define attributes
         var $id;
-        var $dec_name;
-	    var $dec_note;
-	    var $dec_icd10;
+        var $dis_name;
+	    var $dis_note;
+	    var $dis_icd10;
 
-    public function __construct($id, $dec_name, $dec_note, $dec_icd10) {
+    public function __construct($id, $dis_name, $dis_note, $dis_icd10) {
         $this->id  = $id;
-        $this->dec_name  = $dec_name;
-        $this->dec_note  = $dec_note;
-        $this->dec_icd10  = $dec_icd10;
+        $this->dis_name  = $dis_name;
+        $this->dis_note  = $dis_note;
+        $this->dis_icd10  = $dis_icd10;
     }
 
     public static function all() {
@@ -22,8 +22,8 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.DISEASES_DBTABLE);
         // we create a list of Diseases_Model objects from the database results
-        foreach($req as $decease) {
-            $list[] = new Diseases_Model($decease['id'], $decease['dec_name'], $decease['dec_note'], $decease['dec_icd10']);
+        foreach($req as $disease) {
+            $list[] = new Diseases_Model($disease['id'], $disease['dis_name'], $disease['dis_note'], $disease['dis_icd10']);
         }
         return $list;
     }

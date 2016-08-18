@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_diseases` (
 -- Дамп даних таблиці `form_pregnancycdss_diseases`
 --
 
-INSERT INTO `form_pregnancycdss_diseases` (`id`, `dis_name`, `dis_name`, `dis_icd10`, `p`) VALUES
+INSERT INTO `form_pregnancycdss_diseases` (`id`, `dis_name`, `dis_note`, `dis_icd10`, `p`) VALUES
 (1, 'Своєчасні роди', NULL, NULL, 0.5),
 (2, 'Передчасні роди', NULL, NULL, 0.5);
 

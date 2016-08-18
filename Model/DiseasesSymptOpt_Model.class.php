@@ -7,14 +7,14 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
     // we define attributes
     // they are public so that we can access them using $symptoms->cat_name directly
         var $id;
-        var $id_deceases;
+        var $id_diseases;
 	    var $id_sympt_opt;
 	    var $py;
         var $pn;
 
-    public function __construct($id, $id_deceaces, $id_sympt_opt, $py=0, $pn=0) {
+    public function __construct($id, $id_diseases, $id_sympt_opt, $py=0, $pn=0) {
         $this->id  = $id;
-        $this->id_deceaces  = $id_deceaces;
+        $this->id_diseases  = $id_diseases;
         $this->id_sympt_opt  = $id_sympt_opt;
         $this->py  = $py;
         $this->pn  = $pn;
@@ -28,7 +28,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         
         //ADODB:
         $db = get_db();
-        $req = $db->Execute('SELECT * FROM '.DISEASESSYMPTOMOPTIONS_DBTABLE.'ORDER BY id_deceaces');
+        $req = $db->Execute('SELECT * FROM '.DISEASESSYMPTOMOPTIONS_DBTABLE.'ORDER BY id_diseases');
 //print_r("SymptOptions_Model::all");
 //var_dump($req);
         // we create a list of DiseasesSymptOpt_Model objects from the database results
@@ -36,7 +36,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         //foreach($req->fetchAll() as $decsymptopt) {
         //ADODB:
         foreach($req as $decsymptopt) {
-            $list[] = new DiseasesSymptOpt_Model($decsymptopt['id'], $decsymptopt['id_deceaces'], $decsymptopt['id_sympt_opt'], $decsymptopt['py'], $decsymptopt['pn']);
+            $list[] = new DiseasesSymptOpt_Model($decsymptopt['id'], $decsymptopt['id_diseases'], $decsymptopt['id_sympt_opt'], $decsymptopt['py'], $decsymptopt['pn']);
         }
 //var_dump($list);
         return $list;
@@ -58,7 +58,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $db = get_db();
         $req = $db->Execute('SELECT * FROM '.DISEASESSYMPTOMOPTIONS_DBTABLE.' WHERE id_sympt_opt = '.$id_symptopt.' ORDER BY id');
         foreach($req as $decsymptopt) {
-            $list[] = new DiseasesSymptOpt_Model($decsymptopt['id'], $decsymptopt['id_deceaces'], $decsymptopt['id_sympt_opt'], $decsymptopt['py'], $decsymptopt['pn']);
+            $list[] = new DiseasesSymptOpt_Model($decsymptopt['id'], $decsymptopt['id_diseases'], $decsymptopt['id_sympt_opt'], $decsymptopt['py'], $decsymptopt['pn']);
         }
 //var_dump($list);
         return $list;

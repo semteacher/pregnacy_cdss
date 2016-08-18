@@ -11,7 +11,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
 	    var $opt_name;
 	    var $id_order;
         var $is_selected;
-        var $deceasessymptopt;
+        var $diseasessymptopt;
 
     public function __construct($id, $id_symptom, $opt_name, $id_order, $is_selected) {
         $this->id  = $id;
@@ -19,7 +19,7 @@ require_once (dirname(__FILE__) ."/../../../../library/sql.inc");
         $this->opt_name  = $opt_name;
         $this->id_order  = $id_order;
         $this->is_selected  = $is_selected;
-        $this->deceasessymptopt = DiseasesSymptOpt_Model::findbysymptopt($id);
+        $this->diseasessymptopt = DiseasesSymptOpt_Model::findbysymptopt($id);
     }
 
     public static function all() {

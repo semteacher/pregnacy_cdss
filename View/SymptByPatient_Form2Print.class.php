@@ -7,7 +7,7 @@
  */
 class SymptByPatient_Form2Print {
 
-    public function __construct($PatientExam_Form, $patient, $form_data, $curr_deceases_multi, $symptbypatientarr)
+    public function __construct($PatientExam_Form, $patient, $form_data, $curr_diseases_multi, $symptbypatientarr)
     {
         echo '<!DOCTYPE html>';
         echo '<html>';
@@ -15,7 +15,7 @@ class SymptByPatient_Form2Print {
         echo '<meta charset="UTF-8">';
 
         //<!-- page styles -->
-        echo '<link rel="stylesheet" href="/interface/forms/'.$PatientExam_Form->form_folder.'/style.css" type="text/css">';
+        echo '<link rel="stylesheet" href="/openemr/interface/forms/'.$PatientExam_Form->form_folder.'/style.css" type="text/css">';
         echo '</head>';
         echo '<body id="print_general">';
         echo '<div class=centertext><span class="title">'.$PatientExam_Form->form_name.'</span><br></div>';
@@ -41,20 +41,20 @@ class SymptByPatient_Form2Print {
         }
 
         print "<div class=bold><span>Вагітність: </span><span class=warningtext>$isfirstpregtext</span></div>";
-        print "<div class=bold><span>Остаточний діагноз: </span><span class='bold warningtext'>$form_data[finaldecease]</span></div>";
+        print "<div class=bold><span>Остаточний діагноз: </span><span class='bold warningtext'>$form_data[finaldisease]</span></div>";
         
         print "</div>";
         print "</div>";
         print "<div>";
         
         print "<div class='bold display-inline-block'>Вірогіднісна (кількісна) оцінка:";
-        print "<div class=bold><span>Вірогідний діагноз: </span><span class=warningtext>$form_data[expect_decease]</span></div>";
+        print "<div class=bold><span>Вірогідний діагноз: </span><span class=warningtext>$form_data[expect_disease]</span></div>";
         print "<div>Детальніше:</div>";
        // print "<span class=bold>Детальніше про вірогідні діагнози:</span>";
         print "<table class=borderedtable>";
         print "<tr><th>Діагноз</th><th>Кільк. значущих симптомів</th></tr>";
-        foreach ($curr_deceases_multi as $decease_id=>$dec_symmary) {
-            print "<tr><td class=bold>$dec_symmary[dec_name]</td><td class='text centertext'>$dec_symmary[count]</td></tr>";
+        foreach ($curr_diseases_multi as $disease_id=>$dis_symmary) {
+            print "<tr><td class=bold>$dis_symmary[dis_name]</td><td class='text centertext'>$dis_symmary[count]</td></tr>";
         }
         print "</table>";
         print "</div>";
@@ -77,7 +77,7 @@ class SymptByPatient_Form2Print {
                 //print symptom
                 print "<tr><td class=text>$exam_opt_symmary[symptom_name]</td>";
                 print "<td class=text>$exam_opt_symmary[sympt_opt_name]</td>";
-                print "<td class=bold>$exam_opt_symmary[dec_name]</td></tr>";
+                print "<td class=bold>$exam_opt_symmary[dis_name]</td></tr>";
             }
         }
         print "</table>";

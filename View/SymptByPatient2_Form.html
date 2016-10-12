@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <!-- supporting javascript code -->
-<script type="text/javascript" src="/library/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/openemr/library/js/jquery-1.7.2.min.js"></script>
 
     <!-- page styles -->
-<link rel="stylesheet" href="/interface/themes/style_oemr.css" type="text/css">
-<link rel="stylesheet" href="/interface/forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
+<link rel="stylesheet" href="/openemr/interface/themes/style_oemr.css" type="text/css">
+<link rel="stylesheet" href="/openemr/interface/forms/<?php echo $this->form_folder; ?>/style.css" type="text/css">
 
     <script type="text/javascript" language="javascript">
     // this line is to assist the calendar text boxes
     var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
 
     function PrintForm() {
-        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
+        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/openemr/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
     };
     function AdminForm() {
-        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/admin/web/'; ?>","admincdsswin");
+        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/openemr/interface/forms/'.$this->form_folder.'/admin/web/'; ?>","admincdsswin");
     };
     function AdminFormFrame() {
-        top.frames['RBot'].location = "<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/interface/forms/'.$this->form_folder.'/admin/web/index.php?authUser='.$_SESSION['authUser']; ?>";
+        top.frames['RBot'].location = "<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/openemr/interface/forms/'.$this->form_folder.'/admin/web/index.php?authUser='.$_SESSION['authUser']; ?>";
     }
     </script>
 
@@ -30,7 +30,7 @@
 
 <span class="bold"><?php echo 'Сьогодні:&nbsp;'.date("d, F, Y", time()); ?></span><br>
 
-<form method=post action="<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir?>/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnancy_cdss_form">
+<form method=post action="<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir?>/openemr/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnancy_cdss_form">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
 
 <input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />
@@ -39,7 +39,7 @@
 <input type="hidden" name="createdate" value="<?php echo $this->createdate; ?>">
 <input type="hidden" name="process" value="true">
 <input type="hidden" class="isfirstpregnancyhd" name="isfirstpregnancyhd" value="<?php echo $this->is_firstpregnancy; ?>">
-<input type="hidden" class="idfinaldeceasehd" name="idfinaldeceasehd" value="<?php echo $this->id_finaldecease; ?>">
+<input type="hidden" class="idfinaldiseasehd" name="idfinaldiseasehd" value="<?php echo $this->id_finaldisease; ?>">
 
 <!-- Save/Cancel links -->
 <input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
@@ -54,20 +54,20 @@
 
 <?php
 
-    if ($this->id_finaldecease == 0) { $first_row_sel = 'selected'; } else { $first_row_sel = ''; }
+    if ($this->id_finaldisease == 0) { $first_row_sel = 'selected'; } else { $first_row_sel = ''; }
 
-    $dec_selector = '<select id="final_deceasedd" name="finaldeceasedd">';
+    $dec_selector = '<select id="final_diseasedd" name="finaldiseasedd">';
     $dec_selector .= '<option value="0" '.$first_row_sel.'>---Виберіть остаточний діагноз:---</option>';
     //var_dump($dec_selector);
 
-    foreach ($Deceases as $key=>$Decease)
+    foreach ($Diseases as $key=>$Disease)
     {
-        if ($this->id_finaldecease == $Decease->id) { $row_sel = 'selected'; } else { $row_sel = ''; }
-        $dec_selector .= '<option value="'.$Decease->id.'" '.$row_sel.'>'.$Decease->dec_name.'</option>';
+        if ($this->id_finaldisease == $Disease->id) { $row_sel = 'selected'; } else { $row_sel = ''; }
+        $dec_selector .= '<option value="'.$Disease->id.'" '.$row_sel.'>'.$Disease->dis_name.'</option>';
     }
     $dec_selector .= '</select>';
 
-    echo '<div class="deceases">';
+    echo '<div class="bold warningtext diseases">Остаточний діагноз (якщо відомо): ';
     echo $dec_selector;
     echo '</div>';
 
@@ -97,7 +97,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
     $hiddencat = (($this->is_firstpregnancy==1)&&($SymptCat->id==3)) ? 'hidden' : '';
     //begin category
     echo '<div class="symptcategory" rel="cat'.$SymptCat->id.'" '.$hiddencat.'>';
-    echo '<span class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</span>';
+    echo '<div class="symptcattitletext">'.$SymptCat->id.'. '.$SymptCat->cat_name.'</div>';
 
     foreach ($SymptCat->symptoms as $key=>$Symptoms)
     {

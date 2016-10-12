@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_diseases` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dis_name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
   `dis_note` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
-  `dos_icd10` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `dis_icd10` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `p` float DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=3 ;
@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_diseases` (
 -- Дамп даних таблиці `form_pregnancycdss_diseases`
 --
 
-INSERT INTO `form_pregnancycdss_diseases` (`id`, `dis_name`, `dis_name`, `p`) VALUES
-(1, 'Своєчасні роди', NULL, 0.5),
-(2, 'Передчасні роди', NULL, 0.5);
+INSERT INTO `form_pregnancycdss_diseases` (`id`, `dis_name`, `dis_note`, `dis_icd10`, `p`) VALUES
+(1, 'Своєчасні роди', NULL, NULL, 0.5),
+(2, 'Передчасні роди', NULL, NULL, 0.5);
 
 -- --------------------------------------------------------
 
@@ -648,11 +648,13 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_patient_exam` (
   `createdate` datetime DEFAULT NULL,
   `is_firstpregnancy` tinyint(4) DEFAULT NULL,
   `expect_disease` varchar(255) DEFAULT NULL,
-  `diseases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `diseases_tree` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `diseases` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `id_finaldisease` int(11) DEFAULT '0',
   `finaldisease` varchar(255) DEFAULT NULL,
   `finaldisease_icd10` varchar(255) DEFAULT NULL,
+  `id_decisiontree_decease` int(11) DEFAULT NULL,
+  `diseases_tree` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `decisiontree_img` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
 
@@ -676,7 +678,7 @@ CREATE TABLE IF NOT EXISTS `form_pregnancycdss_symptopt_by_patient` (
   `id_sympt_cat` int(11) DEFAULT '0',
   `id_order` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `symptoms_by_patient_id_disease_ndx` (`id_diseases`),
+  KEY `symptoms_by_patient_id_disease_ndx` (`id_disease`),
   KEY `symptoms_by_patient_id_exam_ndx` (`id_exam`),
   KEY `symptoms_by_patient_id_patient_ndx` (`pid`),
   KEY `symptoms_by_patient_id_sympt_cat_ndx` (`id_sympt_cat`),

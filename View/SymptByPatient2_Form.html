@@ -51,8 +51,8 @@
 <!-- container for the main body of the form -->
 <div id="form_container">
     <div id="result"></div>
-    <div class="alert-box success">Saving Successful!</div>
-    <div class="alert-box failure">Saving Failure!</div>
+    <div class="popup success centertext bold">Saving Successful!</div>
+    <div class="popup failure centertext bold">Saving Failure!</div>
 <div id="general">
 
 <?php
@@ -157,14 +157,14 @@ $(document).ready(function(){
             //console.log(data);
             //var content = $(data).toString();
             //$("#result").empty().append(content);
-            $( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+            $( "div.success" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
             //alert('form was submitted!');
         });
         posting.error(function(data) {
             //console.log(data);
             //var content = $(data).toString();
             //$("#result").empty().append(content);
-            $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+            $( "div.failure" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
             //alert('form was submitted!');
         });
     });

@@ -112,7 +112,17 @@ h1 {
     vertical-align: top;
 }
 
-.alert-box {
+.popup {
+    position: fixed;
+    bottom: 50%;
+    right: 25%;
+    width: 50%;
+    display: inline-block;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;

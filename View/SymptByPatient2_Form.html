@@ -14,7 +14,7 @@
     var mypcc = '<?php echo $GLOBALS["phone_country_code"] ?>';
 
     function PrintForm() {
-        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/openemr/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET["id"]; ?>","mywin");
+        newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/openemr/interface/forms/'.$this->form_folder.'/print.php?id='.$_GET['id']; ?>","mywin");
     };
     function AdminForm() {
         newwin = window.open("<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir.'/openemr/interface/forms/'.$this->form_folder.'/admin/web/'; ?>","admincdsswin");
@@ -30,7 +30,7 @@
 
 <span class="bold"><?php echo 'Сьогодні:&nbsp;'.date("d, F, Y", time()); ?></span><br>
 
-<form method=post action="<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir?>/openemr/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET["id"];?>" name="pregnancy_cdss_form">
+<form method=post action="<?php echo 'http://'.$_SERVER['SERVER_NAME'].$rootdir?>/openemr/interface/forms/<?php echo $this->form_folder; ?>/save.php?mode=<?php echo $this->form_mode; ?>&id=<?php echo $_GET['id'];?>" name="pregnancy_cdss_form" id="pregnancyCdssFormId">
 <span class="title"><?php xl($this->form_name,'e'); ?></span><br>
 
 <input type="hidden" name="id" value="<?php echo $this->form_idexam; ?>" />
@@ -42,14 +42,16 @@
 <input type="hidden" class="idfinaldiseasehd" name="idfinaldiseasehd" value="<?php echo $this->id_finaldisease; ?>">
 
 <!-- Save/Cancel links -->
-<input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="save" value="<?php xl('Save and Exit','e'); ?>"> &nbsp;
+<input type="button" class="saveajax" value="<?php xl('Save','e'); ?>"> &nbsp;
 <input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
 <input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp;
 <input type="button" class="adminform" value="<?php xl('CDSS Admin','e'); ?>"> &nbsp;
 
 <!-- container for the main body of the form -->
 <div id="form_container">
-
+    <div class="popup success centertext bold">Saving Successful!</div>
+    <div class="popup failure centertext bold">Saving Failure!</div>
 <div id="general">
 
 <?php
@@ -116,6 +118,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
             //end symptom option
             echo '</div>';
         }
+        echo '<div class="centertext"><img class="clearsympt" src="/openemr/interface/pic/Clear.gif"></div>';
         //end symptom
         echo '</div>';
     }
@@ -128,7 +131,8 @@ foreach ($SymptCategory as $key=>$SymptCat)
 
 </div> <!-- end form_container -->
 
-<input type="button" class="save" value="<?php xl('Save Changes','e'); ?>"> &nbsp; 
+<input type="button" class="save" value="<?php xl('Save and Exit','e'); ?>"> &nbsp;
+<input type="button" class="saveajax" value="<?php xl('Save','e'); ?>"> &nbsp;
 <input type="button" class="dontsave" value="<?php xl('Don\'t Save Changes','e'); ?>"> &nbsp; 
 <input type="button" class="printform" value="<?php xl('Print','e'); ?>"> &nbsp;
 <input type="button" class="adminform" value="<?php xl('CDSS Admin','e'); ?>"> &nbsp;
@@ -137,10 +141,30 @@ foreach ($SymptCategory as $key=>$SymptCat)
 
 </body>
 
-<script language="javascript">
+<script type="text/javascript">
 // jQuery stuff to make the page a little easier to use
 $(document).ready(function(){
-    $(".save").click(function() { top.restoreSession(); document.pregnancy_cdss_form.submit(); });
+    $(".save").click(function() {
+        top.restoreSession(); 
+        document.pregnancy_cdss_form.submit();   
+    });
+    $(".saveajax").click(function() {
+    var $form = $('#pregnancyCdssFormId'),
+        data = $form.serialize(),
+        url = $form.attr("action");
+    var posting = $.post( url, data );
+        posting.done(function(data) {
+            $( "div.success" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
+        });
+        posting.error(function(data) {
+            $( "div.failure" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
+        });
+    });
+    //clear selected checks/radio
+    $(".clearsympt").click(function() {
+        $(this).closest(".symptom").find("input[type='checkbox']").removeAttr('checked');
+        $(this).closest(".symptom").find("input[type='radio']").removeAttr('checked');
+    });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });
     $(".adminform").click(function() { AdminFormFrame(); });

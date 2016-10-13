@@ -129,6 +129,10 @@ h1 {
     border-radius: 4px;
 }
 
+.clearsympt {
+    cursor: pointer;
+}
+
 .success {
     color: #3c763d;
     background-color: #dff0d8;

@@ -118,6 +118,7 @@ foreach ($SymptCategory as $key=>$SymptCat)
             //end symptom option
             echo '</div>';
         }
+        echo '<div class="centertext"><img class="clearsympt" src="/openemr/interface/pic/Clear.gif"></div>';
         //end symptom
         echo '</div>';
     }
@@ -158,6 +159,11 @@ $(document).ready(function(){
         posting.error(function(data) {
             $( "div.failure" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
         });
+    });
+    //clear selected checks/radio
+    $(".clearsympt").click(function() {
+        $(this).closest(".symptom").find("input[type='checkbox']").removeAttr('checked');
+        $(this).closest(".symptom").find("input[type='radio']").removeAttr('checked');
     });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
     $(".printform").click(function() { PrintForm(); });

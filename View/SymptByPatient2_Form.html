@@ -50,7 +50,6 @@
 
 <!-- container for the main body of the form -->
 <div id="form_container">
-    <div id="result"></div>
     <div class="popup success centertext bold">Saving Successful!</div>
     <div class="popup failure centertext bold">Saving Failure!</div>
 <div id="general">
@@ -141,10 +140,10 @@ foreach ($SymptCategory as $key=>$SymptCat)
 
 </body>
 
-<script language="javascript">
+<script type="text/javascript">
 // jQuery stuff to make the page a little easier to use
 $(document).ready(function(){
-    $(".save").click(function() { 
+    $(".save").click(function() {
         top.restoreSession(); 
         document.pregnancy_cdss_form.submit();   
     });
@@ -154,18 +153,10 @@ $(document).ready(function(){
         url = $form.attr("action");
     var posting = $.post( url, data );
         posting.done(function(data) {
-            //console.log(data);
-            //var content = $(data).toString();
-            //$("#result").empty().append(content);
             $( "div.success" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
-            //alert('form was submitted!');
         });
         posting.error(function(data) {
-            //console.log(data);
-            //var content = $(data).toString();
-            //$("#result").empty().append(content);
             $( "div.failure" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400 );
-            //alert('form was submitted!');
         });
     });
     $(".dontsave").click(function() { location.href='<?php echo "$this->returnurl";?>'; });
@@ -183,8 +174,6 @@ $(document).ready(function(){
         }
         this.disabled = true;
     });
-
-    
 });
 
 </script>

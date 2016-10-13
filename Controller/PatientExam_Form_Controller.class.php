@@ -484,8 +484,13 @@ var_dump($page);
                     }
                 }
             } else {
+                //Symptom does not selected! Remove it from patient table in DB?
+                $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
                 foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
-                //TODO:remove symptom from patient table in DB??
+                    //remove all existed symptom option values for the patient
+                    if ($symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')')){
+                        $symptoptbyperson->delete();
+                    }
                 }
             }
         }

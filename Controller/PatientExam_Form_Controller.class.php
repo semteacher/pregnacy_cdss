@@ -415,7 +415,6 @@ var_dump($page);
                                 $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
                                 $symptoptbyperson->py = $diseasesymptopt->py;
                                 $symptoptbyperson->pn = $diseasesymptopt->pn;
-
                                 $symptoptbyperson->save();
                             }
                         }
@@ -424,7 +423,7 @@ var_dump($page);
                     //Symptom can have only single option
                     //Is this symptom in database?
                     $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
-                    $currSelectedOptionsCount = $symptoptbyperson->Find('(id_exam=?)AND(pid=?)AND(id_symptom=?)',array($this->form_idexam, $this->form_pid, $Symptom->id));
+                    $currSelectedOptionsCount = $symptoptbyperson->Find('(id_exam=?)AND(pid=?)AND(id_symptom=?)',array($this->form_idexam, $this->form_pid, $Symptom->id));                
 
                     if (sizeof($currSelectedOptionsCount) ==1) {
                         //Update single record
@@ -436,7 +435,7 @@ var_dump($page);
                             if ($diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
                                 $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
                                 $symptoptbyperson->py = $diseasesymptopt->py;
-                                $symptoptbyperson->pn = $diseasesymptopt->pn;
+                                $symptoptbyperson->pn = $diseasesymptopt->pn;                              
                             }
                             $symptoptbyperson->save();
                         }

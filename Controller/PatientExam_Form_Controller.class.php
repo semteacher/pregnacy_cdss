@@ -335,6 +335,111 @@ var_dump($page);
         return $curr_disease_multi;
     }
     
+    public function save_action_process() {
+
+        $this->form_idexam = $_POST['id'];
+        if ($_POST['pid']) {$this->form_pid = $_POST['pid'];}else{$this->form_pid = $_SESSION['pid'];}
+        if ($_POST['isfirstpregnancyhd']) {$this->is_firstpregnancy = intval($_POST['isfirstpregnancyhd']);}else{$this->is_firstpregnancy = NULL;}
+        if ($_POST['finaldiseasedd']) {$this->id_finaldisease = intval($_POST['finaldiseasedd']);}else{$this->is_firstpregnancy = 0;}
+        if ($_POST['createdate']) {$this->createdate = $_POST['createdate'];}else{$this->createdate = NULL;}
+        $this->form_encounter = $_SESSION['encounter'];
+        $this->form_userauthorized = $_SESSION['userauthorized'];
+
+        //get disease - probability method
+        $curr_disease_multi = array();
+        $curr_disease_multi = $this->probability_diseases_action($_POST['symptom_options']);
+        $ser_curr_disease_multi=serialize($curr_disease_multi);
+
+        //save new/update patient form data
+        if ($_GET["mode"] == "new") {
+
+            /* NOTE - for customization you can replace $_POST with your own array
+             * of key=>value pairs where 'key' is the table field name and
+             * 'value' is whatever it should be set to
+             * ex)   $newrecord['parent_sig'] = $_POST['sig'];
+             *       $newid = formSubmit($table_name, $newrecord, $_GET["id"], $userauthorized);
+             */
+
+            /* save the data into the form's own table */
+            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_disease'=> $this->expectdiseasename,'diseases'=>$ser_curr_disease_multi, 'id_finaldisease'=>$this->id_finaldisease, 'finaldisease'=>$this->finaldisease), $_GET["id"], $this->form_userauthorized);
+
+            $this->form_idexam = $newid;
+            /* link the form to the encounter in the 'forms' table */
+            addForm($this->form_encounter, $this->form_name, $newid, $this->form_folder, $this->form_pid, $this->form_userauthorized);
+        }
+        elseif ($_GET["mode"] == "update") {
+            /* update existing record */
+            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_disease'=> $this->expectdiseasename, 'diseases'=>$ser_curr_disease_multi, 'id_finaldisease'=>$this->id_finaldisease, 'finaldisease'=>$this->finaldisease), $_GET["id"], $this->form_userauthorized);
+        } else {
+            //TODO: throw error
+            //$_POST['process'] = "";
+            return;
+        }
+
+        //save new/update patient details
+        //prepare tmp record
+        $diseasesymptopt = new DiseasesSymptOpt2_Model();
+        $symptoptbyperson = new SymptByPatient2_Model();
+        //process all symptoms:
+        $Symptoms = Symptoms_Model::all();
+        foreach ($Symptoms as $key=>$Symptom) {
+            //process all symptom options:
+            foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
+                //is it symptom option in POST?
+                $key = array_search($SympOption->id,$_POST['symptom_options'][$Symptom->id]);
+                //is it symptom option in database?
+                echo ' Symptom='.$Symptom->id;
+                echo ' SympOption='.$SympOption->id;
+                echo ' key(post)='; 
+                var_dump($key);
+                echo ' db_search='; 
+                var_dump(SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id));
+                
+                if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id)) {
+                    if ($key === false || is_null($key)){
+                        //symptom option is in database but not in POST: it is unselected (unchecked) and will be deleted
+                        $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
+                        $symptoptbyperson->delete();  
+
+                echo ' result: db-Yes,post-NO: will be deleted<br>';
+                    } else {
+                echo ' result: db-Yes,post-Yes: will be skipped<br>';    
+                    }
+                } else {
+                    if (is_int($key)) {
+                        //symptom option is NOT in database but it is in POST: it will be added
+                        //prepare new record data values
+                        $symptoptbyperson = new SymptByPatient2_Model();
+                        $symptoptbyperson->id_exam = $this->form_idexam;
+                        $symptoptbyperson->pid  = $this->form_pid;
+                        $symptoptbyperson->user = $_SESSION['authUser'];
+                        $symptoptbyperson->id_symptom = $Symptom->id;
+                        $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
+                        $symptoptbyperson->id_order = $Symptom->id_order;
+                        $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][$key];
+
+                        if ($diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)) {
+                            //add stat. information about possible disease by this symptom option (if exist)
+                            $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
+                            $symptoptbyperson->py = $diseasesymptopt->py;
+                            $symptoptbyperson->pn = $diseasesymptopt->pn;
+                        }
+                        //save changes to DB
+                        $symptoptbyperson->save();
+                echo ' result: db-No,post-Yes: will be added<br>';        
+                    } else {
+                echo ' result: db-No,post-No: will be skipped<br>';      
+                    }
+                }
+                
+            }
+        }
+
+//die;
+//		$_POST['process'] = "";
+		return;
+	}
+    
 	public function default_action_process() {
 
 		if ($_POST['process'] != "true"){

@@ -269,18 +269,19 @@ var_dump($page);
             foreach ($symptbypatient as $key=>$SymptByPatientModel) {
                 $symptcat->Load('id='.$SymptByPatientModel->id_sympt_cat);
                 $symprom->Load('id='.$SymptByPatientModel->id_symptom);
-                $sympt_opt->Load('id='.$SymptByPatientModel->id_sympt_opt);
-                $diseases->Load('id='.$SymptByPatientModel->id_diseases);
+                $sympt_opt->Load('id='.$SymptByPatientModel->id_sympt_opt);                
                 $symptbypatientarr[$key][id_sympt_cat]=$SymptByPatientModel->id_sympt_cat;
                 $symptbypatientarr[$key][sympt_cat_name]=$symptcat->cat_name;
                 $symptbypatientarr[$key][id_symptom]=$SymptByPatientModel->id_symptom;
                 $symptbypatientarr[$key][symptom_name]=$symprom->symp_name;
                 $symptbypatientarr[$key][id_sympt_opt]=$SymptByPatientModel->id_sympt_opt;
                 $symptbypatientarr[$key][sympt_opt_name]=$sympt_opt->opt_name;
-                $symptbypatientarr[$key][id_diseases]=$SymptByPatientModel->id_diseases;
-                $symptbypatientarr[$key][dis_name]=$diseases->dis_name;
+                //print diseases if exist
+                if ($diseases->Load('id='.$SymptByPatientModel->id_diseases)) {
+                    $symptbypatientarr[$key][id_diseases]=$SymptByPatientModel->id_diseases;
+                    $symptbypatientarr[$key][dis_name]=$diseases->dis_name;
+                }
             }
-            //var_dump($symptbypatientarr);
             //display form
             $report_form = new SymptByPatient_Form2Print($this, $patient, $form_data, $curr_diseases_multi, $symptbypatientarr);
         } else {

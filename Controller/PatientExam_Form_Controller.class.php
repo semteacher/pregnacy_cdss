@@ -13,7 +13,6 @@ require_once(MODEL_DIR."Symptoms2Patients_Model.class.php");
 
 require_once(VIEW_DIR."SymptByPatient_Form2Report.class.php");
 require_once(VIEW_DIR."SymptByPatient_Form2Print.class.php");
-//require_once(VIEW_DIR."SymptByPatient_Form.class.php");
 
 //main controller class
 class PatientExam_Form_Controller {
@@ -372,7 +371,6 @@ var_dump($page);
             $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_disease'=> $this->expectdiseasename, 'diseases'=>$ser_curr_disease_multi, 'id_finaldisease'=>$this->id_finaldisease, 'finaldisease'=>$this->finaldisease), $_GET["id"], $this->form_userauthorized);
         } else {
             //TODO: throw error
-            //$_POST['process'] = "";
             return;
         }
 
@@ -434,175 +432,9 @@ var_dump($page);
                 
             }
         }
-
 //die;
-//		$_POST['process'] = "";
 		return;
-	}
-    
-	public function default_action_process() {
-
-		if ($_POST['process'] != "true"){
-            return;
-        }
-
-        $this->form_idexam = $_POST['id'];
-        if ($_POST['pid']) {$this->form_pid = $_POST['pid'];}else{$this->form_pid = $_SESSION['pid'];}
-        if ($_POST['isfirstpregnancyhd']) {$this->is_firstpregnancy = intval($_POST['isfirstpregnancyhd']);}else{$this->is_firstpregnancy = NULL;}
-        if ($_POST['finaldiseasedd']) {$this->id_finaldisease = intval($_POST['finaldiseasedd']);}else{$this->is_firstpregnancy = 0;}
-        if ($_POST['createdate']) {$this->createdate = $_POST['createdate'];}else{$this->createdate = NULL;}
-        $this->form_encounter = $_SESSION['encounter'];
-        $this->form_userauthorized = $_SESSION['userauthorized'];
-
-        //get disease - probability method
-        $curr_disease_multi = array();
-        $curr_disease_multi = $this->probability_diseases_action($_POST['symptom_options']);
-        $ser_curr_disease_multi=serialize($curr_disease_multi);
-
-        //save new/update patient form data
-        if ($_GET["mode"] == "new") {
-
-            /* NOTE - for customization you can replace $_POST with your own array
-             * of key=>value pairs where 'key' is the table field name and
-             * 'value' is whatever it should be set to
-             * ex)   $newrecord['parent_sig'] = $_POST['sig'];
-             *       $newid = formSubmit($table_name, $newrecord, $_GET["id"], $userauthorized);
-             */
-
-            /* save the data into the form's own table */
-            $newid = formSubmit($this->table_name, array('encounter'=>$this->form_encounter, 'createuser'=>$_SESSION['authUser'], 'createdate'=>$this->createdate, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_disease'=> $this->expectdiseasename,'diseases'=>$ser_curr_disease_multi, 'id_finaldisease'=>$this->id_finaldisease, 'finaldisease'=>$this->finaldisease), $_GET["id"], $this->form_userauthorized);
-
-            $this->form_idexam = $newid;
-            /* link the form to the encounter in the 'forms' table */
-            addForm($this->form_encounter, $this->form_name, $newid, $this->form_folder, $this->form_pid, $this->form_userauthorized);
-        }
-        elseif ($_GET["mode"] == "update") {
-            /* update existing record */
-            $success = formUpdate($this->table_name, array('encounter'=>$this->form_encounter, 'is_firstpregnancy'=>$this->is_firstpregnancy, 'expect_disease'=> $this->expectdiseasename, 'diseases'=>$ser_curr_disease_multi, 'id_finaldisease'=>$this->id_finaldisease, 'finaldisease'=>$this->finaldisease), $_GET["id"], $this->form_userauthorized);
-        }
-
-        //save new/update patient details
-        $diseasesymptopt = new DiseasesSymptOpt2_Model();
-        $Symptoms = Symptoms_Model::all();
-        //process all symptoms:
-        foreach ($Symptoms as $key=>$Symptom) {
-            //check is it symptom selected is?
-            if (array_key_exists($Symptom->id,$_POST['symptom_options'])){
-                //Symptom is selected!
-                //check symptom type:
-                if (Symptoms_Model::is_multy($Symptom->id)) {
-                    //Symptom can have multiple options
-                    foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
-                        //is it symptom option in POST?
-                        $key = array_search($SympOption->id,$_POST['symptom_options'][$Symptom->id]);
-                        //is it symptom option in database?
-                        if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id)) {
-                            if ($key === false){
-                                //symptom option is in database but not in POST:it is unchecked and will be deleted
-                                $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
-                                $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
-                                $symptoptbyperson->delete();
-                            }
-
-                        } else {
-                            if ($key !== false) {
-                                //Insert one new record
-                                $symptoptbyperson = new SymptByPatient2_Model();
-                                $symptoptbyperson->id_exam = $this->form_idexam;
-                                $symptoptbyperson->pid  = $this->form_pid;
-                                $symptoptbyperson->user = $_SESSION['authUser'];
-                                $symptoptbyperson->id_symptom = $Symptom->id;
-                                $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
-                                $symptoptbyperson->id_order = $Symptom->id_order;
-                                $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][$key];
-
-                                $diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt);
-                                $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
-                                $symptoptbyperson->py = $diseasesymptopt->py;
-                                $symptoptbyperson->pn = $diseasesymptopt->pn;
-                                $symptoptbyperson->save();
-                            }
-                        }
-                    }
-                } else {
-                    //Symptom can have only single option
-                    //Is this symptom in database?
-                    $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
-                    $currSelectedOptionsCount = $symptoptbyperson->Find('(id_exam=?)AND(pid=?)AND(id_symptom=?)',array($this->form_idexam, $this->form_pid, $Symptom->id));                
-
-                    if (sizeof($currSelectedOptionsCount) ==1) {
-                        //Update single record
-                        $symptoptbyperson = new SymptByPatient2_Model();
-                        $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')');
-                        if ($symptoptbyperson->id_sympt_opt != intval($_POST['symptom_options'][$Symptom->id][0])){
-                            $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][0];
-                            //load disease info
-                            if ($diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
-                                $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
-                                $symptoptbyperson->py = $diseasesymptopt->py;
-                                $symptoptbyperson->pn = $diseasesymptopt->pn;                              
-                            }
-                            $symptoptbyperson->save();
-                        }
-
-                    } elseif (sizeof($currSelectedOptionsCount) >1) {
-                        //delete all and insert new one
-                        foreach ($currSelectedOptionsCount as $tmpsymptoptbyperson) {
-                            $tmpsymptoptbyperson->delete();
-                        }
-                        //Insert one new record
-                        $symptoptbyperson = new SymptByPatient2_Model();
-                        $symptoptbyperson->id_exam = $this->form_idexam;
-                        $symptoptbyperson->pid  = $this->form_pid;
-                        $symptoptbyperson->user = $_SESSION['authUser'];
-                        $symptoptbyperson->id_symptom = $Symptom->id;
-                        $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
-                        $symptoptbyperson->id_order = $Symptom->id_order;
-                        $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][0];
-                        //load disease info
-                        if ($diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
-                            $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
-                            $symptoptbyperson->py = $diseasesymptopt->py;
-                            $symptoptbyperson->pn = $diseasesymptopt->pn;
-                        }
-                        $symptoptbyperson->save();
-                        //print_r($opt_name.' will be skipped<br>');
-                    } else {
-                        //Insert one new record
-                        $symptoptbyperson = new SymptByPatient2_Model();
-                        $symptoptbyperson->id_exam = $this->form_idexam;
-                        $symptoptbyperson->pid  = $this->form_pid;
-                        $symptoptbyperson->user = $_SESSION['authUser'];
-                        $symptoptbyperson->id_symptom = $Symptom->id;
-                        $symptoptbyperson->id_sympt_cat = $Symptom->id_category;
-                        $symptoptbyperson->id_order = $Symptom->id_order;
-                        $symptoptbyperson->id_sympt_opt = $_POST['symptom_options'][$Symptom->id][0];
-
-                        //load disease info
-                        if ($diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)){
-                            $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
-                            $symptoptbyperson->py = $diseasesymptopt->py;
-                            $symptoptbyperson->pn = $diseasesymptopt->pn;
-                        }
-                        $symptoptbyperson->save();
-                    }
-                }
-            } else {
-                //Symptom does not selected! Remove it from patient table in DB?
-                $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
-                foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
-                    //remove all existed symptom option values for the patient
-                    if ($symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')')){
-                        $symptoptbyperson->delete();
-                    }
-                }
-            }
-        }
-//die;
-		$_POST['process'] = "";
-		return;
-	}
-    
+	} 
 }
 
 ?>

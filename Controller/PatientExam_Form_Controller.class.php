@@ -381,28 +381,27 @@ var_dump($page);
             foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
                 //is it symptom option in POST?
                 $key = array_search($SympOption->id,$_POST['symptom_options'][$Symptom->id]);
-                //is it symptom option in database?
-                echo ' Symptom='.$Symptom->id;
-                echo ' SympOption='.$SympOption->id;
-                echo ' key(post)='; 
-                var_dump($key);
-                echo ' db_search='; 
-                var_dump(SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id));
-                
+                //is it symptom option in database?                
                 if (SymptByPatient_Model::isselected($this->form_idexam, $this->form_pid, $Symptom->id, $SympOption->id)) {
                     if ($key === false || is_null($key)){
-                        //symptom option is in database but not in POST: it is unselected (unchecked) and will be deleted
+                        //CASE_1: symptom option is in database but not in POST: it is unselected and will be DELETED
                         $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
-                        $symptoptbyperson->delete();  
-
-                echo ' result: db-Yes,post-NO: will be deleted<br>';
+                        $symptoptbyperson->delete();
                     } else {
-                echo ' result: db-Yes,post-Yes: will be skipped<br>';    
+                        //CASE_2: symptom option is in database and in POST: it will be UPADTED                
+                        $symptoptbyperson->Load('(id_exam='.$this->form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')');
+                        if ($diseasesymptopt->Load('id_sympt_opt='.$symptoptbyperson->id_sympt_opt)) {                
+                            //add stat. information about possible disease by this symptom option (if exist)
+                            $symptoptbyperson->id_diseases = $diseasesymptopt->id_diseases;
+                            $symptoptbyperson->py = $diseasesymptopt->py;
+                            $symptoptbyperson->pn = $diseasesymptopt->pn;
+                        }
+                        //save changes to DB
+                        $symptoptbyperson->save();
                     }
                 } else {
                     if (is_int($key)) {
-                        //symptom option is NOT in database but it is in POST: it will be added
-                        //prepare new record data values
+                        //CASE_3: symptom option is NOT in database but it is in POST: it will be ADDED
                         $symptoptbyperson = new SymptByPatient2_Model();
                         $symptoptbyperson->id_exam = $this->form_idexam;
                         $symptoptbyperson->pid  = $this->form_pid;
@@ -419,16 +418,14 @@ var_dump($page);
                             $symptoptbyperson->pn = $diseasesymptopt->pn;
                         }
                         //save changes to DB
-                        $symptoptbyperson->save();
-                echo ' result: db-No,post-Yes: will be added<br>';        
+                        $symptoptbyperson->save();                
                     } else {
-                echo ' result: db-No,post-No: will be skipped<br>';      
+                        //CASE_3: symptom option is NOT in database and is NOT in POST: it will be SKIPPED
                     }
                 }
-                
             }
         }
-die;
+//die;
 		return;
 	} 
 }

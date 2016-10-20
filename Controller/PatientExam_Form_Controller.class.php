@@ -113,16 +113,9 @@ class PatientExam_Form_Controller {
         return;
 
 	}
-
-    public function report_action($form_idexam) {
-        //show form report on the encounter page
-        $form_idexam = intval($form_idexam);
-        //fetch form data
-        $form_data = formFetch($this->table_name, $form_idexam);
-        if ($form_data) {
-            $this->id_finaldisease = $form_data[id_finaldisease];
-            $this->finaldisease = $form_data[finaldisease];
-            //set diseases names
+    
+    protected function getCurrDiseasesMultiTable_action($form_data) {
+    //set diseases names
             $curr_diseases_multi = array();
             $curr_diseases_multi = unserialize($form_data[diseases]);
             $diseases = new Diseases2_Model();
@@ -136,10 +129,21 @@ class PatientExam_Form_Controller {
                     $curr_diseases_multi[$disease_id][dis_name] = "Інший діагноз";
                 }
             }
+        return $curr_diseases_multi;
+    }
+
+    public function report_action($form_idexam) {
+        //show form report on the encounter page
+        $form_idexam = intval($form_idexam);
+        //fetch form data
+        $form_data = formFetch($this->table_name, $form_idexam);
+        if ($form_data) {
+            $this->id_finaldisease = $form_data[id_finaldisease];
+            $this->finaldisease = $form_data[finaldisease];
+            //set diseases names
+            $currDiseasesMulti = $this->getCurrDiseasesMultiTable_action($form_data);            
             //display form
-            $report_form = new SymptByPatient_Form2Report($form_data, $curr_diseases_multi);
-        } else {
-            return;
+            $report_form = new SymptByPatient_Form2Report($form_data, $currDiseasesMulti);
         }
         return;
     }
@@ -215,6 +219,7 @@ var_dump($page);
             $this->id_finaldisease = $form_data[id_finaldisease];
             $this->finaldisease = $form_data[finaldisease];
             //set diseases names
+            $currDiseasesMulti = $this->getCurrDiseasesMultiTable_action($form_data);            
             $curr_diseases_multi = array();
             $curr_diseases_multi = unserialize($form_data[diseases]);
             $diseases = new Diseases2_Model();
@@ -246,26 +251,16 @@ var_dump($page);
         $form_data = formFetch($this->table_name, $form_idexam);
         //var_dump($form_data);
         if ($form_data) {
-            $curr_diseases_multi = array();
-            $curr_diseases_multi = unserialize($form_data[diseases]);
-            //set diseases names
-            $diseases = new Diseases2_Model();
-            foreach ($curr_diseases_multi as $disease_id=>$dec_symmary) {
-                if ($diseases->Load('id='.$disease_id)){
-                    $dec_symmary[dis_name] = $diseases->dis_name;
-                    $curr_diseases_multi[$disease_id][dis_name] = $diseases->dis_name;
-                } else {
-                    //db error
-                    $dec_symmary[dis_name] = "Інший діагноз";
-                    $curr_diseases_multi[$disease_id][dis_name] = "Інший діагноз";
-                }
-            }
+            $currDiseasesMulti = $this->getCurrDiseasesMultiTable_action($form_data);
+
             //get patient exam data
             $symptcat = new SymptCategory2_Model;
             $symprom = new Symptoms2_Model;
             $sympt_opt = new SymptOptions2_Model;
             $symptbypatientarr = array();
             $symptbypatient = SymptByPatient_Model::find($form_idexam);
+            //set diseases names
+            $diseases = new Diseases2_Model();
             foreach ($symptbypatient as $key=>$SymptByPatientModel) {
                 $symptcat->Load('id='.$SymptByPatientModel->id_sympt_cat);
                 $symprom->Load('id='.$SymptByPatientModel->id_symptom);
@@ -283,7 +278,7 @@ var_dump($page);
                 }
             }
             //display form
-            $report_form = new SymptByPatient_Form2Print($this, $patient, $form_data, $curr_diseases_multi, $symptbypatientarr);
+            $report_form = new SymptByPatient_Form2Print($this, $patient, $form_data, $currDiseasesMulti, $symptbypatientarr);
         } else {
             return;
         }
@@ -433,7 +428,7 @@ var_dump($page);
                 
             }
         }
-//die;
+die;
 		return;
 	} 
 }

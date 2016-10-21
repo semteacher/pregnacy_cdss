@@ -73,12 +73,11 @@ class SymptByPatient_Form2Print {
                 //print category header
                 $curr_id_category = $exam_opt_symmary[id_sympt_cat];
                 print "<tr><td colspan='3' class=bold>$exam_opt_symmary[id_sympt_cat]. $exam_opt_symmary[sympt_cat_name]</td></tr>";
-            } else {
-                //print symptom
-                print "<tr><td class=text>$exam_opt_symmary[symptom_name]</td>";
-                print "<td class=text>$exam_opt_symmary[sympt_opt_name]</td>";
-                print "<td class=bold>$exam_opt_symmary[dis_name]</td></tr>";
-            }
+            } 
+            //print symptom
+            print "<tr><td class=text>$exam_opt_symmary[symptom_name]</td>";
+            print "<td class=text>$exam_opt_symmary[sympt_opt_name]</td>";
+            print "<td class=bold>$exam_opt_symmary[dis_name]</td></tr>";            
         }
         print "</table>";
 

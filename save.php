@@ -7,7 +7,12 @@ include_once("config.inc.php");
 
 require_once ("Controller/PatientExam_Form_Controller.class.php");
 
-$c = new PatientExam_Form_Controller();
-echo $c->default_action_process($_POST);
+//echo $c->default_action_process($_POST);
+if ($_POST['process'] == "true") {
+    $c = new PatientExam_Form_Controller();
+    echo $c->save_action_process($_POST);
+    $_POST['process'] = "";
+}
+
 @formJump();
 ?>

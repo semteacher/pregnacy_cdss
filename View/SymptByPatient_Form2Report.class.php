@@ -7,7 +7,7 @@
  */
 class SymptByPatient_Form2Report {
 
-    public function __construct($form_data, $curr_diseases_multi)
+    public function __construct($form_data, $curr_diseases_multi, $form_folder)
     {
         print "<style>.borderedtable, .borderedtable th, .borderedtable td { border: 1px solid black; }</style>";
         print "<style>.centertext { text-align: center; }</style>";
@@ -60,7 +60,7 @@ class SymptByPatient_Form2Report {
         print "</div>";
         print "</div>";
         print "<hr>";
-
+        print "<script type='text/javascript' src='/openemr/interface/forms/".$form_folder."/gaeprocess.js'></script>";
     }
 }
 ?>

@@ -143,7 +143,7 @@ class PatientExam_Form_Controller {
             //set diseases names
             $currDiseasesMulti = $this->getCurrDiseasesMultiTable_action($form_data);            
             //display form
-            $report_form = new SymptByPatient_Form2Report($form_data, $currDiseasesMulti);
+            $report_form = new SymptByPatient_Form2Report($form_data, $currDiseasesMulti, $this->form_folder);
         }
         return;
     }

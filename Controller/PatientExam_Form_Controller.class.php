@@ -147,6 +147,64 @@ class PatientExam_Form_Controller {
         }
         return;
     }
+            
+    public function gaeDecisionTreeAjsx_action($form_idexam) {
+        //show form report on the encounter page
+        $form_idexam = intval($form_idexam);
+        //fetch form data
+        $form_data = formFetch($this->table_name, $form_idexam);
+        
+        //construct row of the result`s table
+        $submitArray = array();
+        $row = array();
+        $client_description = array();
+        $client_disease = array();
+        $client_data = array();
+        
+        //prepare array with form data
+        $client_description = array_merge($client_description, ['url'=>$_SERVER['SERVER_NAME'], 'form_name' => $this->form_name, 'exam_id'=>$form_idexam, 'patient_id'=>$this->form_pid]);
+        $row = array_merge($row,['client_description'=>$client_description]);
+        $row = array_merge($row,['client_disease'=>$client_disease]);
+        
+        //prepare array with symptoms list
+        $Symptoms = Symptoms_Model::all();
+        $symptoptbyperson = new SymptByPatient2_Model();//prepare tmp record
+        $tmpsymptoptdata = new SymptOptions2_Model();//prepare tmp record
+        //process all symptoms:
+        foreach ($Symptoms as $key=>$Symptom) {
+            //check symptom type:
+            if (Symptoms_Model::is_multy($Symptom->id)) {
+                //Symptom can have multiple options
+                foreach ($Symptom->symptoptions as $optkey=>$SympOption) {
+                //load EACH symptom options by this patient
+                    if ($symptoptbyperson->Load('(id_exam='.$form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')AND(id_sympt_opt='.$SympOption->id.')')) {
+                        if ($tmpsymptoptdata->Load('id='.$symptoptbyperson->id_sympt_opt)) {
+                            //add to the row of the resulted array
+                            $client_data = array_merge($client_data,[$Symptom->id=>['symp_id'=>$Symptom->id,'symp_name'=>$Symptom->symp_name,'opt_id'=>$symptoptbyperson->id_sympt_opt, 'opt_name'=>$tmpsymptoptdata->opt_name]]);
+                        }
+                    }
+                }
+            } else {
+                //load SINGLE symptom option by this patient
+                if ($symptoptbyperson->Load('(id_exam='.$form_idexam.')AND(pid='.$this->form_pid.')AND(id_symptom='.$Symptom->id.')')) {
+                    if ($tmpsymptoptdata->Load('id='.$symptoptbyperson->id_sympt_opt)) {
+                        //add to the row of the resulted array
+                        $client_data = array_merge($client_data,[$Symptom->id=>['symp_id'=>$Symptom->id,'symp_name'=>$Symptom->symp_name,'opt_id'=>$symptoptbyperson->id_sympt_opt, 'opt_name'=>$tmpsymptoptdata->opt_name]]);
+                    }                
+                }
+            }
+            //Var_dump($Symptom->id);            
+            //var_dump($symptoptbyperson);   
+        }
+        $row = array_merge($row, ['client_data'=>$client_data]);
+        //ad new row to array
+        $submitArray[]= $row;
+        //convert to json
+        $submitArrayjson = json_encode($submitArray);
+var_dump($submitArray);
+die;
+        return $submitArrayjson;
+    }
     
     public function decisiontreegae_action($form_idexam) {
         //show form report on the encounter page

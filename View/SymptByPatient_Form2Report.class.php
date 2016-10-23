@@ -7,7 +7,7 @@
  */
 class SymptByPatient_Form2Report {
 
-    public function __construct($form_data, $curr_diseases_multi, $form_folder)
+    public function __construct($form_data, $curr_diseases_multi, $formFolder, $gaeScriptName=Null)
     {
         print "<style>.borderedtable, .borderedtable th, .borderedtable td { border: 1px solid black; }</style>";
         print "<style>.centertext { text-align: center; }</style>";
@@ -16,10 +16,13 @@ class SymptByPatient_Form2Report {
         print "<style>.display-margin { margin: 5px; }</style>";
         
         print "<div class='navigateLink'>";
-		print "<form method='post' action='../../forms/pregnancy_cdss/decisiontreegae.php' onsubmit='return top.restoreSession()'>"; 
-		print "<input type='hidden' name='id' value='". attr($form_data[id]) . "'>";
-		print "<input type='submit' name='decisiontreegae' value='" . xla('Submit this form to GAE Decision Tree Service') . "' />";
-		print "</form>";
+		//print "<form method='post' action='../../forms/pregnancy_cdss/decisiontreegae.php' onsubmit='return top.restoreSession()'>"; 
+		//print "<input type='hidden' name='id' value='". attr($form_data[id]) . "'>";
+        if ($gaeScriptName){
+            print "<input type='button' class='submitGAE' name='ajaxdecisiontreegae' value='".xla('AJAX: Submit this form to GAE Decision Tree Service')."' onclick='gaeDecisionTreeSubmitFormFunction(\"".$form_data[id]."\",\"".$formFolder."\",\"".$gaeScriptName."\")' />";
+        }
+		//print "<input type='submit' name='decisiontreegae' value='" . xla('Submit this form to GAE Decision Tree Service') . "' />";
+		//print "</form>";
         print "</div>"; // end hide for report
     
         print "<div class=bold>Діагностичні дані:";
@@ -60,7 +63,7 @@ class SymptByPatient_Form2Report {
         print "</div>";
         print "</div>";
         print "<hr>";
-        print "<script type='text/javascript' src='/openemr/interface/forms/".$form_folder."/gaeprocess.js'></script>";
+        print "<script type='text/javascript' src='/openemr/interface/forms/".$formFolder."/gaeprocess.js'></script>";
     }
 }
 ?>

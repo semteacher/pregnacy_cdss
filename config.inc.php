@@ -15,6 +15,7 @@ define('MODEL_DIR', HOME . DS.'Model'.DS);
 //define form general
 define("FORM_NAME", "Pregnancy CDSS Form");
 define("FORM_FOLDER", "pregnancy_cdss");
+define("GAE_SCRIPT_NAME", "decisiontreegae.php");
 
 //define database table names
 define("SYMPTCATEGORY_DBTABLE", "form_pregnancycdss_sympt_category");

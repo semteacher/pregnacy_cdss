@@ -1,7 +1,7 @@
     function submitData2GAE(formData){
         alert('formData='+JSON.stringify(formData));
         jQuery.ajax({  
-            type : 'GET',   
+            type : 'POST',   
             url : 'http://contactmgr.loc/site/yii2curltest',   
             data : formData,  
             dataType : 'json',
@@ -18,18 +18,14 @@
             }  
         }); 
     }
-    function gaeDecisionTreeSubmitFormFunction(examId,encounterId,patientId){
-        alert('examId='+examId+', encounterId='+encounterId+', patientId='+patientId);
+    function gaeDecisionTreeSubmitFormFunction(formId, formFolder, scriptName){
         jQuery.ajax({  
-            type : 'GET',   
-            url : '/module/pregnancycdss/gAEDecisionTree/single.json',   
-            data : 'examId=' + examId + '&encounterId=' + encounterId + '&patientId=' + patientId,  
+            type : 'POST',   
+            //url : '../../forms/'+formFolder+'/decisiontreegae.php',
+            url : '../../forms/'+formFolder+'/'+scriptName,
+            data : 'formId=' + formId,  
             dataType : 'json',
             success : function(response) {
-                var mystr = JSON.stringify(response);
-                console.log(response);
-                console.log(mystr);
-                //alert(mystr);
                 submitData2GAE(response);
             },  
             error : function(e) {  

@@ -12,5 +12,6 @@ include_once("config.inc.php");
 require ("/Controller/PatientExam_Form_Controller.class.php");
 
 $c = new PatientExam_Form_Controller();
-echo $c->decisiontreegae_action($_POST['id']);
+//echo $c->decisiontreegae_action($_POST['id']);
+echo $c->gaeDecisionTreeAjsx_action($_POST['formId']);
 ?>

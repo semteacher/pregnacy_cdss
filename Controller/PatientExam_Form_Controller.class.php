@@ -18,6 +18,7 @@ require_once(VIEW_DIR."SymptByPatient_Form2Print.class.php");
 class PatientExam_Form_Controller {
 
     public $form_folder;
+    public $gaeScriptName;
     public $form_idexam;
     public $form_pid;
     public $returnurl;
@@ -31,11 +32,11 @@ class PatientExam_Form_Controller {
     public $id_finaldisease;
     public $finaldisease;
     public $expectdiseasename;
-
     public $symptbypatient;
 
     function PatientExam_Form_Controller() {
         $this->form_folder = FORM_FOLDER;
+        $this->gaeScriptName = GAE_SCRIPT_NAME;
         $this->form_name = FORM_NAME;
         $this->table_name = PATIENTEXAM_DBTABLE;
         $this->form_encounter = $_SESSION['encounter'];
@@ -143,7 +144,7 @@ class PatientExam_Form_Controller {
             //set diseases names
             $currDiseasesMulti = $this->getCurrDiseasesMultiTable_action($form_data);            
             //display form
-            $report_form = new SymptByPatient_Form2Report($form_data, $currDiseasesMulti, $this->form_folder);
+            $report_form = new SymptByPatient_Form2Report($form_data, $currDiseasesMulti, $this->form_folder, $this->gaeScriptName);
         }
         return;
     }
@@ -201,8 +202,6 @@ class PatientExam_Form_Controller {
         $submitArray[]= $row;
         //convert to json
         $submitArrayjson = json_encode($submitArray);
-var_dump($submitArray);
-die;
         return $submitArrayjson;
     }
     

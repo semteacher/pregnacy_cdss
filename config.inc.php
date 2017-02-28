@@ -33,7 +33,8 @@ define("NEXTPREGNACYTXT","Повторна");
 define("UNDEFINED","Не вказано!");
 //print_r('<br>DB connect througt ADOdb_Active_Record');
 //establish persistent database connection
-include_once("$srcdir/adodb/adodb-active-record.inc.php");
+//include_once("$srcdir/adodb/adodb-active-record.inc.php");
+require_once(dirname(__FILE__) . "/../../../vendor/adodb/adodb-php/adodb-active-record.inc.php");
 $form_db = get_db();
 ADOdb_Active_Record::SetDatabaseAdapter($form_db);
 
